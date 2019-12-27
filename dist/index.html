@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>start template</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.0.1/dist/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.2/Draggable.js"></script>
+    <script src="js/index.js" defer=""></script>
+  </head>
+  <body>
+    <div id="progress-line"></div>
+    <div class="wrapperAll">
+      <div class="j-leftLine"></div>
+      <div class="j-rightLine"></div>
+      <div class="j-topLine"></div>
+      <div class="j-bottomLine"></div>
+      <div class="displayParams">
+        <p id="width"> </p>
+        <p id="height"> </p>
+        <p id="scroll"> </p>
+        <p id="mouseX"> </p>
+        <p id="mouseY"></p>
+        <P id="clientX"></P>
+        <P id="clientY"></P>
+      </div>
+      <div class="j-wrap-content">
+        <sidebar class="j-wrap-content-sidebar">
+          <button class="j-wrap-content-sidebar__add-table-btn">addTable</button>
+        </sidebar>
+        <div class="j-wrap-content-map">
+          <div class="resizable draggedMap">
+            <div class="resizers">some
+              <div class="resizer top-left"></div>
+              <div class="resizer top-right"></div>
+              <div class="resizer bottom-left"></div>
+              <div class="resizer bottom-right"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

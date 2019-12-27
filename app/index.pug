@@ -1,0 +1,48 @@
+doctype html
+html(lang='en')
+	head
+		title start template
+		meta(charset='UTF-8')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+		link(rel='stylesheet', href='css/main.css')
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+		script(src="https://unpkg.com/axios/dist/axios.min.js")
+		script(src='https://cdn.jsdelivr.net/npm/gsap@3.0.1/dist/gsap.min.js')
+		script(src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.2/Draggable.js')
+		script(src='js/index.js', defer='')
+		//- script(src="https://kit.fontawesome.com/f90f7a5525.js")
+		//- script(src='libs/Magnific/jquery.magnific-popup.min.js')
+
+	body
+		div(id='progress-line')
+		.wrapperAll
+			.j-leftLine
+			.j-rightLine
+			.j-topLine
+			.j-bottomLine
+			//- .j-centerVLine
+			//- 	.j-centerVLine__testball
+			//- .j-centerHLine
+			.displayParams
+				p#width 
+				p#height 
+				p#scroll 
+				p#mouseX 
+				p#mouseY
+				P#clientX
+				P#clientY
+
+
+			.j-wrap-content
+				sidebar.j-wrap-content-sidebar
+					button.j-wrap-content-sidebar__add-table-btn addTable
+				.j-wrap-content-map
+					.resizable.draggedMap
+						.resizers
+							| some
+							.resizer.top-left
+							.resizer.top-right
+							.resizer.bottom-left
+							.resizer.bottom-right
+				
+
