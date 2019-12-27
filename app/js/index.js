@@ -59,6 +59,30 @@ function makeResizableDiv(div) {
         const width = original_width + (e.pageX - original_mouse_x);
         const height = original_height + (e.pageY - original_mouse_y)
 
+        function dropResizeRight() {
+          element.style.width = (width + 3) + 'px'
+          // element.style.left = (original_x + 10) + (e.pageX - original_mouse_x) + 'px'
+          var clickEvent = new Event('mouseup'); //создаем событие
+          window.dispatchEvent(clickEvent); //имитируем 
+          return
+        }
+        function dropResizeBottom() {
+          element.style.height = (height + 3) + 'px'
+          // element.style.top = (original_y - 10) + (e.pageY - original_mouse_y) + 'px'
+          var clickEvent = new Event('mouseup'); // создаем событие
+          window.dispatchEvent(clickEvent); // имитируем 
+        }
+
+        if (itemTranslateLeft + itemWidth > width - 10) {
+          dropResizeRight()
+          return
+        }
+        
+        if (itemTranslateTop + itemHeight > height - 10) {
+          dropResizeBottom()
+          return
+        }
+
         if (
           wrapperWidth - draggedMap.offsetWidth > sumPosAndTranslLeft
         ) {
@@ -93,6 +117,30 @@ function makeResizableDiv(div) {
         const height = original_height + (e.pageY - original_mouse_y)
         const width = original_width - (e.pageX - original_mouse_x)
 
+        function dropResizeRight() {
+          element.style.width = (width + 3) + 'px'
+          element.style.left = (original_x - 3) + (e.pageX - original_mouse_x) + 'px'
+          var clickEvent = new Event('mouseup'); //создаем событие
+          window.dispatchEvent(clickEvent); //имитируем 
+          return
+        }
+        function dropResizeBottom() {
+          element.style.height = (height + 3) + 'px'
+          // element.style.top = (original_y - 10) + (e.pageY - original_mouse_y) + 'px'
+          var clickEvent = new Event('mouseup'); // создаем событие
+          window.dispatchEvent(clickEvent); // имитируем 
+        }
+
+        if (itemTranslateLeft + itemWidth > width - 10) {
+          dropResizeRight()
+          return
+        }
+        
+        if (itemTranslateTop + itemHeight > height - 10) {
+          dropResizeBottom()
+          return
+        }
+
         if (
           sumPosAndTranslLeft > wrapperWidth
         ) {
@@ -126,40 +174,44 @@ function makeResizableDiv(div) {
         getCornerCoords()
         getItemCoords()
 
-        function dropResize() {
-          element.style.width = (width + 10) + 'px'
+        function dropResizeRight() {
+          element.style.width = (width + 3) + 'px'
           // element.style.left = (original_x + 10) + (e.pageX - original_mouse_x) + 'px'
           var clickEvent = new Event('mouseup'); //создаем событие
           window.dispatchEvent(clickEvent); //имитируем 
           return
         }
+        function dropResizeBottom() {
+          element.style.height = (height + 3) + 'px'
+          element.style.top = (original_y - 3) + (e.pageY - original_mouse_y) + 'px'
+          var clickEvent = new Event('mouseup'); // создаем событие
+          window.dispatchEvent(clickEvent); // имитируем 
+        }
 
         const width = original_width + (e.pageX - original_mouse_x)
         const height = original_height - (e.pageY - original_mouse_y)
-        console.log('width: ', width)
+
         if (itemTranslateLeft + itemWidth > width - 10) {
-          dropResize()
+          dropResizeRight()
           return
         }
 
         if (
           wrapperWidth - draggedMap.offsetWidth > sumPosAndTranslLeft
         ) {
-          dropResize()
-          // element.style.width = (width + 10) + 'px'
-          // // element.style.left = (original_x + 10) + (e.pageX - original_mouse_x) + 'px'
-          // var clickEvent = new Event('mouseup'); //создаем событие
-          // window.dispatchEvent(clickEvent); //имитируем 
+          dropResizeRight()
           return
-          
         }
+
+        if (itemTranslateTop + itemHeight > height - 10) {
+          dropResizeBottom()
+          return
+        }
+
         if (
           wrapperHeight < sumPosAndTranslTop
         ) {
-          element.style.height = (height + 10) + 'px'
-          element.style.top = (original_y - 10) + (e.pageY - original_mouse_y) + 'px'
-          var clickEvent = new Event('mouseup'); // создаем событие
-          window.dispatchEvent(clickEvent); // имитируем 
+          dropResizeBottom()
           return
         }
 
@@ -176,10 +228,33 @@ function makeResizableDiv(div) {
         const width = original_width - (e.pageX - original_mouse_x)
         const height = original_height - (e.pageY - original_mouse_y)
         
-
         getParentCenter()
         getCornerCoords()
         getItemCoords()
+
+        function dropResizeRight() {
+          element.style.width = (width + 3) + 'px'
+          element.style.left = (original_x - 3) + (e.pageX - original_mouse_x) + 'px'
+          var clickEvent = new Event('mouseup'); //создаем событие
+          window.dispatchEvent(clickEvent); //имитируем 
+          return
+        }
+        function dropResizeBottom() {
+          element.style.height = (height + 3) + 'px'
+          element.style.top = (original_y - 3) + (e.pageY - original_mouse_y) + 'px'
+          var clickEvent = new Event('mouseup'); // создаем событие
+          window.dispatchEvent(clickEvent); // имитируем 
+        }
+
+        if (itemTranslateLeft + itemWidth > width - 10) {
+          dropResizeRight()
+          return
+        }
+        
+        if (itemTranslateTop + itemHeight > height - 10) {
+          dropResizeBottom()
+          return
+        }
 
         if (
           sumPosAndTranslLeft > wrapperWidth
@@ -187,7 +262,7 @@ function makeResizableDiv(div) {
           element.style.width = (width + 10) + 'px'
           element.style.left = (original_x - 10) + (e.pageX - original_mouse_x) + 'px'
           var clickEvent = new Event('mouseup'); //создаем событие
-          window.dispatchEvent(clickEvent); //имитируем 
+          window.dispatchEvent(clickEvent); // имитируем 
           return
         }
         if (
@@ -208,7 +283,6 @@ function makeResizableDiv(div) {
           element.style.height = height + 'px'
           element.style.top = original_y + (e.pageY - original_mouse_y) + 'px'
         }
-
       }
     }
 
@@ -309,7 +383,6 @@ function getItemCoords() {
   itemTranslateLeft = getTranslateXValue(itemTransform);
   itemTranslateTop = getTranslateYValue(itemTransform);
   console.log('leftTransl: ', itemTranslateLeft, 'topTransl: ', itemTranslateTop)
-  
 }
 
 
@@ -368,30 +441,17 @@ function draggable() {
     onRelease: onRelease,
     onDragStart: onStart,
     onDragEnd: function () {
-      /////////////////////////////////////////
-      function getCoords(targetElement) { // кроме IE8-
-
-        let top = targetElement.offsetTop;
-        let left = targetElement.offsetLeft;
-
-      }
-      getCoords(targetElement);
+      boxItems.forEach(item => {
+        item.style.color = 'blue'
+        item.style.pointerEvents = 'auto'
+      })
  /////////////////////////////////////////
-
-      // ограничение карты
-      // ширина + отступ от родителя
-      // targWidth = this.x + targetElement.offsetWidth + 40;
-      // targHeight = this.y + targetElement.offsetHeight + 80;
-      // console.log(this.x)
-      // console.log(this.y)
-      // draggedMap.style.minWidth = targWidth + "px";
-      // draggedMap.style.minHeight = targHeight + "px";
 
       boxItems.forEach(item => {
         if (this.hitTest(item)) {
           TweenMax.to(this.target, 1, {
             x: xx,
-            y: yy,
+            y: yy
             // rotate: 90
           });
         }
@@ -418,11 +478,14 @@ tlPress.to( this.target, 0.1, {
 // -------------------------------------
 function onStart() {
   mapDraggble.disable();
-
+  boxItems.forEach(item => {
+    item.style.color = 'red'
+    item.style.pointerEvents = 'none'
+  })
   const tlPress = new TimelineMax();
   tlPress.to( this.target, 0.1, {
     opacity: 1,
-    borderColor: 'red',
+    borderColor: '#828282',
     borderWidth: 2,
     ease: Power4.easeIn
   })
@@ -430,7 +493,7 @@ function onStart() {
 // ---------------------------------
 function onRelease() {
   mapDraggble.enable();
-
+  
   const tlPress = new TimelineMax();
   tlPress.to(this.target, 0.1, {
     // borderColor: 'green',
