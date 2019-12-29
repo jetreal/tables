@@ -10,14 +10,11 @@
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.0.1/dist/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.2/Draggable.js"></script>
     <script src="js/index.js" defer=""></script>
+    <script src="js/table-logic.js" defer=""></script>
   </head>
   <body>
     <div id="progress-line"></div>
     <div class="wrapperAll">
-      <div class="j-leftLine"></div>
-      <div class="j-rightLine"></div>
-      <div class="j-topLine"></div>
-      <div class="j-bottomLine"></div>
       <div class="displayParams">
         <p id="width"> </p>
         <p id="height"> </p>
@@ -40,6 +37,27 @@
               <div class="resizer bottom-right"></div>
               <div class="box-item draggable-item draggable-item--uno" id="id1"><span class="spanDel">X</span><span class="spanDrag">O</span></div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="j-footer">
+        <div class="resizableTable">
+          <div class="resizerTablesTable">
+            <div class="resizerTable top-left"></div>
+            <div class="resizerTable top-right"></div>
+            <div class="resizerTable bottom-left"></div>
+            <div class="resizerTable bottom-right"></div>
+          </div>
+          <div class="tableCenter">
+            <div class="tableCenter-line"></div>
+            <div class="tableCenter-del">x</div>
+            <div class="tableText">
+              <p>123</p>
+            </div>
+            <div class="elipsTop"></div>
+            <div class="elipsLeft"></div>
+            <div class="elipsRight"></div>
+            <div class="elipsBottom"></div>
           </div>
         </div>
       </div>

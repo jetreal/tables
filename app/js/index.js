@@ -447,8 +447,8 @@ function getMaxRangeItem() {
     heightArr.push(sumtop)
     let maxTop = Math.max(...heightArr)
 
-    console.log(widthArr)
-    console.log(maxLeft)
+    // console.log(widthArr)
+    // console.log(maxLeft)
     maxAboutWidth = maxLeft
     maxAboutHeight = maxTop
     // console.log(maxAboutHeight)
@@ -521,7 +521,7 @@ function draggable() {
 
       boxItems.forEach(item => {
         if (this.hitTest(item)) {
-          TweenMax.to(this.target, 1, {
+          TweenMax.to(this.target, .1, {
             x: xx,
             y: yy
             // rotate: 90
