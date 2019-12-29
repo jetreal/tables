@@ -1,4 +1,6 @@
 
+  
+
 // параметры 
 var scrolled;
 window.onscroll = function () {
@@ -55,6 +57,8 @@ function makeResizableDiv(div) {
         getParentCenter()
         getCornerCoords()
         getItemCoords()
+        getMaxRangeItem()
+ 
 
         const width = original_width + (e.pageX - original_mouse_x);
         const height = original_height + (e.pageY - original_mouse_y)
@@ -73,12 +77,12 @@ function makeResizableDiv(div) {
           window.dispatchEvent(clickEvent); // имитируем 
         }
 
-        if (itemTranslateLeft + itemWidth > width - 10) {
+        if (maxAboutWidth > width - 10) {
           dropResizeRight()
           return
         }
         
-        if (itemTranslateTop + itemHeight > height - 10) {
+        if (maxAboutHeight > height - 10) {
           dropResizeBottom()
           return
         }
@@ -113,6 +117,8 @@ function makeResizableDiv(div) {
         getParentCenter()
         getCornerCoords()
         getItemCoords()
+        getMaxRangeItem()
+ 
 
         const height = original_height + (e.pageY - original_mouse_y)
         const width = original_width - (e.pageX - original_mouse_x)
@@ -131,12 +137,12 @@ function makeResizableDiv(div) {
           window.dispatchEvent(clickEvent); // имитируем 
         }
 
-        if (itemTranslateLeft + itemWidth > width - 10) {
+        if (maxAboutWidth > width - 10) {
           dropResizeRight()
           return
         }
         
-        if (itemTranslateTop + itemHeight > height - 10) {
+        if (maxAboutHeight > height - 10) {
           dropResizeBottom()
           return
         }
@@ -173,6 +179,7 @@ function makeResizableDiv(div) {
         getParentCenter()
         getCornerCoords()
         getItemCoords()
+        getMaxRangeItem()
 
         function dropResizeRight() {
           element.style.width = (width + 3) + 'px'
@@ -191,8 +198,13 @@ function makeResizableDiv(div) {
         const width = original_width + (e.pageX - original_mouse_x)
         const height = original_height - (e.pageY - original_mouse_y)
 
-        if (itemTranslateLeft + itemWidth > width - 10) {
+        if (maxAboutWidth > width - 10) {
           dropResizeRight()
+          return
+        }
+
+        if (maxAboutHeight > height - 10) {
+          dropResizeBottom()
           return
         }
 
@@ -203,10 +215,6 @@ function makeResizableDiv(div) {
           return
         }
 
-        if (itemTranslateTop + itemHeight > height - 10) {
-          dropResizeBottom()
-          return
-        }
 
         if (
           wrapperHeight < sumPosAndTranslTop
@@ -231,6 +239,7 @@ function makeResizableDiv(div) {
         getParentCenter()
         getCornerCoords()
         getItemCoords()
+        getMaxRangeItem()
 
         function dropResizeRight() {
           element.style.width = (width + 3) + 'px'
@@ -246,12 +255,12 @@ function makeResizableDiv(div) {
           window.dispatchEvent(clickEvent); // имитируем 
         }
 
-        if (itemTranslateLeft + itemWidth > width - 10) {
+        if (maxAboutWidth > width - 10) {
           dropResizeRight()
           return
         }
         
-        if (itemTranslateTop + itemHeight > height - 10) {
+        if (maxAboutHeight > height - 10) {
           dropResizeBottom()
           return
         }
@@ -271,7 +280,7 @@ function makeResizableDiv(div) {
           element.style.height = (height + 10) + 'px'
           element.style.top = (original_y - 10) + (e.pageY - original_mouse_y) + 'px'
           var clickEvent = new Event('mouseup'); //создаем событие
-          window.dispatchEvent(clickEvent); //имитируем 
+          window.dispatchEvent(clickEvent); //имитируем
           return
         }
 
@@ -376,15 +385,77 @@ let itemTranslateLeft;
 let itemTranslateTop;
 let itemWidth;
 let itemHeight;
+
+let maxItemWidth;
+let maxItemHeight;
+
+// getMaxTableSize() {
+//   const allItemWidths = itemCoords.map(item => item.itemWidth)
+//   const allItemHeights = itemCoords.map(item => item.itemHeight)
+//   maxItemWidth = Math.max(...allItemWidths)
+//   maxItemHeight = Math.max(...allItemHeights)
+// }
+
+
+
 function getItemCoords() {
+
   itemWidth = targetElement.offsetWidth
   itemHeight = targetElement.offsetHeight
   const itemTransform = targetElement.style.transform || 'translate(0px, 0px)';
   itemTranslateLeft = getTranslateXValue(itemTransform);
   itemTranslateTop = getTranslateYValue(itemTransform);
-  console.log('leftTransl: ', itemTranslateLeft, 'topTransl: ', itemTranslateTop)
+
 }
 
+let itemCoords; // array с со всеми столами
+
+function getAllItemCoords() {
+  itemCoords = []
+  boxItems.forEach((item, index) => {
+
+    let oneItem = {}
+    oneItem.id = item.id
+    const itemTransform = item.style.transform || 'translate(0px, 0px)';
+    oneItem.itemTranslateLeft = getTranslateXValue(itemTransform)
+    oneItem.itemTranslateTop = getTranslateYValue(itemTransform)
+    oneItem.itemWidth = item.offsetWidth
+    oneItem.itemHeight = item.offsetHeight
+    oneItem.positionLeft = item.offsetLeft
+    oneItem.positionTop = item.offsetTop
+
+    itemCoords = [...itemCoords, oneItem ]
+    // console.log(itemCoords)
+  })
+}
+getAllItemCoords()
+
+
+let maxAboutWidth = 0
+let maxAboutHeight = 0
+function getMaxRangeItem() {
+  getAllItemCoords()
+  const widthArr = []   
+  const heightArr = []
+  itemCoords.forEach(item => {
+    let sumleft = item.itemTranslateLeft + item.positionLeft + item.itemWidth
+    let sumtop = item.itemTranslateTop + item.positionTop + item.itemHeight
+
+    widthArr.push(sumleft)
+    let maxLeft = Math.max(...widthArr)
+
+    heightArr.push(sumtop)
+    let maxTop = Math.max(...heightArr)
+
+    console.log(widthArr)
+    console.log(maxLeft)
+    maxAboutWidth = maxLeft
+    maxAboutHeight = maxTop
+    // console.log(maxAboutHeight)
+    
+  })
+}
+getMaxRangeItem()
 
 let sumPosAndTranslLeft;
 let sumPosAndTranslTop;
@@ -425,14 +496,14 @@ function getCornerCoords() {
 
 getParentCenter()
 getCornerCoords()
-
+draggable()
 
 //////////////////////////////////////////////////////
 
-
 // перетаскивание item'ov
+var draggableCollection
 function draggable() {
-  Draggable.create( boxItems, {
+  draggableCollection = Draggable.create( boxItems, {
     bounds: draggedMap,
     cursor: 'pointer',
     type: 'x, y',
@@ -441,6 +512,7 @@ function draggable() {
     onRelease: onRelease,
     onDragStart: onStart,
     onDragEnd: function () {
+      
       boxItems.forEach(item => {
         item.style.color = 'blue'
         item.style.pointerEvents = 'auto'
@@ -477,6 +549,7 @@ tlPress.to( this.target, 0.1, {
 }
 // -------------------------------------
 function onStart() {
+
   mapDraggble.disable();
   boxItems.forEach(item => {
     item.style.color = 'red'
@@ -492,6 +565,7 @@ function onStart() {
 }
 // ---------------------------------
 function onRelease() {
+  getMaxRangeItem()
   mapDraggble.enable();
   
   const tlPress = new TimelineMax();
@@ -500,25 +574,37 @@ function onRelease() {
     borderWidth: 3,
     ease: Power4.easeIn,
   })
+  getAllItemCoords()
 }
 
 
 /////////////////////////////////////////////////////////////
   // создание стола
+
 btnTable.addEventListener('click', function() {
   let div = document.createElement('div');
   div.classList.add('box-item');
   div.classList.add('draggable-item');
+  div.id = Date.now()
   let span = document.createElement('span');
   span.innerHTML = 'X';
   span.classList.add('spanClose');
+  let removed;
   span.addEventListener('click', function() {
-    div.parentNode.removeChild(div)
+
+    removed = div.parentNode.removeChild(div)
+    console.log(removed)
+    itemCoords = itemCoords.filter(item => item.id != removed.id)
+    boxItems = document.querySelectorAll( '.box-item' );
+    console.log(itemCoords)
+
   })
   draggedMap.appendChild(div)
   div.appendChild(span)
   boxItems = document.querySelectorAll( '.box-item' );
   draggable()
+  getAllItemCoords()
+  
 })
 
 
