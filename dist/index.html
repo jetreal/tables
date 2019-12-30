@@ -14,10 +14,6 @@
   <body>
     <div id="progress-line"></div>
     <div class="wrapperAll">
-      <div class="j-leftLine"></div>
-      <div class="j-rightLine"></div>
-      <div class="j-topLine"></div>
-      <div class="j-bottomLine"></div>
       <div class="displayParams">
         <p id="width"> </p>
         <p id="height"> </p>
@@ -38,8 +34,49 @@
               <div class="resizer top-right"></div>
               <div class="resizer bottom-left"></div>
               <div class="resizer bottom-right"></div>
-              <div class="box-item draggable-item draggable-item--uno" id="id1"><span class="spanDel">X</span><span class="spanDrag">O</span></div>
+              <div class="resizableTable box-item draggable-item draggable-item--uno" id="id1">
+                <div class="resizerTablesTable">
+                  <div class="resizerTable top-left"></div>
+                  <div class="resizerTable top-right"></div>
+                  <div class="resizerTable bottom-left"></div>
+                  <div class="resizerTable bottom-right" id="my-child-draggable"></div>
+                </div>
+                <div class="tableCenter">
+                  <div class="tableCenter-line"></div>
+                  <div class="tableCenter-del">x</div>
+                  <div class="tableText">
+                    <p class="tebleTextP">123</p>
+                  </div>
+                  <input class="tableText__input" type="text" name="tableText" value="">
+                  <div class="elipsTop chair"></div>
+                  <div class="elipsLeft chair"></div>
+                  <div class="elipsRight chair"></div>
+                  <div class="elipsBottom chair"></div>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="j-footer">
+        <div class="resizableTable">
+          <div class="resizerTablesTable">
+            <div class="resizerTable top-left"></div>
+            <div class="resizerTable top-right"></div>
+            <div class="resizerTable bottom-left"></div>
+            <div class="resizerTable bottom-right"></div>
+          </div>
+          <div class="tableCenter">
+            <div class="tableCenter-line"></div>
+            <div class="tableCenter-del">x</div>
+            <div class="tableText">
+              <p class="tebleTextP">123</p>
+            </div>
+            <input class="tableText__input" type="text" name="tableText" value="">
+            <div class="elipsTop chair"></div>
+            <div class="elipsLeft chair"></div>
+            <div class="elipsRight chair"></div>
+            <div class="elipsBottom chair"></div>
           </div>
         </div>
       </div>

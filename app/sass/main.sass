@@ -100,18 +100,15 @@
 
 ///////////////////////////
 .draggable-item
-	background-color: #525252
+	// background-color: rgba(1,1,1,.2)
 	position: absolute
 	top: 0px
 	left: 0px
 	// transform: translate(50%, 50%)
 	width: 100px
 	height: 100px
-	opacity: 0.5
-	border-radius: 8px
-	z-index: 1002
-	+b(green)
-
+	// opacity: 0.5
+	// z-index: 1002
 
 .j-footer
 	width: 100%
@@ -129,27 +126,32 @@
 	position: absolute
 	top: 100px
 	left: 100px
-	+b(silver)
+	+o(none)
 	z-index: 1
-	visibility: 0.5
+	&:hover
+		transition: outline .5s
+		+o(silver)
+		
 	& .resizerTablesTable
 		min-width: 105px
 		min-height: 105px
 		+c
 		width: inherit
 		height: inherit
-		// border: 3px solid #4286f4
 		overflow: hidden
 		padding: 20px
-		// background-color:#1E1E1E
+		
+
 
 .resizableTable .resizerTablesTable .resizerTable
+	z-index: 1006
 	width: 10px
 	height: 10px
 	border-radius: 50%
 	background: white
 	border: 3px solid #4286f4
 	position: absolute
+	opacity: 1
 
 .resizableTable .resizerTablesTable .resizerTable.top-left 
 	left: -5px
@@ -199,24 +201,7 @@
 	border: 1px dashed #525252
 	// background: #525252
 	border-radius: 60px 60px 0 0
-.elipsTop2
-	left: 56px
-.elipsTop3
-	left: 96px
-.elipsTop4
-	left: 136px
-.elipsTop5
-	left: 176px
-.elipsTop6
-	left: 216px
-.elipsTop7
-	left: 256px
-.elipsTop8
-	left: 296px
-.elipsTop9
-	left: 336px
-.elipsTop10
-	left: 376px
+
 .elipsLeft
 	position: absolute
 	top: 16px
@@ -247,6 +232,20 @@
 	// background: #525252
 	border-radius: 0 0 60px 60px
 
+.chair
+	z-index: 1010
+	cursor: pointer
+
+.elipsBgColored
+	background-color: rgba(10,10,10,.3)
+
+.tableText__input
+	width: 40px
+	position: absolute
+	top: 15px
+	left: 15px
+	display: none
+
 .tableCenter-del
 	+c
 	border: 1px solid red
@@ -259,9 +258,52 @@
 
 .tableText
 	position: absolute
-	top: 8px
+	top: 12px
 	left: 16px
+	& p
+		cursor: pointer
+	// display: none
 ////////////////////
+
+
+.elipsTop2
+	left: 56px
+.elipsTop3
+	left: 96px
+.elipsTop4
+	left: 136px
+.elipsTop5
+	left: 176px
+.elipsTop6
+	left: 216px
+.elipsTop7
+	left: 256px
+.elipsTop8
+	left: 296px
+.elipsTop9
+	left: 336px
+.elipsTop10
+	left: 376px
+
+.elipsLeft2
+	top: 56px
+.elipsLeft3
+	top: 96px
+.elipsLeft4
+	top: 136px
+.elipsLeft5
+	top: 176px
+.elipsLeft6
+	top: 216px
+.elipsLeft7
+	top: 256px
+.elipsLeft8
+	top: 296px
+.elipsLeft9
+	top: 336px
+.elipsLeft10
+	top: 376px
+
 @import "displayPapams"
 // @import "magnific-popup"
 @import "media"

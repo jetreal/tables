@@ -590,16 +590,11 @@ template {
           justify-content: center; }
 
 .draggable-item {
-  background-color: #525252;
   position: absolute;
   top: 0px;
   left: 0px;
   width: 100px;
-  height: 100px;
-  opacity: 0.5;
-  border-radius: 8px;
-  z-index: 1002;
-  border: 1px solid green; }
+  height: 100px; }
 
 .j-footer {
   width: 100%;
@@ -617,9 +612,13 @@ template {
   position: absolute;
   top: 100px;
   left: 100px;
-  border: 1px solid silver;
-  z-index: 1;
-  visibility: 0.5; }
+  outline: 1px solid none;
+  z-index: 1; }
+  .resizableTable:hover {
+    -webkit-transition: outline .5s;
+    -o-transition: outline .5s;
+    transition: outline .5s;
+    outline: 1px solid silver; }
   .resizableTable .resizerTablesTable {
     min-width: 105px;
     min-height: 105px;
@@ -637,12 +636,14 @@ template {
     padding: 20px; }
 
 .resizableTable .resizerTablesTable .resizerTable {
+  z-index: 1006;
   width: 10px;
   height: 10px;
   border-radius: 50%;
   background: white;
   border: 3px solid #4286f4;
-  position: absolute; }
+  position: absolute;
+  opacity: 1; }
 
 .resizableTable .resizerTablesTable .resizerTable.top-left {
   left: -5px;
@@ -696,33 +697,6 @@ template {
   border: 1px dashed #525252;
   border-radius: 60px 60px 0 0; }
 
-.elipsTop2 {
-  left: 56px; }
-
-.elipsTop3 {
-  left: 96px; }
-
-.elipsTop4 {
-  left: 136px; }
-
-.elipsTop5 {
-  left: 176px; }
-
-.elipsTop6 {
-  left: 216px; }
-
-.elipsTop7 {
-  left: 256px; }
-
-.elipsTop8 {
-  left: 296px; }
-
-.elipsTop9 {
-  left: 336px; }
-
-.elipsTop10 {
-  left: 376px; }
-
 .elipsLeft {
   position: absolute;
   top: 16px;
@@ -750,6 +724,20 @@ template {
   border: 1px dashed #525252;
   border-radius: 0 0 60px 60px; }
 
+.chair {
+  z-index: 1010;
+  cursor: pointer; }
+
+.elipsBgColored {
+  background-color: rgba(10, 10, 10, 0.3); }
+
+.tableText__input {
+  width: 40px;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  display: none; }
+
 .tableCenter-del {
   display: grid;
   -webkit-align-content: center;
@@ -769,8 +757,64 @@ template {
 
 .tableText {
   position: absolute;
-  top: 8px;
+  top: 12px;
   left: 16px; }
+  .tableText p {
+    cursor: pointer; }
+
+.elipsTop2 {
+  left: 56px; }
+
+.elipsTop3 {
+  left: 96px; }
+
+.elipsTop4 {
+  left: 136px; }
+
+.elipsTop5 {
+  left: 176px; }
+
+.elipsTop6 {
+  left: 216px; }
+
+.elipsTop7 {
+  left: 256px; }
+
+.elipsTop8 {
+  left: 296px; }
+
+.elipsTop9 {
+  left: 336px; }
+
+.elipsTop10 {
+  left: 376px; }
+
+.elipsLeft2 {
+  top: 56px; }
+
+.elipsLeft3 {
+  top: 96px; }
+
+.elipsLeft4 {
+  top: 136px; }
+
+.elipsLeft5 {
+  top: 176px; }
+
+.elipsLeft6 {
+  top: 216px; }
+
+.elipsLeft7 {
+  top: 256px; }
+
+.elipsLeft8 {
+  top: 296px; }
+
+.elipsLeft9 {
+  top: 336px; }
+
+.elipsLeft10 {
+  top: 376px; }
 
 .displayParams {
   position: fixed;
