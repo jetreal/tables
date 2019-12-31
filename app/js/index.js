@@ -27,6 +27,8 @@ document.onmousemove = function (e) {
 
 
 /*Make resizable div by Hung Nguyen*/  // and restrict to center by me //
+
+
 function makeResizableDiv(div) {
   const element = document.querySelector(div);
   const resizers = document.querySelectorAll(div + ' .resizer')
@@ -54,9 +56,9 @@ function makeResizableDiv(div) {
     function resize(e) {
 
       if (currentResizer.classList.contains('bottom-right')) {
+
         getParentCenter()
         getCornerCoords()
-        getItemCoords()
         getMaxRangeItem()
  
 
@@ -116,7 +118,6 @@ function makeResizableDiv(div) {
       else if (currentResizer.classList.contains('bottom-left')) {
         getParentCenter()
         getCornerCoords()
-        getItemCoords()
         getMaxRangeItem()
  
 
@@ -178,7 +179,6 @@ function makeResizableDiv(div) {
       else if (currentResizer.classList.contains('top-right')) {
         getParentCenter()
         getCornerCoords()
-        getItemCoords()
         getMaxRangeItem()
 
         function dropResizeRight() {
@@ -238,7 +238,6 @@ function makeResizableDiv(div) {
         
         getParentCenter()
         getCornerCoords()
-        getItemCoords()
         getMaxRangeItem()
 
         function dropResizeRight() {
@@ -301,11 +300,12 @@ function makeResizableDiv(div) {
   }
 }
 makeResizableDiv('.resizable')
+
 ///////////////////////////////////////////
+
 const btnTable = document.querySelector( '.j-wrap-content-sidebar__add-table-btn' );
 const wrapperDraggerMap = document.querySelector('.j-wrap-content-map');
 const draggedMap = document.querySelector('.draggedMap');
-const topLeftCorner = document.querySelector('.top-left');
 const mapConner = document.querySelectorAll('.resizer');
 const addTableBtn = document.querySelector('.j-wrap-content-sidebar__add-table-btn');
 let boxItems = document.querySelectorAll( '.box-item' );
@@ -381,23 +381,23 @@ function getParentCenter() {
 }
 
 
-let itemTranslateLeft;
-let itemTranslateTop;
-let itemWidth;
-let itemHeight;
+// let itemTranslateLeft;
+// let itemTranslateTop;
+// let itemWidth;
+// let itemHeight;
 
-let maxItemWidth;
-let maxItemHeight;
+// let maxItemWidth;
+// let maxItemHeight;
 
-function getItemCoords() {
 
-  itemWidth = targetElement.offsetWidth
-  itemHeight = targetElement.offsetHeight
-  const itemTransform = targetElement.style.transform || 'translate(0px, 0px)';
-  itemTranslateLeft = getTranslateXValue(itemTransform);
-  itemTranslateTop = getTranslateYValue(itemTransform);
+// function getItemCoords() {
+//   itemWidth = targetElement.offsetWidth
+//   itemHeight = targetElement.offsetHeight
+//   const itemTransform = targetElement.style.transform || 'translate(0px, 0px)';
+//   itemTranslateLeft = getTranslateXValue(itemTransform);
+//   itemTranslateTop = getTranslateYValue(itemTransform);
 
-}
+// }
 
 let itemCoords; // array с со всеми столами
 
@@ -574,16 +574,75 @@ function onRelease() {
   // создание стола
 
 btnTable.addEventListener('click', function() {
-  let div = document.createElement('div');
+  // создание обвёртки
+  const div = document.createElement('div');
   div.classList.add('box-item');
   div.classList.add('draggable-item');
+  div.classList.add('resizableTable');
   div.id = Date.now()
-  let span = document.createElement('span');
-  span.innerHTML = 'X';
-  span.classList.add('spanClose');
-  let removed;
-  span.addEventListener('click', function() {
+  // врутринности ресайзер и уголки
+  const innerDiv = document.createElement('div');
+  innerDiv.classList.add('resizerTablesTable');
+  div.appendChild(innerDiv)
 
+  const corner1 = document.createElement('div');
+  corner1.classList.add('resizerTable', 'top-left');
+  const corner2 = document.createElement('div');
+  corner2.classList.add('resizerTable', 'top-right');
+  const corner3 = document.createElement('div');
+  corner3.classList.add('resizerTable', 'bottom-left');
+  const corner4 = document.createElement('div');
+  corner4.classList.add('resizerTable', 'bottom-right');
+ 
+  innerDiv.appendChild(corner1)
+  innerDiv.appendChild(corner2)
+  innerDiv.appendChild(corner3)
+  innerDiv.appendChild(corner4)
+
+  // сам стол
+  const table = document.createElement('div');
+  table.classList.add('tableCenter');
+  div.appendChild(table)
+  // линия стола
+  const line = document.createElement('div');
+  line.classList.add('tableCenter-line');
+  table.appendChild(line)
+  // удалялка 
+  const tableDel = document.createElement('div');
+  tableDel.innerHTML = "x";
+  tableDel.classList.add('tableCenter-del');
+  table.appendChild(tableDel)
+  // text
+  const tableTextDiv = document.createElement('div');
+  tableTextDiv.classList.add('tableText');
+  const tableText = document.createElement('p');
+  tableText.innerHTML = 'text'
+  tableText.classList.add('tebleTextP');
+  tableTextDiv.appendChild(tableText)
+  table.appendChild(tableTextDiv)
+  // input
+  const tableInput = document.createElement('input');
+  tableInput.classList.add('tableText__input');
+  tableInput.type = 'text'
+  tableInput.name = 'tableText'
+  tableInput.value = ''
+  table.appendChild(tableInput)
+  // стулья
+  const chairTop = document.createElement('div');
+  chairTop.classList.add('chair', 'elipsTop');
+  const chairBottom = document.createElement('div');
+  chairBottom.classList.add('chair', 'elipsBottom');
+  const chairLeft = document.createElement('div');
+  chairLeft.classList.add('chair', 'elipsLeft');
+  const chairRight = document.createElement('div');
+  chairRight.classList.add('chair', 'elipsRight');
+  table.appendChild(chairTop)
+  table.appendChild(chairBottom)
+  table.appendChild(chairLeft)
+  table.appendChild(chairRight)
+  // логика удалялки 
+  let removed;
+  tableDel.addEventListener('click', function() {
     removed = div.parentNode.removeChild(div)
     console.log(removed)
     itemCoords = itemCoords.filter(item => item.id != removed.id)
@@ -592,7 +651,7 @@ btnTable.addEventListener('click', function() {
 
   })
   draggedMap.appendChild(div)
-  div.appendChild(span)
+  // oбновеление коллекции
   boxItems = document.querySelectorAll( '.box-item' );
   draggable()
   getAllItemCoords()
