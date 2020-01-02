@@ -559,6 +559,7 @@ function createTable() {
   console.log(divId)
   div.classList.add(divId);
   div.classList.add('box-item');
+  div.classList.add('any-map-item');
   div.classList.add('draggable-item');
   div.classList.add('resizableTable');
   // врутренности ресайзер и уголки
@@ -638,7 +639,7 @@ function createTable() {
   corners = document.querySelectorAll('.resizerTable')
   boxItems = document.querySelectorAll( '.box-item' );
   getAllItemCoords() // обновление массива с координатами столов
-  onChangeColor()  // обновление коллекции стульев
+  onChangeColor('.' + divId)  // обновление коллекции стульев
   disableDraggableParent()
   tables = document.querySelectorAll('.resizerTablesTable')
   replaceLine('.' + divId)
@@ -646,6 +647,8 @@ function createTable() {
   
   draggable()   // добавление нового стола в объект с перетаскиванием.
   makeresizableTableDiv('.' + divId)
+  // tableTexts = document.querySelectorAll('.tebleTextP') // обновление текска стола с инпутами
+  inputsHandler('.' + divId)
 
   }
 
@@ -692,6 +695,7 @@ function makeresizableTableDiv(div) {
         addTopAndBottomChair(div)
         addLeftAndRightChair(div)
         replaceLine(div)
+        onChangeColor()
         // логика resize стола 
         const width = original_width + (e.pageX - original_mouse_x);
         const height = original_height + (e.pageY - original_mouse_y)
@@ -706,6 +710,7 @@ function makeresizableTableDiv(div) {
         addTopAndBottomChair(div)
         addLeftAndRightChair(div)
         replaceLine(div)
+        onChangeColor()
      
         const height = original_height + (e.pageY - original_mouse_y)
         const width = original_width - (e.pageX - original_mouse_x)
@@ -721,6 +726,7 @@ function makeresizableTableDiv(div) {
         addTopAndBottomChair(div)
         addLeftAndRightChair(div)
         replaceLine(div)
+        onChangeColor()
     
         const width = original_width + (e.pageX - original_mouse_x)
         const height = original_height - (e.pageY - original_mouse_y)
@@ -736,6 +742,7 @@ function makeresizableTableDiv(div) {
         addTopAndBottomChair(div)
         addLeftAndRightChair(div)
         replaceLine(div)
+        onChangeColor()
   
         const width = original_width - (e.pageX - original_mouse_x)
         const height = original_height - (e.pageY - original_mouse_y)
@@ -1163,7 +1170,7 @@ function changeColorChair(e) {
   e.target.classList.toggle('elipsBgColored');
 }
 
-onChangeColor()
+// onChangeColor()
 
 //////////////////////////////////////////////////
 
@@ -1213,32 +1220,44 @@ function dragTableEnable() {
 }
 //////////////////////////////////////////////////
 
-const tableText = document.querySelector('.tebleTextP')
-const tableInput = document.querySelector('.tableText__input')
+function inputsHandler(el) {
 
-tableText.addEventListener('dblclick', onTextChange)
-console.log(tableText.innerHTML)
+  let tableText = document.querySelector(el +' .tebleTextP') 
+  
 
-function onTextChange() {
-  this.style.display = 'none'
-  tableInput.style.display = 'block'
-  tableInput.focus()
-  tableInput.value = tableText.innerHTML
-}
-
-tableInput.addEventListener('blur', onInput)
-// tableInput.addEventListener('mouseout', onInput)
-tableInput.addEventListener('keypress', function(e) {
-  if (e.keyCode === 13) {
-    onInput()
+  
+    const tableInput = document.querySelector(el + ' .tableText__input')
+    
+    tableText.addEventListener('dblclick', onTextChange)
+    
+    function onTextChange() {
+      // console.log('tableTexts: ', tableTexts)           
+      this.style.display = 'none'
+      tableInput.style.display = 'block'
+      tableInput.focus()
+      tableInput.value = tableText.innerHTML
+  
+  
+      tableInput.addEventListener('blur', onInput)
+      // tableInput.addEventListener('mouseout', onInput)
+      tableInput.addEventListener('keypress', function(e) {
+        if (e.keyCode === 13) {
+          onInput()
+        }
+      })
+      
+      function onInput() {
+        tableText.innerHTML = this.value || 'num';
+        tableInput.style.display = 'none'
+        tableText.style.display = 'block'
+      }
+    
   }
-})
-
-function onInput() {
-  tableText.innerHTML = this.value || 'num';
-  tableInput.style.display = 'none'
-  tableText.style.display = 'block'
 }
+// console.log(tableText.innerHTML)
+
+
+
 
 ///////////////////////////////////////////////////
 // var tableCornerDraggble;
