@@ -306,23 +306,23 @@ makeResizableDiv('.resizable')
 const btnTable = document.querySelector( '.j-wrap-content-sidebar__add-table-btn' );
 const wrapperDraggerMap = document.querySelector('.j-wrap-content-map');
 const draggedMap = document.querySelector('.draggedMap');
+const resizers = document.querySelector('.resizers');
 const mapConner = document.querySelectorAll('.resizer');
 const addTableBtn = document.querySelector('.j-wrap-content-sidebar__add-table-btn');
 let boxItems = document.querySelectorAll( '.box-item' );
 const targetElement = document.querySelector( '.draggable-item--uno')
 
+// отключение перетаскивания карты при наведение на уголки карты
 mapConner.forEach(item => {
-
   item.addEventListener('mouseover', function () {
     Draggable.get(draggedMap).disable()
   })
 })
-
 mapConner.forEach(item => {
   item.addEventListener('mouseout', dragMap)
 })
 
-
+// ограничение карты до центра
 function onDragRestrictMap() {
   getParentCenter()
   getCornerCoords()
@@ -361,7 +361,7 @@ function onDragRestrictMap() {
   }
 }
 
-// для перетаскивания карты
+// объект для перетаскивания карты с ограничением до центра
 var mapDraggble;
 function dragMap() {
   mapDraggble = Draggable.create(draggedMap, {
@@ -369,7 +369,6 @@ function dragMap() {
   })[0]
 }
 dragMap()
-
 
 // ширина и высота родителя  (вычисления центра)
 let wrapperWidth;
@@ -385,10 +384,8 @@ function getParentCenter() {
 // let itemTranslateTop;
 // let itemWidth;
 // let itemHeight;
-
 // let maxItemWidth;
 // let maxItemHeight;
-
 
 // function getItemCoords() {
 //   itemWidth = targetElement.offsetWidth
@@ -396,10 +393,9 @@ function getParentCenter() {
 //   const itemTransform = targetElement.style.transform || 'translate(0px, 0px)';
 //   itemTranslateLeft = getTranslateXValue(itemTransform);
 //   itemTranslateTop = getTranslateYValue(itemTransform);
-
 // }
 
-let itemCoords; // array с со всеми столами
+let itemCoords; // array с размерами и координатами всех столов
 
 function getAllItemCoords() {
   itemCoords = []
@@ -416,13 +412,13 @@ function getAllItemCoords() {
     oneItem.positiaddTop = item.offsetTop
 
     itemCoords = [...itemCoords, oneItem ]
-    // console.log(itemCoords)
   })
 }
 getAllItemCoords()
 
 
-let maxAboutWidth = 0
+// функция вычислени ограничение карты при столкновении со столом
+let maxAboutWidth = 0 
 let maxAboutHeight = 0
 function getMaxRangeItem() {
   getAllItemCoords()
@@ -438,44 +434,19 @@ function getMaxRangeItem() {
     heightArr.push(sumtop)
     let maxTop = Math.max(...heightArr)
 
-    // console.log(widthArr)
-    // console.log(maxLeft)
     maxAboutWidth = maxLeft
     maxAboutHeight = maxTop
-    // console.log(maxAboutHeight)
-    
+
   })
 }
 getMaxRangeItem()
 
+// вычисление координат углов карты
 let sumPosAndTranslLeft;
 let sumPosAndTranslTop;
-let posLeft;
-let posTop;
-function getTranslateXValue(translateString) {
-  // debugger
-  var n = translateString.indexOf("(");
-  var n1 = translateString.indexOf(",");
-
-  var res = parseInt(translateString.slice(n + 1, n1 - 2));
-
-  return res;
-
-}
-function getTranslateYValue(translateString) {
-
-  var n = translateString.indexOf(",");
-  var n1 = translateString.indexOf(")");
-
-  var res = parseInt(translateString.slice(n + 1, n1 - 1));
-  return res;
-
-}
-
-// вычисление координат углов карты
 function getCornerCoords() {
-  posLeft = draggedMap.offsetLeft; // координата position , без транслейт  
-  posTop = draggedMap.offsetTop;
+  let posLeft = draggedMap.offsetLeft; // координата position , без транслейт  
+  let posTop = draggedMap.offsetTop;
   const transform = draggedMap.style.transform || 'translate(0px, 0px)';
 
   let x = getTranslateXValue(transform)  // координата транслейта
@@ -484,22 +455,33 @@ function getCornerCoords() {
   sumPosAndTranslLeft = x + posLeft   // сумма координат транслейта и position
   sumPosAndTranslTop = y + posTop
 }
-
 getParentCenter()
 getCornerCoords()
-// draggable()
+// парсинг данных css translate на переменные
+function getTranslateXValue(translateString) {
+  var n = translateString.indexOf("(");
+  var n1 = translateString.indexOf(",");
+  var res = parseInt(translateString.slice(n + 1, n1 - 2));
+  return res;
+}
+function getTranslateYValue(translateString) {
+  var n = translateString.indexOf(",");
+  var n1 = translateString.indexOf(")");
+  var res = parseInt(translateString.slice(n + 1, n1 - 1));
+  return res;
+}
+
 
 //////////////////////////////////////////////////////
 
-// перетаскивание item'ov
+// перетаскивание item'ov (столов)
 var draggableCollection;
 function draggable() {
   draggableCollection = Draggable.create( boxItems, {
     bounds: draggedMap,
     cursor: 'pointer',
     type: 'x, y',
-    inertia: true,
-
+    // inertia: true,
     onPress: onPress,
     onRelease: onRelease,
     onDragStart: onStart,
@@ -509,8 +491,8 @@ function draggable() {
         item.style.color = 'blue'
         item.style.pointerEvents = 'auto'
       })
- /////////////////////////////////////////
-
+/////////////////////////////////////////
+// Действие при столкновении столов
       boxItems.forEach(item => {
         if (this.hitTest(item)) {
           TweenMax.to(this.target, .1, {
@@ -528,59 +510,58 @@ draggable()
 
 var xx = 0;
 var yy = 0;
+// вычисление старновых координат стола по которому кликнули
 function onPress() {
   xx = this.x;
   yy = this.y;
-
-const tlPress = new TimelineMax();
-tlPress.to( this.target, 0.1, {
-  borderColor: 'white',
-  borderWidth: 6,
-  ease: Power4.easeIn
-})
+// const tlPress = new TimelineMax(); // для примера что можно создать объект анимации
+// tlPress.to( this.target, 0.1, {
+//   borderWidth: 6,
+//   ease: Power4.easeIn
+// })
 }
 // -------------------------------------
-function onStart() {
 
-  mapDraggble.disable();
+function onStart() {
+  mapDraggble.disable();   // отключение перетаскивания самой карты
   boxItems.forEach(item => {
-    item.style.color = 'red'
     item.style.pointerEvents = 'none'
   })
   const tlPress = new TimelineMax();
   tlPress.to( this.target, 0.1, {
     opacity: 1,
-    borderColor: '#828282',
-    borderWidth: 2,
-    ease: Power4.easeIn
+    // ease: Power4.easeIn
   })
 }
 // ---------------------------------
 function onRelease() {
-  getMaxRangeItem()
-  mapDraggble.enable();
-  
-  const tlPress = new TimelineMax();
-  tlPress.to(this.target, 0.1, {
-    // borderColor: 'green',
-    borderWidth: 3,
-    ease: Power4.easeIn,
-  })
+  getMaxRangeItem()  // обновление координат
   getAllItemCoords()
+  mapDraggble.enable();  // включение перетаскивания самой карты
+  // const tlPress = new TimelineMax();
+  // tlPress.to(this.target, 0.1, {
+  //   // borderColor: 'green',
+  //   borderWidth: 3,
+  //   ease: Power4.easeIn,
+  // })
 }
 
 
 /////////////////////////////////////////////////////////////
-  // создание стола
+// создание стола
 
-btnTable.addEventListener('click', function() {
+btnTable.addEventListener('click', createTable )
+
+function createTable() {
   // создание обвёртки
   const div = document.createElement('div');
+  const divId = div.id = 'id' + Date.now()
+  console.log(divId)
+  div.classList.add(divId);
   div.classList.add('box-item');
   div.classList.add('draggable-item');
   div.classList.add('resizableTable');
-  div.id = Date.now()
-  // врутринности ресайзер и уголки
+  // врутренности ресайзер и уголки
   const innerDiv = document.createElement('div');
   innerDiv.classList.add('resizerTablesTable');
   div.appendChild(innerDiv)
@@ -648,38 +629,36 @@ btnTable.addEventListener('click', function() {
     itemCoords = itemCoords.filter(item => item.id != removed.id)
     boxItems = document.querySelectorAll( '.box-item' );
     console.log(itemCoords)
-
   })
-  draggedMap.appendChild(div)
-  // oбновеление коллекции
-  boxItems = document.querySelectorAll( '.box-item' );
-  draggable()
-  getAllItemCoords()
-  
-})
 
+  resizers.appendChild(div)
+  // draggedMap.appendChild(div)
+  // oбновеление коллекции
+
+  corners = document.querySelectorAll('.resizerTable')
+  boxItems = document.querySelectorAll( '.box-item' );
+  getAllItemCoords() // обновление массива с координатами столов
+  onChangeColor()  // обновление коллекции стульев
+  disableDraggableParent()
+  tables = document.querySelectorAll('.resizerTablesTable')
+  replaceLine('.' + divId)
+  
+  
+  draggable()   // добавление нового стола в объект с перетаскиванием.
+  makeresizableTableDiv('.' + divId)
+
+  }
 
 
 /////////////////////////////////////////////////////////////////
 // логика стола
 ///////////////////////////////////////////////////////////////
-function dragTableDisable() {
-  mapDraggble.disable();
-  draggableCollection.forEach(item => {
-    item.disable()
-  })
-}
 
-function dragTableEnable() {
-  mapDraggble.enable();
-  draggableCollection.forEach(item => {
-    item.enable()
-  })
-}
+
 
 /*Make resizableTable div by Hung Nguyen*/
 
-
+// resize столов и всё что должно быть при ресайзе
 function makeresizableTableDiv(div) {
   const element = document.querySelector(div);
   const resizerTablesTable = document.querySelectorAll(div + ' .resizerTable')
@@ -694,8 +673,7 @@ function makeresizableTableDiv(div) {
     const currentresizerTable = resizerTablesTable[i];
     currentresizerTable.addEventListener('mousedown', function(e) {
       e.preventDefault()
-      dragTableDisable()
-      
+
       original_width = parseFloat(getComputedStyle(element, null).getPropertyValue('width').replace('px', ''));
       original_height = parseFloat(getComputedStyle(element, null).getPropertyValue('height').replace('px', ''));
       original_x = element.offsetLeft; // .offsetLeft changed  <==> .getBoundingClientRect().left
@@ -708,15 +686,13 @@ function makeresizableTableDiv(div) {
     
 
     function resize(e) {
-      e.stopPropagation()
-      e.stopImmediatePropagation()
-      
+
       if (currentresizerTable.classList.contains('bottom-right')) {
 
-        addTopAndBottomChair()
-        addLeftAndRightChair()
-        replaceLine()
-        
+        addTopAndBottomChair(div)
+        addLeftAndRightChair(div)
+        replaceLine(div)
+        // логика resize стола 
         const width = original_width + (e.pageX - original_mouse_x);
         const height = original_height + (e.pageY - original_mouse_y)
         if (width > minimum_size) {
@@ -727,11 +703,10 @@ function makeresizableTableDiv(div) {
         }
       }
       else if (currentresizerTable.classList.contains('bottom-left')) {
-        addTopAndBottomChair()
-        addLeftAndRightChair()
-        replaceLine()
+        addTopAndBottomChair(div)
+        addLeftAndRightChair(div)
+        replaceLine(div)
      
-
         const height = original_height + (e.pageY - original_mouse_y)
         const width = original_width - (e.pageX - original_mouse_x)
         if (height > minimum_size) {
@@ -743,11 +718,10 @@ function makeresizableTableDiv(div) {
         }
       }
       else if (currentresizerTable.classList.contains('top-right')) {
-        addTopAndBottomChair()
-        addLeftAndRightChair()
-        replaceLine()
+        addTopAndBottomChair(div)
+        addLeftAndRightChair(div)
+        replaceLine(div)
     
-
         const width = original_width + (e.pageX - original_mouse_x)
         const height = original_height - (e.pageY - original_mouse_y)
         if (width > minimum_size) {
@@ -759,11 +733,10 @@ function makeresizableTableDiv(div) {
         }
       }
       else {
-        addTopAndBottomChair()
-        addLeftAndRightChair()
-        replaceLine()
+        addTopAndBottomChair(div)
+        addLeftAndRightChair(div)
+        replaceLine(div)
   
-
         const width = original_width - (e.pageX - original_mouse_x)
         const height = original_height - (e.pageY - original_mouse_y)
         if (width > minimum_size) {
@@ -780,8 +753,6 @@ function makeresizableTableDiv(div) {
     function stopResize() {
       window.removeEventListener('mousemove', resize)
 
-      onChangeColor()
-
     }
   }
 }
@@ -793,38 +764,41 @@ function makeresizableTableDiv(div) {
 ////////////////////////////////////////////
 
 // перемещение линии
-function replaceLine() {
-  const table = document.querySelector('.tableCenter')
-  const line = document.querySelector('.tableCenter-line')
+function replaceLine(cl) {
+  const table = document.querySelector(cl)
   // console.log(table.offsetHeight)
-  switch(true) {
-    case (table.offsetWidth <= table.offsetHeight) : 
-      line.style.width = '100%'
-      line.style.height = '14px'
-      line.style.borderRadius = '15px 15px 0 0'
-      break;
-    case (table.offsetWidth > table.offsetHeight):
-      line.style.width = '14px'
-      line.style.height = '100%'
-      line.style.borderRadius = '15px 0 0 15px'
-    default: return
-  }
+  
+    const line = document.querySelector(`${cl} .tableCenter-line`)
+
+    switch(true) {
+      case (table.offsetWidth <= table.offsetHeight) : 
+        line.style.width = '100%'
+        line.style.height = '14px'
+        line.style.borderRadius = '15px 15px 0 0'
+        break;
+      case (table.offsetWidth > table.offsetHeight):
+        line.style.width = '14px'
+        line.style.height = '100%'
+        line.style.borderRadius = '15px 0 0 15px'
+      default: return
+    
+    }
 }
 ////////////////////////////////////////////////////
-// Добавление стульев
 
-function addTopAndBottomChair() {
+// Добавление стульев сверху и снизу
+function addTopAndBottomChair(el) {
 
-  let table = document.querySelector('.tableCenter')
+  const table = document.querySelector(el + ' .tableCenter')
 
   function removeTop(removeClass) {
-    if (document.querySelector(removeClass)) {
-      removeChair(removeClass) 
-    }
+    removeChair(removeClass) 
   }
   function removeChair(leftClass) {
-    const div = document.querySelector(leftClass)
-    removed = div.parentNode.removeChild(div)
+    const div = document.querySelector(el + ' ' + leftClass)
+    if(!!div ) {
+      removed = div.parentNode.removeChild(div)
+    }
   }
 
   switch(true) {
@@ -907,20 +881,21 @@ function addTopAndBottomChair() {
       break;
   }
 
-  function addTop(addClass) {
-    if(!document.querySelector(addClass) ){
-      let divTop = document.createElement('div');
-      divTop.classList.add('elipsTop');
-      divTop.classList.add('chair');
-      divTop.classList.add(addClass.slice(1));
-      table.appendChild(divTop)
+  function addTop(addClass) { 
+    const div = document.querySelector(el + ' ' + addClass)
+  
+    if (!div) {
+      let chairTop = document.createElement('div');
+      chairTop.classList.add('elipsTop');
+      chairTop.classList.add('chair');
+      chairTop.classList.add(addClass.slice(1));
+      table.appendChild(chairTop)
 
-      let divBottom = document.createElement('div');
-      divBottom.classList.add('elipsBottom');
-      divBottom.classList.add('chair');
-      divBottom.classList.add(addClass.slice(1));
-      table.appendChild(divBottom)
-
+      let chairBottom = document.createElement('div');
+      chairBottom.classList.add('elipsBottom');
+      chairBottom.classList.add('chair');
+      chairBottom.classList.add(addClass.slice(1));
+      table.appendChild(chairBottom)
 
     }
   }
@@ -991,21 +966,21 @@ function addTopAndBottomChair() {
 
   }
 }
-addTopAndBottomChair()
 
 //////////////////////////////////////////////////////////////////
-function addLeftAndRightChair() {
+function addLeftAndRightChair(el) {
 
-  let table = document.querySelector('.tableCenter')
+  const table = document.querySelector(el + ' .tableCenter')
 
   function removeTop(removeClass) {
-    if (document.querySelector(removeClass)) {
+    
       removeChair(removeClass) 
-    }
   }
   function removeChair(leftClass) {
-    const div = document.querySelector(leftClass)
-    removed = div.parentNode.removeChild(div)
+    const div = document.querySelector(el + ' ' + leftClass)
+    if(!!div) {
+      removed = div.parentNode.removeChild(div)
+    }
   }
 
   switch(true) {
@@ -1089,8 +1064,8 @@ function addLeftAndRightChair() {
   }
 
   function addTop(addClass) {
-    
-    if(!document.querySelector(addClass) ){
+    const div = document.querySelector(el + ' ' + addClass)
+    if(!div){
       let divTop = document.createElement('div');
       divTop.classList.add('elipsLeft');
       divTop.classList.add('chair');
@@ -1172,10 +1147,10 @@ function addLeftAndRightChair() {
 
   }
 }
-addLeftAndRightChair()
+// addLeftAndRightChair()
 
 //////////////////////////////////////////////////////////////
-
+// изменение цвета выбранного стула
 var chairs;
 function onChangeColor() {
   chairs = document.querySelectorAll('.chair')
@@ -1191,27 +1166,50 @@ function changeColorChair(e) {
 onChangeColor()
 
 //////////////////////////////////////////////////
-const table = document.querySelector('.resizerTablesTable')
-table.addEventListener('mouseover', onTableOver)
-table.addEventListener('mouseout', onTableOut)
 
-// let corners = document.querySelectorAll('.resizerTable')
-function onTableOver() {
-  const corners = document.querySelectorAll('.resizerTable')
-  corners.forEach(item => {
-    item.style.opacity = '1'
+function disableDraggableParent() {
+  const tables = document.querySelectorAll('.resizerTablesTable')
+  tables.forEach(item => {
+    item.addEventListener('mouseover', onTableOver)
+    item.addEventListener('mouseout', onTableOut)
+
   })
 
-  dragTableDisable()
+  function onTableOver() {
+    const corners = document.querySelectorAll('.resizerTable')
+   
+    corners.forEach(item => {
+      this.style.opacity = '1'
+    })
+
+    dragTableDisable()
+  }
+  function onTableOut() {
+    const corners = document.querySelectorAll('.resizerTable')
+    corners.forEach(item => {
+      this.style.opacity = '0'
+    })
+
+    dragTableEnable()
+  }
 }
+disableDraggableParent()
 
-function onTableOut() {
-  const corners = document.querySelectorAll('.resizerTable')
-  corners.forEach(item => {
-    item.style.opacity = '0'
+// функции отключения перетаскивания карты и столов
+function dragTableDisable() {
+  mapDraggble.disable();
+  
+  draggableCollection.forEach(item => {
+    // item.disable()
+    item.disable()
   })
-
-  dragTableEnable()
+}
+function dragTableEnable() {
+  mapDraggble.enable();  
+  
+  draggableCollection.forEach(item => {
+    item.enable()
+  })
 }
 //////////////////////////////////////////////////
 

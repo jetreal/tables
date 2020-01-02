@@ -515,12 +515,10 @@ template {
   .resizable .resizers {
     width: 100%;
     height: 100%;
-    border: 3px solid #4286f4;
+    border: 1px solid #4286f4;
     overflow: visible;
     background-color: #1E1E1E;
     position: absolute;
-    top: -3px;
-    left: -3px;
     padding: 10px; }
 
 .resizable .resizers .resizer {
@@ -729,7 +727,8 @@ template {
   cursor: pointer; }
 
 .elipsBgColored {
-  background-color: rgba(10, 10, 10, 0.3); }
+  background-color: rgba(10, 10, 10, 0.7);
+  border: 2px solid grey; }
 
 .tableText__input {
   width: 40px;
