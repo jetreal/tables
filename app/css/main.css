@@ -608,8 +608,6 @@ template {
   width: 105px;
   height: 105px;
   position: absolute;
-  top: 100px;
-  left: 100px;
   outline: 1px solid none;
   z-index: 1; }
   .resizableTable:hover {
