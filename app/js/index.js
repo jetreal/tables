@@ -306,6 +306,7 @@ makeResizableDiv('.resizable')
 const btnTable = document.querySelector( '.j-wrap-content-sidebar__add-table-btn' );
 const wrapperDraggerMap = document.querySelector('.j-wrap-content-map');
 const draggedMap = document.querySelector('.draggedMap');
+const restricter = document.querySelector('.resizable__restricter');
 const resizers = document.querySelector('.resizers');
 const mapConner = document.querySelectorAll('.resizer');
 const addTableBtn = document.querySelector('.j-wrap-content-sidebar__add-table-btn');
@@ -479,7 +480,7 @@ function getTranslateYValue(translateString) {
 var draggableCollection;
 function draggable() {
   draggableCollection = Draggable.create( boxItems, {
-    bounds: draggedMap,
+    bounds: restricter,
     cursor: 'pointer',
     type: 'x, y',
     // inertia: true,
@@ -487,10 +488,11 @@ function draggable() {
     onRelease: onRelease,
     onDragStart: onStart,
     onDragEnd: function () {
-      
+      console.log(this)
       boxItems.forEach(item => {
         item.style.color = 'blue'
         item.style.pointerEvents = 'auto'
+        
       })
 /////////////////////////////////////////
 // Действие при столкновении столов
@@ -515,11 +517,18 @@ var yy = 0;
 function onPress() {
   xx = this.x;
   yy = this.y;
-// const tlPress = new TimelineMax(); // для примера что можно создать объект анимации
-// tlPress.to( this.target, 0.1, {
-//   borderWidth: 6,
-//   ease: Power4.easeIn
-// })
+
+const tlPress = new TimelineMax(); // для примера что можно создать объект анимации
+  tlPress.to(this.target, 0.1, {
+    scale: 1,
+    opacity: 1,
+    ease: Power4.easeIn
+  })
+
+  if (this.target.style.opacity < 1) {
+    btnTable.addEventListener('click', onCreateTable)
+    buttonForTextItem.addEventListener('click', onCreateItem)
+  }
 }
 // -------------------------------------
 
@@ -530,7 +539,8 @@ function onStart() {
   })
   const tlPress = new TimelineMax();
   tlPress.to( this.target, 0.1, {
-    opacity: 1,
+    opacity: 1
+
     // ease: Power4.easeIn
   })
 }
@@ -551,9 +561,10 @@ function onRelease() {
 /////////////////////////////////////////////////////////////
 // создание стола
 
-btnTable.addEventListener('click', createTable )
+btnTable.addEventListener('click', onCreateTable )
 
-function createTable() {
+function onCreateTable() {
+  
   // создание обвёртки
   const div = document.createElement('div');
   const divId = div.id = 'id' + Date.now()
@@ -651,9 +662,12 @@ function createTable() {
   // tableTexts = document.querySelectorAll('.tebleTextP') // обновление текска стола с инпутами
   inputsHandler('.' + divId)
   onConflictItemsWithOther()
-  // onConflictItemWithMap()
+  onShowTableAnimation('.' + divId)
 
-  }
+  buttonForTextItem.removeEventListener('click', onCreateItem)
+  btnTable.removeEventListener('click', onCreateTable)
+}
+
 
 
 /////////////////////////////////////////////////////////////////
@@ -697,7 +711,9 @@ function makeresizableTableDiv(div) {
 
         addTopAndBottomChair(div)
         addLeftAndRightChair(div)
+       
         replaceLine(div)
+        
         onChangeColor()
         onConflictItemWithMap(div)
         onConflictItemsWithOther(div)
@@ -715,6 +731,7 @@ function makeresizableTableDiv(div) {
         addTopAndBottomChair(div)
         addLeftAndRightChair(div)
         replaceLine(div)
+       
         onChangeColor()
         onConflictItemWithMap(div)
         onConflictItemsWithOther(div)
@@ -788,19 +805,20 @@ function replaceLine(cl) {
   // console.log(table.offsetHeight)
   
     const line = document.querySelector(`${cl} .tableCenter-line`)
+    if (line) {
+      switch(true) {
+        case (table.offsetWidth <= table.offsetHeight) : 
+          line.style.width = '100%'
+          line.style.height = '14px'
+          line.style.borderRadius = '15px 15px 0 0'
+          break;
+        case (table.offsetWidth > table.offsetHeight):
+          line.style.width = '14px'
+          line.style.height = '100%'
+          line.style.borderRadius = '15px 0 0 15px'
+        default: return
+      }
 
-    switch(true) {
-      case (table.offsetWidth <= table.offsetHeight) : 
-        line.style.width = '100%'
-        line.style.height = '14px'
-        line.style.borderRadius = '15px 15px 0 0'
-        break;
-      case (table.offsetWidth > table.offsetHeight):
-        line.style.width = '14px'
-        line.style.height = '100%'
-        line.style.borderRadius = '15px 0 0 15px'
-      default: return
-    
     }
 }
 ////////////////////////////////////////////////////
@@ -809,84 +827,73 @@ function replaceLine(cl) {
 function addTopAndBottomChair(el) {
 
   const table = document.querySelector(el + ' .tableCenter')
+  console.log(table.firstChild.classList.contains('tableCenter-del'))
+  if (table.firstChild.classList.contains('tableCenter-line')) {
 
-  function removeTop(removeClass) {
-    removeChair(removeClass) 
-  }
-  function removeChair(leftClass) {
-    const div = document.querySelector(el + ' ' + leftClass)
-    if(!!div ) {
-      removed = div.parentNode.removeChild(div)
+    function removeTop(removeClass) {
+      removeChair(removeClass) 
     }
-  }
-
-  switch(true) {
-    case (table.offsetWidth > 415 && table.offsetWidth <= 455) : 
-      removeTop('.elipsTop11')
-      break;
-    case (table.offsetWidth > 375 && table.offsetWidth <= 415) : 
-      removeTop('.elipsTop10')
-      removeTop('.elipsTop11')
-      break;
-    case (table.offsetWidth > 335 && table.offsetWidth <= 375) : 
-      removeTop('.elipsTop9')
-      removeTop('.elipsTop10')
-      removeTop('.elipsTop11')
-      break;
-    case (table.offsetWidth > 295 && table.offsetWidth <= 335) : 
-      removeTop('.elipsTop8')
-      removeTop('.elipsTop9')
-      removeTop('.elipsTop10')
-      removeTop('.elipsTop11')
-      break;
-    case (table.offsetWidth > 255 && table.offsetWidth <= 295) : 
-      removeTop('.elipsTop7')
-      removeTop('.elipsTop8')
-      removeTop('.elipsTop9')
-      removeTop('.elipsTop10')
-      removeTop('.elipsTop11')
-      break;
-    case (table.offsetWidth > 215 && table.offsetWidth <= 255) : 
-      removeTop('.elipsTop6')
-      removeTop('.elipsTop7')
-      removeTop('.elipsTop8')
-      removeTop('.elipsTop9')
-      removeTop('.elipsTop10')
-      removeTop('.elipsTop11')
-      break;
-    case (table.offsetWidth > 175 && table.offsetWidth <= 215) : 
-      removeTop('.elipsTop5')
-      removeTop('.elipsTop6')
-      removeTop('.elipsTop7')
-      removeTop('.elipsTop8')
-      removeTop('.elipsTop9')
-      removeTop('.elipsTop10')
-      removeTop('.elipsTop11')
-      break;
-    case (table.offsetWidth > 135 && table.offsetWidth <= 175) : 
-      removeTop('.elipsTop4')
-      removeTop('.elipsTop5')
-      removeTop('.elipsTop6')
-      removeTop('.elipsTop7')
-      removeTop('.elipsTop8')
-      removeTop('.elipsTop9')
-      removeTop('.elipsTop10')
-      removeTop('.elipsTop11')
-      break;
-    case (table.offsetWidth > 95 && table.offsetWidth <= 135) : 
-      removeTop('.elipsTop3')
-      removeTop('.elipsTop4')
-      removeTop('.elipsTop5')
-      removeTop('.elipsTop6')
-      removeTop('.elipsTop7')
-      removeTop('.elipsTop8')
-      removeTop('.elipsTop9')
-      removeTop('.elipsTop10')
-      removeTop('.elipsTop11')
-      break;
-    case (table.offsetWidth <= 95) :
-      if (document.querySelector('.elipsTop2')) {
-        removeTop(".elipsTop2")
+    function removeChair(leftClass) {
+      const div = document.querySelector(el + ' ' + leftClass)
+      if(!!div ) {
+        removed = div.parentNode.removeChild(div)
+      }
+    }
+  
+    switch(true) {
+      case (table.offsetWidth > 415 && table.offsetWidth <= 455) : 
+        removeTop('.elipsTop11')
+        break;
+      case (table.offsetWidth > 375 && table.offsetWidth <= 415) : 
+        removeTop('.elipsTop10')
+        removeTop('.elipsTop11')
+        break;
+      case (table.offsetWidth > 335 && table.offsetWidth <= 375) : 
+        removeTop('.elipsTop9')
+        removeTop('.elipsTop10')
+        removeTop('.elipsTop11')
+        break;
+      case (table.offsetWidth > 295 && table.offsetWidth <= 335) : 
+        removeTop('.elipsTop8')
+        removeTop('.elipsTop9')
+        removeTop('.elipsTop10')
+        removeTop('.elipsTop11')
+        break;
+      case (table.offsetWidth > 255 && table.offsetWidth <= 295) : 
+        removeTop('.elipsTop7')
+        removeTop('.elipsTop8')
+        removeTop('.elipsTop9')
+        removeTop('.elipsTop10')
+        removeTop('.elipsTop11')
+        break;
+      case (table.offsetWidth > 215 && table.offsetWidth <= 255) : 
+        removeTop('.elipsTop6')
+        removeTop('.elipsTop7')
+        removeTop('.elipsTop8')
+        removeTop('.elipsTop9')
+        removeTop('.elipsTop10')
+        removeTop('.elipsTop11')
+        break;
+      case (table.offsetWidth > 175 && table.offsetWidth <= 215) : 
+        removeTop('.elipsTop5')
+        removeTop('.elipsTop6')
+        removeTop('.elipsTop7')
+        removeTop('.elipsTop8')
+        removeTop('.elipsTop9')
+        removeTop('.elipsTop10')
+        removeTop('.elipsTop11')
+        break;
+      case (table.offsetWidth > 135 && table.offsetWidth <= 175) : 
+        removeTop('.elipsTop4')
+        removeTop('.elipsTop5')
+        removeTop('.elipsTop6')
+        removeTop('.elipsTop7')
+        removeTop('.elipsTop8')
+        removeTop('.elipsTop9')
+        removeTop('.elipsTop10')
+        removeTop('.elipsTop11')
+        break;
+      case (table.offsetWidth > 95 && table.offsetWidth <= 135) : 
         removeTop('.elipsTop3')
         removeTop('.elipsTop4')
         removeTop('.elipsTop5')
@@ -896,101 +903,117 @@ function addTopAndBottomChair(el) {
         removeTop('.elipsTop9')
         removeTop('.elipsTop10')
         removeTop('.elipsTop11')
-      }
-      break;
-  }
-
-  function addTop(addClass) { 
-    const div = document.querySelector(el + ' ' + addClass)
+        break;
+      case (table.offsetWidth <= 95) :
+        if (document.querySelector('.elipsTop2')) {
+          removeTop(".elipsTop2")
+          removeTop('.elipsTop3')
+          removeTop('.elipsTop4')
+          removeTop('.elipsTop5')
+          removeTop('.elipsTop6')
+          removeTop('.elipsTop7')
+          removeTop('.elipsTop8')
+          removeTop('.elipsTop9')
+          removeTop('.elipsTop10')
+          removeTop('.elipsTop11')
+        }
+        break;
+    }
   
-    if (!div) {
-      let chairTop = document.createElement('div');
-      chairTop.classList.add('elipsTop');
-      chairTop.classList.add('chair');
-      chairTop.classList.add(addClass.slice(1));
-      table.appendChild(chairTop)
-
-      let chairBottom = document.createElement('div');
-      chairBottom.classList.add('elipsBottom');
-      chairBottom.classList.add('chair');
-      chairBottom.classList.add(addClass.slice(1));
-      table.appendChild(chairBottom)
-
+    function addTop(addClass) { 
+      const div = document.querySelector(el + ' ' + addClass)
+  
+  
+      if (!div) {
+        let chairTop = document.createElement('div');
+        chairTop.classList.add('elipsTop');
+        chairTop.classList.add('chair');
+        chairTop.classList.add(addClass.slice(1));
+        table.appendChild(chairTop)
+  
+        let chairBottom = document.createElement('div');
+        chairBottom.classList.add('elipsBottom');
+        chairBottom.classList.add('chair');
+        chairBottom.classList.add(addClass.slice(1));
+        table.appendChild(chairBottom)
+  
+      }
+    }
+    switch(true) {
+      case (table.offsetWidth > 415) : 
+        addTop('.elipsTop10')
+        addTop('.elipsTop9')
+        addTop('.elipsTop8')
+        addTop('.elipsTop7')
+        addTop('.elipsTop6')
+        addTop('.elipsTop5')
+        addTop('.elipsTop4')
+        addTop('.elipsTop3')
+        addTop('.elipsTop2')
+        break;
+      case (table.offsetWidth > 375 && table.offsetWidth <= 415) : 
+        addTop('.elipsTop9')
+        addTop('.elipsTop8')
+        addTop('.elipsTop7')
+        addTop('.elipsTop6')
+        addTop('.elipsTop5')
+        addTop('.elipsTop4')
+        addTop('.elipsTop3')
+        addTop('.elipsTop2')
+        break;
+      case (table.offsetWidth > 335 && table.offsetWidth <= 375) : 
+        addTop('.elipsTop8')
+        addTop('.elipsTop7')
+        addTop('.elipsTop6')
+        addTop('.elipsTop5')
+        addTop('.elipsTop4')
+        addTop('.elipsTop3')
+        addTop('.elipsTop2')
+        break;
+      case (table.offsetWidth > 295 && table.offsetWidth <= 335) : 
+        addTop('.elipsTop7')
+        addTop('.elipsTop6')
+        addTop('.elipsTop5')
+        addTop('.elipsTop4')
+        addTop('.elipsTop3')
+        addTop('.elipsTop2')
+        break;
+      case (table.offsetWidth > 255 && table.offsetWidth <= 295) : 
+        addTop('.elipsTop6')
+        addTop('.elipsTop5')
+        addTop('.elipsTop4')
+        addTop('.elipsTop3')
+        addTop('.elipsTop2')
+        break;
+      case (table.offsetWidth > 215 && table.offsetWidth <= 255) : 
+        addTop('.elipsTop5')
+        addTop('.elipsTop4')
+        addTop('.elipsTop3')
+        addTop('.elipsTop2')
+        break;
+      case (table.offsetWidth > 175 && table.offsetWidth <= 215) : 
+        addTop('.elipsTop4')
+        addTop('.elipsTop3')
+        addTop('.elipsTop2')
+        break;
+      case (table.offsetWidth > 135 && table.offsetWidth <= 175) : 
+        addTop('.elipsTop3')
+        addTop('.elipsTop2')
+        break;
+      case (table.offsetWidth > 95 && table.offsetWidth <= 135 ) : 
+        addTop('.elipsTop2')
+        break;
+  
     }
   }
-  switch(true) {
-    case (table.offsetWidth > 415) : 
-      addTop('.elipsTop10')
-      addTop('.elipsTop9')
-      addTop('.elipsTop8')
-      addTop('.elipsTop7')
-      addTop('.elipsTop6')
-      addTop('.elipsTop5')
-      addTop('.elipsTop4')
-      addTop('.elipsTop3')
-      addTop('.elipsTop2')
-      break;
-    case (table.offsetWidth > 375 && table.offsetWidth <= 415) : 
-      addTop('.elipsTop9')
-      addTop('.elipsTop8')
-      addTop('.elipsTop7')
-      addTop('.elipsTop6')
-      addTop('.elipsTop5')
-      addTop('.elipsTop4')
-      addTop('.elipsTop3')
-      addTop('.elipsTop2')
-      break;
-    case (table.offsetWidth > 335 && table.offsetWidth <= 375) : 
-      addTop('.elipsTop8')
-      addTop('.elipsTop7')
-      addTop('.elipsTop6')
-      addTop('.elipsTop5')
-      addTop('.elipsTop4')
-      addTop('.elipsTop3')
-      addTop('.elipsTop2')
-      break;
-    case (table.offsetWidth > 295 && table.offsetWidth <= 335) : 
-      addTop('.elipsTop7')
-      addTop('.elipsTop6')
-      addTop('.elipsTop5')
-      addTop('.elipsTop4')
-      addTop('.elipsTop3')
-      addTop('.elipsTop2')
-      break;
-    case (table.offsetWidth > 255 && table.offsetWidth <= 295) : 
-      addTop('.elipsTop6')
-      addTop('.elipsTop5')
-      addTop('.elipsTop4')
-      addTop('.elipsTop3')
-      addTop('.elipsTop2')
-      break;
-    case (table.offsetWidth > 215 && table.offsetWidth <= 255) : 
-      addTop('.elipsTop5')
-      addTop('.elipsTop4')
-      addTop('.elipsTop3')
-      addTop('.elipsTop2')
-      break;
-    case (table.offsetWidth > 175 && table.offsetWidth <= 215) : 
-      addTop('.elipsTop4')
-      addTop('.elipsTop3')
-      addTop('.elipsTop2')
-      break;
-    case (table.offsetWidth > 135 && table.offsetWidth <= 175) : 
-      addTop('.elipsTop3')
-      addTop('.elipsTop2')
-      break;
-    case (table.offsetWidth > 95 && table.offsetWidth <= 135 ) : 
-      addTop('.elipsTop2')
-      break;
 
   }
-}
 
 //////////////////////////////////////////////////////////////////
 function addLeftAndRightChair(el) {
 
   const table = document.querySelector(el + ' .tableCenter')
-
+  if (table.firstChild.classList.contains('tableCenter-line')) {
   function removeTop(removeClass) {
     
       removeChair(removeClass) 
@@ -1166,6 +1189,7 @@ function addLeftAndRightChair(el) {
 
   }
 }
+}
 // addLeftAndRightChair()
 
 //////////////////////////////////////////////////////////////
@@ -1308,7 +1332,7 @@ getCornerCoords()
 
 function dropOnRightMap() {
   
-  if (itemWidth + sumPosAndTranslLeft > width - 3) {
+  if (itemWidth + sumPosAndTranslLeft > width - 40) {
     var clickEvent = new Event('mouseup'); //создаем событие
     window.dispatchEvent(clickEvent); //имитируем 
     stopPointRight = sumPosAndTranslLeft;
@@ -1321,7 +1345,7 @@ function dropOnRightMap() {
 dropOnRightMap()
 
 function dropOnBottomMap() {
-  if (itemHeight + sumPosAndTranslTop > height - 3) {
+  if (itemHeight + sumPosAndTranslTop > height - 40) {
     var clickEvent = new Event('mouseup'); //создаем событие
     window.dispatchEvent(clickEvent); //имитируем 
     stopPointBottom = sumPosAndTranslTop;
@@ -1334,7 +1358,7 @@ function dropOnBottomMap() {
 dropOnBottomMap()
 
 function dropOnLeftMap() {
-  if (sumPosAndTranslLeft < 10) {
+  if (sumPosAndTranslLeft < 45) {
     var clickEvent = new Event('mouseup'); //создаем событие
     window.dispatchEvent(clickEvent); //имитируем 
     item.style.maxWidth = (width - 10) + 'px'
@@ -1344,7 +1368,7 @@ function dropOnLeftMap() {
 }
 dropOnLeftMap()
 function dropOnTopMap() {
-  if (sumPosAndTranslTop < 10) {
+  if (sumPosAndTranslTop < 45) {
     var clickEvent = new Event('mouseup'); //создаем событие
     window.dispatchEvent(clickEvent); //имитируем
 
@@ -1439,13 +1463,9 @@ function onConflictItemsWithOther(el) {
       const nearestItems = itemsOnConflictLine.map(item => {
         return item.positionLeft + item.itemTranslateLeft
       })
-      console.log(nearestItems) 
-     
-   
+    
       let leftSideNearestItemCoord = Math.max(...nearestItems)
-      console.log(leftSideNearestItemCoord)
-
-      
+ 
       let nearestObj;
       if (itemsThatLeft) {
         nearestObj = itemsThatLeft.find(item => item.positionLeft + item.itemTranslateLeft == leftSideNearestItemCoord)
@@ -1458,8 +1478,6 @@ function onConflictItemsWithOther(el) {
       switch (true) {
         case (nearestObj !== undefined &&
           itemposLeft + itemTranslateLeft < nearestPoint ):
-          console.log(itemposLeft + itemTranslateLeft)
-          console.log(nearestPoint)
           let clickEvent = new Event('mouseup'); // создаем событие drop'a
           window.dispatchEvent(clickEvent); // имитируем 
           console.log('bumssss')
@@ -1503,3 +1521,158 @@ function onConflictItemsWithOther(el) {
 }
 
 onConflictItemsWithOther()
+
+
+////////////////////////////////////////////////////////////////
+// create TextItem
+////////////////////////////////////////////////////////////////
+const buttonForTextItem = document.getElementById('addElement')
+buttonForTextItem.addEventListener('click', onCreateItem )
+
+
+
+function onCreateItem() { 
+  // создание обвёртки
+  const div = document.createElement('div');
+  const divId = div.id = 'id' + Date.now()
+  console.log(divId)
+  div.classList.add(divId);
+  div.classList.add('box-item');
+  div.classList.add('any-map-item');
+  div.classList.add('draggable-item');
+  div.classList.add('resizableTable');
+  // врутренности ресайзер и уголки
+  const innerDiv = document.createElement('div');
+  innerDiv.classList.add('resizerTablesTable');
+  div.appendChild(innerDiv)
+  
+  const corner1 = document.createElement('div');
+  corner1.classList.add('resizerTable', 'top-left');
+  const corner2 = document.createElement('div');
+  corner2.classList.add('resizerTable', 'top-right');
+  const corner3 = document.createElement('div');
+  corner3.classList.add('resizerTable', 'bottom-left');
+  const corner4 = document.createElement('div');
+  corner4.classList.add('resizerTable', 'bottom-right');
+ 
+  innerDiv.appendChild(corner1)
+  innerDiv.appendChild(corner2)
+  innerDiv.appendChild(corner3)
+  innerDiv.appendChild(corner4)
+
+  // сам стол
+  const table = document.createElement('div');
+  table.classList.add('tableCenter');
+  table.classList.add('text-item');
+  div.appendChild(table)
+  // линия стола
+  
+  // удалялка 
+  const tableDel = document.createElement('div');
+  tableDel.innerHTML = "x";
+  tableDel.classList.add('tableCenter-del');
+  table.appendChild(tableDel)
+  // text
+  const tableTextDiv = document.createElement('div');
+  tableTextDiv.classList.add('tableText');
+  const tableText = document.createElement('p');
+  tableText.innerHTML = 'text'
+  tableText.classList.add('tebleTextP');
+  tableTextDiv.appendChild(tableText)
+  table.appendChild(tableTextDiv)
+  // input
+  const tableInput = document.createElement('input');
+  tableInput.classList.add('tableText__input');
+  tableInput.type = 'text'
+  tableInput.name = 'tableText'
+  tableInput.value = ''
+  table.appendChild(tableInput)
+ 
+  // логика удалялки 
+  let removed;
+  tableDel.addEventListener('click', function() {
+    removed = div.parentNode.removeChild(div)
+    console.log(removed)
+    itemCoords = itemCoords.filter(item => item.id != removed.id)
+    boxItems = document.querySelectorAll( '.box-item' );
+    console.log(itemCoords)
+  })
+
+  resizers.appendChild(div)
+  // draggedMap.appendChild(div)
+  // oбновеление коллекции
+
+  corners = document.querySelectorAll('.resizerTable')
+  boxItems = document.querySelectorAll( '.box-item' );
+  getAllItemCoords() // обновление массива с координатами столов
+  disableDraggableParent()
+  tables = document.querySelectorAll('.resizerTablesTable')
+
+  draggable()   // добавление нового стола в объект с перетаскиванием.
+  makeresizableTableDiv('.' + divId)
+  // tableTexts = document.querySelectorAll('.tebleTextP') // обновление текска стола с инпутами
+  inputsHandler('.' + divId)
+  onConflictItemsWithOther()
+  // onConflictItemWithMap()
+  onShowTableAnimation('.' + divId)
+
+  buttonForTextItem.removeEventListener('click', onCreateItem)
+  btnTable.removeEventListener('click', onCreateTable)
+  }
+
+
+  ///////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////
+    // для перетаскивания окна
+    const windowTop = document.querySelector('.resizable-wall-window-top-and-bottom')
+    const windowTopRestrictor = document.querySelector('.resizable-wall.resizable-wall--top')
+  function dragWindow(item, restricter) {
+
+  let windowDraggble = Draggable.create(item, {
+    onDragStart: function() {
+      mapDraggble.disable()
+    },
+    onRelease: function() {
+      mapDraggble.enable()
+    },
+    bounds: restricter
+  })[0]
+}
+dragWindow(windowTop, windowTopRestrictor)
+
+
+//////////////////////////////////////////////////////////
+
+const windowButton = document.querySelector('#addWindow')
+
+windowButton.addEventListener('click', onCreateText )
+
+function onCreateText() { 
+ 
+}
+
+/////////////////////////////////////////////////////////
+
+function onShowTableAnimation(div) {
+
+  console.log(draggedMap.offsetWidth / 2) 
+
+  // const table = document.querySelectorAll(".box-item");
+  const option1 = {
+    x: 0,
+    y: 0,
+    opacity: 0.2,
+    // rotation: 250,
+    scale: 0.4,
+    delay: 0.2
+  };
+  const option2 = {
+    x: (draggedMap.offsetWidth / 2) - 50,
+    y: (draggedMap.offsetHeight / 2) - 50,
+    opacity: 0.6,
+    // rotation: 250,
+    scale: 0.76
+
+  };
+  TweenMax.fromTo(div, 1, option1, option2);
+}

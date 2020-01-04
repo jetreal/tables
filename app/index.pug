@@ -37,10 +37,20 @@ html(lang='en')
 			.j-wrap-content
 				sidebar.j-wrap-content-sidebar
 					button.j-wrap-content-sidebar__add-table-btn addTable
+					button.j-wrap-content-sidebar__add-table-btn#addElement Text
+					button.j-wrap-content-sidebar__add-table-btn#addWindow window
 				.j-wrap-content-map
 					.resizable.draggedMap
+						.resizable-wall.resizable-wall--top
+							.resizable-wall-window-top-and-bottom
+								p окно
+								input.resizable-wall-window-top-and-bottom__input(type='text' name='tableText' value='')
+								.tableCenter-del x
+						.resizable-wall.resizable-wall--bottom
+						.resizable-wall.resizable-wall--left
+						.resizable-wall.resizable-wall--right
+						.resizable__restricter
 						.resizers
-							| some
 							.resizer.top-left
 							.resizer.top-right
 							.resizer.bottom-left
