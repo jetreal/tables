@@ -412,6 +412,7 @@ function getAllItemCoords() {
     oneItem.positionTop = item.offsetTop
 
     itemCoords = [...itemCoords, oneItem ]
+    return [...itemCoords, oneItem ]
   })
 }
 getAllItemCoords()
@@ -649,6 +650,8 @@ function createTable() {
   makeresizableTableDiv('.' + divId)
   // tableTexts = document.querySelectorAll('.tebleTextP') // обновление текска стола с инпутами
   inputsHandler('.' + divId)
+  onConflictItemsWithOther()
+  // onConflictItemWithMap()
 
   }
 
@@ -696,6 +699,8 @@ function makeresizableTableDiv(div) {
         addLeftAndRightChair(div)
         replaceLine(div)
         onChangeColor()
+        onConflictItemWithMap(div)
+        onConflictItemsWithOther(div)
         // логика resize стола 
         const width = original_width + (e.pageX - original_mouse_x);
         const height = original_height + (e.pageY - original_mouse_y)
@@ -711,7 +716,9 @@ function makeresizableTableDiv(div) {
         addLeftAndRightChair(div)
         replaceLine(div)
         onChangeColor()
-     
+        onConflictItemWithMap(div)
+        onConflictItemsWithOther(div)
+ 
         const height = original_height + (e.pageY - original_mouse_y)
         const width = original_width - (e.pageX - original_mouse_x)
         if (height > minimum_size) {
@@ -727,6 +734,8 @@ function makeresizableTableDiv(div) {
         addLeftAndRightChair(div)
         replaceLine(div)
         onChangeColor()
+        onConflictItemWithMap(div)
+        onConflictItemsWithOther(div)
     
         const width = original_width + (e.pageX - original_mouse_x)
         const height = original_height - (e.pageY - original_mouse_y)
@@ -743,6 +752,9 @@ function makeresizableTableDiv(div) {
         addLeftAndRightChair(div)
         replaceLine(div)
         onChangeColor()
+        onConflictItemWithMap(div)
+        onConflictItemsWithOther(div)
+        
   
         const width = original_width - (e.pageX - original_mouse_x)
         const height = original_height - (e.pageY - original_mouse_y)
@@ -1258,26 +1270,236 @@ function inputsHandler(el) {
 
 
 
-
 ///////////////////////////////////////////////////
-// var tableCornerDraggble;
-// function dragCorner() {
-//   const corners = document.querySelectorAll('.resizerTable')
+// logic on conflict items
 
-//   tableCornerDraggble = Draggable.create(corners, {
-//     onPress:function(e){e.stopPropagation()},
 
-//     onRelease: function() {
-//       draggableCollection.forEach(item => {
-//         item.enable()
-//       })
+function onConflictItemWithMap(el) {
+  // const allItems = document.querySelectorAll('.any-map-item')
+  const item = document.querySelector(el)
+  // console.log(el)
+  if (item) {
+    const itemWidth = item.offsetWidth;
+    const itemHeight = item.offsetHeight;
+    let sumPosAndTranslLeft;
+    let sumPosAndTranslTop;
+    let stopPointRight;
+    let stopPointBottom;
+    let stopPointLeft;
+    let stopPointTop;
+
+    const width = draggedMap.offsetWidth
+    const height = draggedMap.offsetHeight
+    // const width = original_width - (e.pageX - original_mouse_x)
+    // const height = original_height - (e.pageY - original_mouse_y)
+
+function getCornerCoords() {
+  let posLeft = item.offsetLeft; // координата position , без транслейт  
+  let posTop = item.offsetTop;
+  const transform = item.style.transform || 'translate(0px, 0px)';
+
+  let x = getTranslateXValue(transform)  // координата транслейта
+  let y = getTranslateYValue(transform)
+
+  sumPosAndTranslLeft = x + posLeft   // сумма координат транслейта и position
+  sumPosAndTranslTop = y + posTop
+}
+getCornerCoords()
+
+function dropOnRightMap() {
+  
+  if (itemWidth + sumPosAndTranslLeft > width - 3) {
+    var clickEvent = new Event('mouseup'); //создаем событие
+    window.dispatchEvent(clickEvent); //имитируем 
+    stopPointRight = sumPosAndTranslLeft;
+    item.style.maxWidth = (itemWidth - 7) + 'px'
+  }
+  if (stopPointRight !== sumPosAndTranslLeft) {
+    item.style.maxWidth = ''
+  }
+}
+dropOnRightMap()
+
+function dropOnBottomMap() {
+  if (itemHeight + sumPosAndTranslTop > height - 3) {
+    var clickEvent = new Event('mouseup'); //создаем событие
+    window.dispatchEvent(clickEvent); //имитируем 
+    stopPointBottom = sumPosAndTranslTop;
+    item.style.maxHeight = (itemHeight - 7) + 'px'
+  }
+  if (stopPointBottom !== sumPosAndTranslTop) {
+    item.style.maxHeight = ''
+  }
+}
+dropOnBottomMap()
+
+function dropOnLeftMap() {
+  if (sumPosAndTranslLeft < 10) {
+    var clickEvent = new Event('mouseup'); //создаем событие
+    window.dispatchEvent(clickEvent); //имитируем 
+    item.style.maxWidth = (width - 10) + 'px'
+    stopPointRight = item.style.width;
+    item.style.left = '40px'
+  }
+}
+dropOnLeftMap()
+function dropOnTopMap() {
+  if (sumPosAndTranslTop < 10) {
+    var clickEvent = new Event('mouseup'); //создаем событие
+    window.dispatchEvent(clickEvent); //имитируем
+
+  }
+}
+dropOnTopMap()
+}
+  }
+// onConflictItemWithMap()
+
+// const allItems = document.querySelectorAll('any-map-item')
+function onConflictItemsWithOther(el) {
+  const currentItem = document.querySelector(el)
+
+  if (currentItem) {
+    const itemsWithoutCurrent = itemCoords.filter(item => item.id !== currentItem.id)
+    const itemWidth = currentItem.offsetWidth
+    const itemHeight = currentItem.offsetHeight
+    const itemposLeft = currentItem.offsetLeft
+    const itemposTop = currentItem.offsetTop
+    const itemTransform = currentItem.style.transform || 'translate(0px, 0px)';
+    const itemTranslateLeft = getTranslateXValue(itemTransform);
+    const itemTranslateTop = getTranslateYValue(itemTransform);
+    
+
+    function onRightConflict() {
+      const itemsThatRight = itemsWithoutCurrent.filter(item => {
+        return item.itemTranslateTop + item.positionTop + item.itemHeight > itemposTop + itemTranslateTop &&
+          item.itemTranslateTop + item.positionTop < itemposTop + itemTranslateTop + itemHeight &&
+          item.itemTranslateLeft + item.positionLeft > itemposLeft + itemTranslateLeft
+      })
+      const itemsOnConflictLine = itemsThatRight
+      const nearestItems = itemsOnConflictLine.map(item => {
+        return item.positionLeft + item.itemTranslateLeft
+      })
+ 
+      let leftSideNearestItemCoord;
+      leftSideNearestItemCoord = Math.min(...nearestItems)
       
-//     },
-//     onDragStart: function() {
-//       draggableCollection.forEach(item => {
-//         item.disable()
-//       })
-//     },
-//   })[0]
-// }
-// dragCorner()
+      
+      switch (true) {
+        case (leftSideNearestItemCoord !== undefined &&
+              itemWidth + itemposLeft + itemTranslateLeft > leftSideNearestItemCoord &&
+              itemposLeft + itemTranslateLeft < leftSideNearestItemCoord):
+          leftSideNearestItemCoord = Math.min(...nearestItems)
+          let clickEvent = new Event('mouseup'); // создаем событие drop'a
+          window.dispatchEvent(clickEvent); // имитируем 
+          console.log('bum bum')
+          break;
+        default: 
+          return false
+      }
+      
+    }
+    onRightConflict()
+    
+    function onBottomConflict() {
+      const itemsThatBottom = itemsWithoutCurrent.filter(item => {
+        return item.itemTranslateLeft + item.positionLeft + item.itemWidth > itemposLeft + itemTranslateLeft &&
+          item.itemTranslateLeft + item.positionLeft < itemposLeft + itemTranslateLeft + itemWidth
+      })
+
+      const itemsOnConflictLine = itemsThatBottom
+      const nearestItems = itemsOnConflictLine.map(item => {
+        return item.positionTop + item.itemTranslateTop
+      })
+      const nearestObjHeight = itemsThatBottom.find(item => item.positionTop + item.itemTranslateTop == nearestItems)
+
+      let neareastH;
+      if (nearestObjHeight) {
+        neareastH = nearestObjHeight.itemHeight || 0;
+      }
+   
+      const BottomSideNearestItemCoord = Math.min(...nearestItems)
+      if (itemHeight + itemposTop + itemTranslateTop > BottomSideNearestItemCoord &&
+          itemposTop + itemTranslateTop < BottomSideNearestItemCoord + (neareastH)) {
+          var clickEvent = new Event('mouseup'); // создаем событие drop'a
+          window.dispatchEvent(clickEvent); // имитируем 
+          console.log('slam')
+          console.log(BottomSideNearestItemCoord)
+      }
+    }
+    onBottomConflict()
+
+    function onLeftConflict() {
+      const itemsThatLeft = itemsWithoutCurrent.filter(item => {
+        return item.itemTranslateTop + item.positionTop + item.itemHeight > itemposTop + itemTranslateTop &&
+          item.itemTranslateTop + item.positionTop < itemposTop + itemTranslateTop + itemHeight &&
+          item.itemTranslateLeft + item.positionLeft < itemposLeft + itemTranslateLeft
+      })
+      const itemsOnConflictLine = itemsThatLeft
+      const nearestItems = itemsOnConflictLine.map(item => {
+        return item.positionLeft + item.itemTranslateLeft
+      })
+      console.log(nearestItems) 
+     
+   
+      let leftSideNearestItemCoord = Math.max(...nearestItems)
+      console.log(leftSideNearestItemCoord)
+
+      
+      let nearestObj;
+      if (itemsThatLeft) {
+        nearestObj = itemsThatLeft.find(item => item.positionLeft + item.itemTranslateLeft == leftSideNearestItemCoord)
+      }
+
+      let nearestPoint
+      if (nearestObj) {
+        nearestPoint = nearestObj.positionLeft + nearestObj.itemTranslateLeft + nearestObj.itemWidth || 0
+      } 
+      switch (true) {
+        case (nearestObj !== undefined &&
+          itemposLeft + itemTranslateLeft < nearestPoint ):
+          console.log(itemposLeft + itemTranslateLeft)
+          console.log(nearestPoint)
+          let clickEvent = new Event('mouseup'); // создаем событие drop'a
+          window.dispatchEvent(clickEvent); // имитируем 
+          console.log('bumssss')
+          break;
+        default: 
+          return false
+      }
+  }
+  onLeftConflict()
+
+  // function onTopConflict() {
+  //   const itemsThatTop = itemsWithoutCurrent.filter(item => {
+  //     return item.itemTranslateLeft + item.positionLeft + item.itemWidth > itemposLeft + itemTranslateLeft &&
+  //       item.itemTranslateLeft + item.positionLeft < itemposLeft + itemTranslateLeft + itemWidth
+  //   })
+
+  //   const itemsOnConflictLine = itemsThatTop
+  //   const nearestItems = itemsOnConflictLine.map(item => {
+  //     return item.positionTop + item.itemTranslateTop
+  //   })
+
+  //   console.log(nearestItems)
+  //   const nearestObjHeight = itemsThatTop.find(item => item.positionTop + item.itemTranslateTop == nearestItems)
+
+  //   let neareastH;
+  //   if (nearestObjHeight) {
+  //     neareastH = nearestObjHeight.itemHeight || 0;
+  //   }
+ 
+  //   const BottomSideNearestItemCoord = Math.min(...nearestItems)
+  //   if (itemHeight + itemposTop + itemTranslateTop > BottomSideNearestItemCoord &&
+  //       itemposTop + itemTranslateTop < BottomSideNearestItemCoord + (neareastH)) {
+  //       var clickEvent = new Event('mouseup'); // создаем событие drop'a
+  //       window.dispatchEvent(clickEvent); // имитируем 
+  //       console.log('slam')
+  //       console.log(BottomSideNearestItemCoord)
+  //   }
+  // }
+  // onTopConflict()
+}
+}
+
+onConflictItemsWithOther()

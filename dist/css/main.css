@@ -578,6 +578,7 @@ template {
   border: 3px solid red;
   position: relative;
   overflow: hidden;
+  height: 80vh;
   display: grid;
   -webkit-align-content: center;
       -ms-flex-line-pack: center;
@@ -608,8 +609,6 @@ template {
   width: 105px;
   height: 105px;
   position: absolute;
-  top: 100px;
-  left: 100px;
   outline: 1px solid none;
   z-index: 1; }
   .resizableTable:hover {
@@ -814,6 +813,9 @@ template {
 
 .elipsLeft10 {
   top: 376px; }
+
+.draggable-item--uno {
+  display: none; }
 
 .displayParams {
   position: fixed;

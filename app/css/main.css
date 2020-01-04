@@ -578,6 +578,7 @@ template {
   border: 3px solid red;
   position: relative;
   overflow: hidden;
+  height: 80vh;
   display: grid;
   -webkit-align-content: center;
       -ms-flex-line-pack: center;
@@ -812,6 +813,9 @@ template {
 
 .elipsLeft10 {
   top: 376px; }
+
+.draggable-item--uno {
+  display: none; }
 
 .displayParams {
   position: fixed;

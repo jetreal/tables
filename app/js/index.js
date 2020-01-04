@@ -1337,9 +1337,6 @@ function dropOnLeftMap() {
   if (sumPosAndTranslLeft < 10) {
     var clickEvent = new Event('mouseup'); //создаем событие
     window.dispatchEvent(clickEvent); //имитируем 
-    // var click = new Event('dragstart'); //создаем событие
-    // item.dispatchEvent(click); //имитируем 
-
     item.style.maxWidth = (width - 10) + 'px'
     stopPointRight = item.style.width;
     item.style.left = '40px'
@@ -1376,7 +1373,8 @@ function onConflictItemsWithOther(el) {
     function onRightConflict() {
       const itemsThatRight = itemsWithoutCurrent.filter(item => {
         return item.itemTranslateTop + item.positionTop + item.itemHeight > itemposTop + itemTranslateTop &&
-          item.itemTranslateTop + item.positionTop < itemposTop + itemTranslateTop + itemHeight
+          item.itemTranslateTop + item.positionTop < itemposTop + itemTranslateTop + itemHeight &&
+          item.itemTranslateLeft + item.positionLeft > itemposLeft + itemTranslateLeft
       })
       const itemsOnConflictLine = itemsThatRight
       const nearestItems = itemsOnConflictLine.map(item => {
@@ -1394,8 +1392,7 @@ function onConflictItemsWithOther(el) {
           leftSideNearestItemCoord = Math.min(...nearestItems)
           let clickEvent = new Event('mouseup'); // создаем событие drop'a
           window.dispatchEvent(clickEvent); // имитируем 
-          console.log('bum')
-          console.log(leftSideNearestItemCoord)
+          console.log('bum bum')
           break;
         default: 
           return false
@@ -1409,52 +1406,99 @@ function onConflictItemsWithOther(el) {
         return item.itemTranslateLeft + item.positionLeft + item.itemWidth > itemposLeft + itemTranslateLeft &&
           item.itemTranslateLeft + item.positionLeft < itemposLeft + itemTranslateLeft + itemWidth
       })
-      // console.log(itemsThatBottom)
+
       const itemsOnConflictLine = itemsThatBottom
       const nearestItems = itemsOnConflictLine.map(item => {
         return item.positionTop + item.itemTranslateTop
       })
-      
+      const nearestObjHeight = itemsThatBottom.find(item => item.positionTop + item.itemTranslateTop == nearestItems)
+
+      let neareastH;
+      if (nearestObjHeight) {
+        neareastH = nearestObjHeight.itemHeight || 0;
+      }
+   
       const BottomSideNearestItemCoord = Math.min(...nearestItems)
-      if (itemHeight + itemposTop + itemTranslateTop > BottomSideNearestItemCoord ) {
+      if (itemHeight + itemposTop + itemTranslateTop > BottomSideNearestItemCoord &&
+          itemposTop + itemTranslateTop < BottomSideNearestItemCoord + (neareastH)) {
           var clickEvent = new Event('mouseup'); // создаем событие drop'a
           window.dispatchEvent(clickEvent); // имитируем 
           console.log('slam')
+          console.log(BottomSideNearestItemCoord)
       }
     }
     onBottomConflict()
 
-  //   function onLeftConflict() {
-  //     const itemsThatLeft = itemsWithoutCurrent.filter(item => {
-  //       return item.itemTranslateTop + item.positionTop + item.itemHeight > itemposTop + itemTranslateTop &&
-  //         item.itemTranslateTop + item.positionTop < itemposTop + itemTranslateTop + itemHeight
-  //     })
-  //     const itemsOnConflictLine = itemsThatLeft
-  //     const nearestItems = itemsOnConflictLine.map(item => {
-  //       return item.positionLeft + item.itemTranslateLeft
-  //     })
-  //     console.log(nearestItems)
+    function onLeftConflict() {
+      const itemsThatLeft = itemsWithoutCurrent.filter(item => {
+        return item.itemTranslateTop + item.positionTop + item.itemHeight > itemposTop + itemTranslateTop &&
+          item.itemTranslateTop + item.positionTop < itemposTop + itemTranslateTop + itemHeight &&
+          item.itemTranslateLeft + item.positionLeft < itemposLeft + itemTranslateLeft
+      })
+      const itemsOnConflictLine = itemsThatLeft
+      const nearestItems = itemsOnConflictLine.map(item => {
+        return item.positionLeft + item.itemTranslateLeft
+      })
+      console.log(nearestItems) 
+     
    
-  //     let leftSideNearestItemCoord = Math.max(...nearestItems)
-  //     console.log(leftSideNearestItemCoord)
+      let leftSideNearestItemCoord = Math.max(...nearestItems)
+      console.log(leftSideNearestItemCoord)
+
       
-      
-  //   //   switch (true) {
-  //   //     case (leftSideNearestItemCoord !== undefined &&
-  //   //       itemWidth + itemposLeft + itemTranslateLeft > leftSideNearestItemCoord &&
-  //   //       itemposLeft + itemTranslateLeft < leftSideNearestItemCoord):
-  //   //       leftSideNearestItemCoord = Math.min(...nearestItems)
-  //   //       let clickEvent = new Event('mouseup'); // создаем событие drop'a
-  //   //       window.dispatchEvent(clickEvent); // имитируем 
-  //   //       console.log('bum')
-  //   //       console.log(leftSideNearestItemCoord)
-  //   //       break;
-  //   //     default: 
-  //   //       return false
-      
-  //   // }
+      let nearestObj;
+      if (itemsThatLeft) {
+        nearestObj = itemsThatLeft.find(item => item.positionLeft + item.itemTranslateLeft == leftSideNearestItemCoord)
+      }
+
+      let nearestPoint
+      if (nearestObj) {
+        nearestPoint = nearestObj.positionLeft + nearestObj.itemTranslateLeft + nearestObj.itemWidth || 0
+      } 
+      switch (true) {
+        case (nearestObj !== undefined &&
+          itemposLeft + itemTranslateLeft < nearestPoint ):
+          console.log(itemposLeft + itemTranslateLeft)
+          console.log(nearestPoint)
+          let clickEvent = new Event('mouseup'); // создаем событие drop'a
+          window.dispatchEvent(clickEvent); // имитируем 
+          console.log('bumssss')
+          break;
+        default: 
+          return false
+      }
+  }
+  onLeftConflict()
+
+  // function onTopConflict() {
+  //   const itemsThatTop = itemsWithoutCurrent.filter(item => {
+  //     return item.itemTranslateLeft + item.positionLeft + item.itemWidth > itemposLeft + itemTranslateLeft &&
+  //       item.itemTranslateLeft + item.positionLeft < itemposLeft + itemTranslateLeft + itemWidth
+  //   })
+
+  //   const itemsOnConflictLine = itemsThatTop
+  //   const nearestItems = itemsOnConflictLine.map(item => {
+  //     return item.positionTop + item.itemTranslateTop
+  //   })
+
+  //   console.log(nearestItems)
+  //   const nearestObjHeight = itemsThatTop.find(item => item.positionTop + item.itemTranslateTop == nearestItems)
+
+  //   let neareastH;
+  //   if (nearestObjHeight) {
+  //     neareastH = nearestObjHeight.itemHeight || 0;
+  //   }
+ 
+  //   const BottomSideNearestItemCoord = Math.min(...nearestItems)
+  //   if (itemHeight + itemposTop + itemTranslateTop > BottomSideNearestItemCoord &&
+  //       itemposTop + itemTranslateTop < BottomSideNearestItemCoord + (neareastH)) {
+  //       var clickEvent = new Event('mouseup'); // создаем событие drop'a
+  //       window.dispatchEvent(clickEvent); // имитируем 
+  //       console.log('slam')
+  //       console.log(BottomSideNearestItemCoord)
+  //   }
   // }
-  // onLeftConflict()
+  // onTopConflict()
 }
 }
 
