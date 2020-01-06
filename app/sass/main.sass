@@ -12,7 +12,12 @@
 	top: 36px
 	left: 36px
 	position: absolute
-
+.resizable-wall__restricter
+	width: calc(100% - 72px)
+	// height: calc(100% - 72px)
+	// top: 36px
+	left: 36px
+	position: absolute
 .resizable-wall
 	outline: 1px solid rgba(200, 200, 200, .5)
 	position: absolute
@@ -40,25 +45,25 @@
 
 .resizable-wall--top
 	height: 36px
-	width: calc(100% - 60px)
-	left: 30px
+	width: calc(100% - 0px)
+	// left: 30px
 
 .resizable-wall--bottom
 	height: 36px
-	width: calc(100% - 60px)
-	left: 30px
+	width: calc(100% - 0px)
+	// left: 30px
 	bottom: 0
 
 .resizable-wall--left
 	width: 36px
-	height: calc(100% - 60px)
-	top: 30px
+	height: calc(100% - 0px)
+	// top: 30px
 
 .resizable-wall--right
 	width: 36px
-	height: calc(100% - 60px)
+	height: calc(100% - 0px)
 	right: 0
-	top: 30px
+	// top: 30px
 
 
 
@@ -394,27 +399,27 @@
 	border: 3px solid #4286f4
 	position: absolute
 	z-index: 1
-	
+
 
 .resizerWindow.left-side
 	left: -5px
 	top: calc(50% - 5px)
-	cursor: nwse-resize
+	cursor: w-resize
 
 .resizerWindow.top-side
 	right: calc(50% - 5px)
 	top: -5px
-	cursor: nesw-resize
+	cursor: n-resize
 
 .resizerWindow.bottom-side
 	left: calc(50% - 5px)
 	bottom: -5px
-	cursor: nesw-resize
+	cursor: s-resize
 
 .resizerWindow.right-side
 	right: -5px
 	bottom: calc(50% - 5px)
-	cursor: nwse-resize
+	cursor: e-resize
 	// transform: translateY(-50%)
 .window-text
 	position: absolute

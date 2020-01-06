@@ -511,6 +511,12 @@ template {
   left: 36px;
   position: absolute; }
 
+.resizable-wall__restricter {
+  width: -webkit-calc(100% - 72px);
+  width: calc(100% - 72px);
+  left: 36px;
+  position: absolute; }
+
 .resizable-wall {
   outline: 1px solid rgba(200, 200, 200, 0.5);
   position: absolute;
@@ -545,29 +551,25 @@ template {
 
 .resizable-wall--top {
   height: 36px;
-  width: -webkit-calc(100% - 60px);
-  width: calc(100% - 60px);
-  left: 30px; }
+  width: -webkit-calc(100% - 0px);
+  width: calc(100% - 0px); }
 
 .resizable-wall--bottom {
   height: 36px;
-  width: -webkit-calc(100% - 60px);
-  width: calc(100% - 60px);
-  left: 30px;
+  width: -webkit-calc(100% - 0px);
+  width: calc(100% - 0px);
   bottom: 0; }
 
 .resizable-wall--left {
   width: 36px;
-  height: -webkit-calc(100% - 60px);
-  height: calc(100% - 60px);
-  top: 30px; }
+  height: -webkit-calc(100% - 0px);
+  height: calc(100% - 0px); }
 
 .resizable-wall--right {
   width: 36px;
-  height: -webkit-calc(100% - 60px);
-  height: calc(100% - 60px);
-  right: 0;
-  top: 30px; }
+  height: -webkit-calc(100% - 0px);
+  height: calc(100% - 0px);
+  right: 0; }
 
 .resizable {
   width: 500px;
@@ -929,25 +931,25 @@ template {
   left: -5px;
   top: -webkit-calc(50% - 5px);
   top: calc(50% - 5px);
-  cursor: nwse-resize; }
+  cursor: w-resize; }
 
 .resizerWindow.top-side {
   right: -webkit-calc(50% - 5px);
   right: calc(50% - 5px);
   top: -5px;
-  cursor: nesw-resize; }
+  cursor: n-resize; }
 
 .resizerWindow.bottom-side {
   left: -webkit-calc(50% - 5px);
   left: calc(50% - 5px);
   bottom: -5px;
-  cursor: nesw-resize; }
+  cursor: s-resize; }
 
 .resizerWindow.right-side {
   right: -5px;
   bottom: -webkit-calc(50% - 5px);
   bottom: calc(50% - 5px);
-  cursor: nwse-resize; }
+  cursor: e-resize; }
 
 .window-text {
   position: absolute;

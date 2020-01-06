@@ -306,11 +306,13 @@ const btnTable = document.querySelector('.j-wrap-content-sidebar__add-table-btn'
 const wrapperDraggerMap = document.querySelector('.j-wrap-content-map');
 const draggedMap = document.querySelector('.draggedMap');
 const restricter = document.querySelector('.resizable__restricter');
+const restricterTop = document.querySelector('.resizable-wall__restricter');
 const resizers = document.querySelector('.resizers');
 const mapConner = document.querySelectorAll('.resizer');
 let sides = document.querySelectorAll('.resizerWindow');
 const addTableBtn = document.querySelector('.j-wrap-content-sidebar__add-table-btn');
 let boxItems = document.querySelectorAll('.box-item');
+let tableDraggables = document.querySelectorAll('.draggable-item');
 const targetElement = document.querySelector('.draggable-item--uno')
 
 // отключение перетаскивания карты при наведение на уголки карты
@@ -404,9 +406,9 @@ function getParentCenter() {
 
 let itemCoords; // array с размерами и координатами всех столов
 
-function getAllItemCoords() {
+function getAllItemCoords(arr) {
   itemCoords = []
-  boxItems.forEach((item, index) => {
+  arr.forEach((item, index) => {
 
     let oneItem = {}
     oneItem.id = item.id
@@ -419,17 +421,20 @@ function getAllItemCoords() {
     oneItem.positionTop = item.offsetTop
 
     itemCoords = [...itemCoords, oneItem]
-    return [...itemCoords, oneItem]
+    console.log(itemCoords)
+   
   })
+  return itemCoords
 }
-getAllItemCoords()
+itemCoords = getAllItemCoords(boxItems)
+console.log(itemCoords)
 
 
 // функция вычислени ограничение карты при столкновении со столом
 let maxAboutWidth = 0
 let maxAboutHeight = 0
 function getMaxRangeItem() {
-  getAllItemCoords()
+  itemCoords = getAllItemCoords(boxItems)
   const widthArr = []
   const heightArr = []
   itemCoords.forEach(item => {
@@ -485,7 +490,7 @@ function getTranslateYValue(translateString) {
 // перетаскивание item'ov (столов)
 var draggableCollection;
 function draggable() {
-  draggableCollection = Draggable.create(boxItems, {
+  draggableCollection = Draggable.create(tableDraggables, {
     bounds: restricter,
     cursor: 'pointer',
     type: 'x, y',
@@ -495,7 +500,7 @@ function draggable() {
     onDragStart: onStart,
     onDragEnd: function () {
       console.log(this)
-      boxItems.forEach(item => {
+      tableDraggables.forEach(item => {
         item.style.color = 'blue'
         item.style.pointerEvents = 'auto'
 
@@ -503,7 +508,7 @@ function draggable() {
       })
       /////////////////////////////////////////
       // Действие при столкновении столов
-      boxItems.forEach(item => {
+      tableDraggables.forEach(item => {
         if (this.hitTest(item)) {
           TweenMax.to(this.target, .1, {
             x: xx,
@@ -543,7 +548,7 @@ function onPress() {
 
 function onStart() {
   mapDraggble.disable();   // отключение перетаскивания самой карты
-  boxItems.forEach(item => {
+  tableDraggables.forEach(item => {
     item.style.pointerEvents = 'none'
   })
   const tlPress = new TimelineMax();
@@ -556,7 +561,7 @@ function onStart() {
 // ---------------------------------
 function onRelease() {
   getMaxRangeItem()  // обновление координат
-  getAllItemCoords()
+  itemCoords = getAllItemCoords(boxItems)
   mapDraggble.enable();  // включение перетаскивания самой карты
   // const tlPress = new TimelineMax();
   // tlPress.to(this.target, 0.1, {
@@ -650,6 +655,8 @@ function onCreateTable() {
     console.log(removed)
     itemCoords = itemCoords.filter(item => item.id != removed.id)
     boxItems = document.querySelectorAll('.box-item');
+    tableDraggables = document.querySelectorAll('.draggable-item');
+    
     console.log(itemCoords)
   })
 
@@ -659,7 +666,8 @@ function onCreateTable() {
 
   corners = document.querySelectorAll('.resizerTable')
   boxItems = document.querySelectorAll('.box-item');
-  getAllItemCoords() // обновление массива с координатами столов
+  tableDraggables = document.querySelectorAll('.draggable-item');
+  itemCoords = getAllItemCoords(boxItems) // обновление массива с координатами столов
   onChangeColor('.' + divId)  // обновление коллекции стульев
   disableDraggableParent()
   tables = document.querySelectorAll('.resizerTablesTable')
@@ -1566,6 +1574,7 @@ function onCreateItem() {
     console.log(removed)
     itemCoords = itemCoords.filter(item => item.id != removed.id)
     boxItems = document.querySelectorAll('.box-item');
+    tableDraggables = document.querySelectorAll('.draggable-item');
     console.log(itemCoords)
   })
 
@@ -1575,7 +1584,8 @@ function onCreateItem() {
 
   corners = document.querySelectorAll('.resizerTable')
   boxItems = document.querySelectorAll('.box-item');
-  getAllItemCoords() // обновление массива с координатами столов
+  tableDraggables = document.querySelectorAll('.draggable-item');
+  itemCoords = getAllItemCoords(boxItems) // обновление массива с координатами столов
   disableDraggableParent()
   tables = document.querySelectorAll('.resizerTablesTable')
 
@@ -1603,11 +1613,18 @@ let startY;
 function dragWindow(items, restricter, type) {
     windowDraggble = Draggable.create(items, {
       type: type,
-      onDragStart: function () {
-        mapDraggble.disable();
+      onPress: function() {
         startX = this.x;
         startY = this.y;
+        
 
+        if (this.target.style.opacity < 1) {
+          windowButton.addEventListener('click', createWindow)
+        }
+      },
+      onDragStart: function () {
+        mapDraggble.disable();
+        this.target.style.opacity = 1;
       },
       onRelease: function () {
         mapDraggble.enable()
@@ -1626,7 +1643,7 @@ function dragWindow(items, restricter, type) {
           }
         })
       },
-      bounds: restricter
+      bounds: restricterTop
     })
 
 }
@@ -1648,7 +1665,7 @@ function createWindow() {
   const windowId = window.id = 'id' + Date.now()
   console.log(windowId)
   window.classList.add(windowId);
-  window.classList.add('resizableWindowWrapper');
+  window.classList.add('resizableWindowWrapper', 'box-item');
   window.classList.add('windowsDrag');
   // врутренности ресайзер и уголки
   const innerDiv = document.createElement('div');
@@ -1706,20 +1723,24 @@ function createWindow() {
 
   //  // draggedMap.appendChild(div)
   //  // oбновеление коллекции
+  boxItems = document.querySelectorAll('.box-item')
   sides = document.querySelectorAll('.resizerWindow')
   windowsDrag = document.querySelectorAll('.windowsDrag')
+  itemCoords = getAllItemCoords(boxItems)
   disableWindowParent(sides)
   makeresizableWindowDiv('.' + windowId)
   dragWindow(windowsDrag, windowTopRestrictor, 'x')
   inputsHandler('.' + windowId)
+  onConflictItemsWithOther()
+  onShowWindowAnimation('.' + windowId)
 
+  windowButton.removeEventListener('click', createWindow)
 }
 
 /////////////////////////////////////////////////////////
 
 function onShowTableAnimation(div) {
 
-  console.log(draggedMap.offsetWidth / 2)
 
   // const table = document.querySelectorAll(".box-item");
   const option1 = {
@@ -1761,6 +1782,7 @@ function makeresizableWindowDiv(div) {
   for (let i = 0; i < resizerTablesTable.length; i++) {
     const currentresizerTable = resizerTablesTable[i];
     currentresizerTable.addEventListener('mousedown', function (e) {
+      elCoords = getAllItemCoords(windowsDrag)
       e.preventDefault()
       original_width = parseFloat(getComputedStyle(element, null).getPropertyValue('width').replace('px', ''));
       original_height = parseFloat(getComputedStyle(element, null).getPropertyValue('height').replace('px', ''));
@@ -1775,18 +1797,24 @@ function makeresizableWindowDiv(div) {
     function resize(e) {
 
       if (currentresizerTable.classList.contains('right-side')) {
+        windowsOnConflict(div)
+        elCoords = getAllItemCoords(windowsDrag)
         const width = original_width + (e.pageX - original_mouse_x);
         if (width > minimum_size) {
           element.style.width = width + 'px'
         }
       }
       else if (currentresizerTable.classList.contains('bottom-side')) {
+        windowsOnConflict(div)
+        elCoords = getAllItemCoords(windowsDrag)
         const height = original_height + (e.pageY - original_mouse_y)
         if (height > minimum_size) {
           element.style.height = height + 'px'
         }
       }
       else if (currentresizerTable.classList.contains('top-side')) {
+        windowsOnConflict(div)
+        elCoords = getAllItemCoords(windowsDrag)
         const height = original_height - (e.pageY - original_mouse_y)
         if (height > minimum_size) {
           element.style.height = height + 'px'
@@ -1794,6 +1822,8 @@ function makeresizableWindowDiv(div) {
         }
       }
       else {
+        windowsOnConflict(div)
+        elCoords = getAllItemCoords(windowsDrag)
         const width = original_width - (e.pageX - original_mouse_x)
         if (width > minimum_size) {
           element.style.width = width + 'px'
@@ -1829,7 +1859,107 @@ function disableWindowParent(elems) {
 disableWindowParent(sides)
 
 
-
-
-
 //////////////////////////////////////////////////////////
+
+let elCoords = getAllItemCoords(windowsDrag)
+function windowsOnConflict(el) {
+  const currentItem = document.querySelector(el)
+  console.log(currentItem)
+
+
+    if (currentItem) {
+      const itemsWithoutCurrent = elCoords.filter(item => item.id !== currentItem.id)
+      const itemWidth = currentItem.offsetWidth
+      const itemHeight = currentItem.offsetHeight
+      const itemposLeft = currentItem.offsetLeft
+      const itemposTop = currentItem.offsetTop
+      const itemTransform = currentItem.style.transform || 'translate(0px, 0px)';
+      const itemTranslateLeft = getTranslateXValue(itemTransform);
+      const itemTranslateTop = getTranslateYValue(itemTransform);
+
+
+
+      function onRightConflict() {
+        const topSideElement = document.querySelector('.resizable-wall--top')
+        console.log(topSideElement.offsetLeft)
+  
+
+        const itemsThatRight = itemsWithoutCurrent.filter(item => {
+          return item.itemTranslateLeft + item.positionLeft > itemposLeft + itemTranslateLeft
+        })
+        const itemsOnConflictLine = itemsThatRight
+        const nearestItems = itemsOnConflictLine.map(item => {
+          return item.positionLeft + item.itemTranslateLeft
+        })
+  
+        let leftSideNearestItemCoord;
+        leftSideNearestItemCoord = Math.min(...nearestItems)
+        console.log(topSideElement.offsetWidth)
+        console.log(itemWidth + itemposLeft + itemTranslateLeft)
+        switch (true) {
+          case (leftSideNearestItemCoord !== undefined &&
+            itemWidth + itemposLeft + itemTranslateLeft > leftSideNearestItemCoord - 15 ||
+            itemWidth + itemposLeft + itemTranslateLeft > topSideElement.offsetWidth - 40
+            ):
+            leftSideNearestItemCoord = Math.min(...nearestItems)
+            let clickEvent = new Event('mouseup'); // создаем событие drop'a
+            window.dispatchEvent(clickEvent); // имитируем 
+            console.log('bum bum')
+            break;
+          default:
+            return false
+        }
+  
+      }
+      onRightConflict()
+
+      function onLeftConflict() {
+        const itemsThatLeft = itemsWithoutCurrent.filter(item => {
+          return item.itemTranslateLeft + item.positionLeft < itemposLeft + itemTranslateLeft
+        })
+        const nearestItems = itemsThatLeft.map(item => {
+          return item.positionLeft + item.itemTranslateLeft
+        })
+  
+        let leftSideNearestItemCoord = Math.max(...nearestItems)
+  
+        let nearestObj;
+        if (itemsThatLeft) {
+          nearestObj = itemsThatLeft.find(item => item.positionLeft + item.itemTranslateLeft == leftSideNearestItemCoord)
+        }
+  
+        let nearestPoint
+        if (nearestObj) {
+          nearestPoint = nearestObj.positionLeft + nearestObj.itemTranslateLeft + nearestObj.itemWidth || 0
+        }
+        console.log(itemposLeft, itemTranslateLeft )
+        switch (true) {
+          case (nearestObj !== undefined &&
+            itemposLeft + itemTranslateLeft < nearestPoint + 15 ||
+            itemposLeft + itemTranslateLeft < 40):
+            let clickEvent = new Event('mouseup'); // создаем событие drop'a
+            window.dispatchEvent(clickEvent); // имитируем 
+            console.log('bumssss')
+            break;
+          default:
+            return false
+        }
+      }
+      onLeftConflict()
+    }
+  
+}
+/////////////////////////////////////////////////////////////////////////
+function onShowWindowAnimation(div) {
+
+  const option1 = {
+    x: 0,
+    opacity: 0.2,
+    delay: 0.2
+  };
+  const option2 = {
+    x: (draggedMap.offsetWidth / 2) - 50,
+    opacity: 0.8,
+  };
+  TweenMax.fromTo(div, .2, option1, option2);
+}
