@@ -514,7 +514,8 @@ template {
 .resizable-wall {
   outline: 1px solid rgba(200, 200, 200, 0.5);
   position: absolute;
-  z-index: 1007; }
+  z-index: 1020;
+  overflow: hidden; }
 
 .resizable-wall-window-top-and-bottom {
   position: relative;
@@ -885,6 +886,85 @@ template {
 
 .text-item {
   background-color: #464343; }
+
+.resizableWindowWrapper {
+  width: 100px;
+  height: inherit;
+  position: absolute;
+  z-index: 1;
+  -webkit-transform: translate(0px, 0px);
+      -ms-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
+  background-color: green;
+  border-radius: 0 0 16px 16px;
+  display: none; }
+
+.resizerWindowInner {
+  display: grid;
+  -webkit-align-content: center;
+      -ms-flex-line-pack: center;
+          align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 0 0 16px 16px;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #4286f4;
+  overflow: visible;
+  background-color: gray;
+  position: absolute; }
+
+.resizerWindow {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #4286f4;
+  position: absolute;
+  z-index: 1; }
+
+.resizerWindow.left-side {
+  left: -5px;
+  top: -webkit-calc(50% - 5px);
+  top: calc(50% - 5px);
+  cursor: nwse-resize; }
+
+.resizerWindow.top-side {
+  right: -webkit-calc(50% - 5px);
+  right: calc(50% - 5px);
+  top: -5px;
+  cursor: nesw-resize; }
+
+.resizerWindow.bottom-side {
+  left: -webkit-calc(50% - 5px);
+  left: calc(50% - 5px);
+  bottom: -5px;
+  cursor: nesw-resize; }
+
+.resizerWindow.right-side {
+  right: -5px;
+  bottom: -webkit-calc(50% - 5px);
+  bottom: calc(50% - 5px);
+  cursor: nwse-resize; }
+
+.window-text {
+  position: absolute;
+  top: 8px;
+  left: 26px; }
+  .window-text p {
+    cursor: pointer; }
+
+.window-input {
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  display: none; }
 
 .displayParams {
   position: fixed;

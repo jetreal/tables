@@ -502,6 +502,73 @@ template {
 [hidden] {
   display: none; }
 
+.resizable__restricter {
+  width: -webkit-calc(100% - 72px);
+  width: calc(100% - 72px);
+  height: -webkit-calc(100% - 72px);
+  height: calc(100% - 72px);
+  top: 36px;
+  left: 36px;
+  position: absolute; }
+
+.resizable-wall {
+  outline: 1px solid rgba(200, 200, 200, 0.5);
+  position: absolute;
+  z-index: 1020;
+  overflow: hidden; }
+
+.resizable-wall-window-top-and-bottom {
+  position: relative;
+  height: 36px;
+  width: 128px;
+  background-color: #CBCBCB;
+  border-radius: 0 0 16px 16px;
+  text-align: center;
+  display: grid;
+  -webkit-align-content: center;
+      -ms-flex-line-pack: center;
+          align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+
+.resizable-wall-window-top-and-bottom__input {
+  display: none;
+  width: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%); }
+
+.resizable-wall--top {
+  height: 36px;
+  width: -webkit-calc(100% - 60px);
+  width: calc(100% - 60px);
+  left: 30px; }
+
+.resizable-wall--bottom {
+  height: 36px;
+  width: -webkit-calc(100% - 60px);
+  width: calc(100% - 60px);
+  left: 30px;
+  bottom: 0; }
+
+.resizable-wall--left {
+  width: 36px;
+  height: -webkit-calc(100% - 60px);
+  height: calc(100% - 60px);
+  top: 30px; }
+
+.resizable-wall--right {
+  width: 36px;
+  height: -webkit-calc(100% - 60px);
+  height: calc(100% - 60px);
+  right: 0;
+  top: 30px; }
+
 .resizable {
   width: 500px;
   height: 300px;
@@ -511,15 +578,15 @@ template {
   z-index: 1;
   -webkit-transform: translate(0px, 0px);
       -ms-transform: translate(0px, 0px);
-          transform: translate(0px, 0px); }
+          transform: translate(0px, 0px);
+  background-color: green; }
   .resizable .resizers {
     width: 100%;
     height: 100%;
     border: 1px solid #4286f4;
     overflow: visible;
     background-color: #1E1E1E;
-    position: absolute;
-    padding: 10px; }
+    position: absolute; }
 
 .resizable .resizers .resizer {
   width: 10px;
@@ -663,10 +730,10 @@ template {
   cursor: nwse-resize; }
 
 .tableCenter {
-  width: -webkit-calc(100% - 40px);
-  width: calc(100% - 40px);
-  height: -webkit-calc(100% - 40px);
-  height: calc(100% - 40px);
+  width: -webkit-calc(100% - 30px);
+  width: calc(100% - 30px);
+  height: -webkit-calc(100% - 30px);
+  height: calc(100% - 30px);
   background-color: #fff;
   z-index: 1005;
   position: absolute;
@@ -815,6 +882,88 @@ template {
   top: 376px; }
 
 .draggable-item--uno {
+  display: none; }
+
+.text-item {
+  background-color: #464343; }
+
+.resizableWindowWrapper {
+  width: 100px;
+  height: inherit;
+  position: absolute;
+  z-index: 1;
+  -webkit-transform: translate(0px, 0px);
+      -ms-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
+  background-color: green;
+  border-radius: 0 0 16px 16px;
+  display: none; }
+
+.resizerWindowInner {
+  display: grid;
+  -webkit-align-content: center;
+      -ms-flex-line-pack: center;
+          align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-radius: 0 0 16px 16px;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #4286f4;
+  overflow: visible;
+  background-color: gray;
+  position: absolute; }
+
+.resizerWindow {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid #4286f4;
+  position: absolute;
+  z-index: 1; }
+
+.resizerWindow.left-side {
+  left: -5px;
+  top: -webkit-calc(50% - 5px);
+  top: calc(50% - 5px);
+  cursor: nwse-resize; }
+
+.resizerWindow.top-side {
+  right: -webkit-calc(50% - 5px);
+  right: calc(50% - 5px);
+  top: -5px;
+  cursor: nesw-resize; }
+
+.resizerWindow.bottom-side {
+  left: -webkit-calc(50% - 5px);
+  left: calc(50% - 5px);
+  bottom: -5px;
+  cursor: nesw-resize; }
+
+.resizerWindow.right-side {
+  right: -5px;
+  bottom: -webkit-calc(50% - 5px);
+  bottom: calc(50% - 5px);
+  cursor: nwse-resize; }
+
+.window-text {
+  position: absolute;
+  top: 8px;
+  left: 26px; }
+  .window-text p {
+    cursor: pointer; }
+
+.window-input {
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
   display: none; }
 
 .displayParams {
