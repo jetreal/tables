@@ -3,15 +3,15 @@
 
 // параметры скролла
 var scrolled;
-window.onscroll = function () {
-  scrolled = window.pageYOffset || document.documentElement.scrollTop;
+windowItem.onscroll = function () {
+  scrolled = windowItem.pageYOffset || document.documentElement.scrollTop;
   document.getElementById('scroll').innerHTML = scrolled + 'px : scroll';
 
 }
 // ширина, высота окна
-$(window).on('load resize', function () {
+$(windowItem).on('load resize', function () {
   var width = $('html').outerWidth();
-  var height = $(window).height();
+  var height = $(windowItem).height();
   $('#width').html(width + 'px : width');
   $('#height').html(height + 'px : height');
 });
@@ -49,8 +49,8 @@ function makeResizableDiv(div) {
       original_y = element.offsetTop;  // .offsetTop changed  <==> .getBoundingClientRect().top
       original_mouse_x = e.pageX;
       original_mouse_y = e.pageY;
-      window.addEventListener('mousemove', resize)
-      window.addEventListener('mouseup', stopResize)
+      windowItem.addEventListener('mousemove', resize)
+      windowItem.addEventListener('mouseup', stopResize)
     })
 
     function resize(e) {
@@ -69,14 +69,14 @@ function makeResizableDiv(div) {
           element.style.width = (width + 3) + 'px'
           // element.style.left = (original_x + 10) + (e.pageX - original_mouse_x) + 'px'
           var clickEvent = new Event('mouseup'); //создаем событие
-          window.dispatchEvent(clickEvent); //имитируем 
+          windowItem.dispatchEvent(clickEvent); //имитируем 
           return
         }
         function dropResizeBottom() {
           element.style.height = (height + 3) + 'px'
           // element.style.top = (original_y - 10) + (e.pageY - original_mouse_y) + 'px'
           var clickEvent = new Event('mouseup'); // создаем событие
-          window.dispatchEvent(clickEvent); // имитируем 
+          windowItem.dispatchEvent(clickEvent); // имитируем 
         }
 
         if (maxAboutWidth > width - 40) {
@@ -95,7 +95,7 @@ function makeResizableDiv(div) {
           element.style.width = (width + 10) + 'px'
           // element.style.left = (original_x - 10) + (e.pageX - original_mouse_x) + 'px'
           var clickEvent = new Event('mouseup'); //создаем событие
-          window.dispatchEvent(clickEvent); //имитируем 
+          windowItem.dispatchEvent(clickEvent); //имитируем 
           return
         }
         if (
@@ -104,7 +104,7 @@ function makeResizableDiv(div) {
           element.style.height = (height + 10) + 'px'
           // element.style.top = (original_y + 10) + (e.pageY - original_mouse_y) + 'px'
           var clickEvent = new Event('mouseup'); //создаем событие
-          window.dispatchEvent(clickEvent); //имитируем 
+          windowItem.dispatchEvent(clickEvent); //имитируем 
           return
         }
 
@@ -128,14 +128,14 @@ function makeResizableDiv(div) {
           element.style.width = (width + 3) + 'px'
           element.style.left = (original_x - 3) + (e.pageX - original_mouse_x) + 'px'
           var clickEvent = new Event('mouseup'); //создаем событие
-          window.dispatchEvent(clickEvent); //имитируем 
+          windowItem.dispatchEvent(clickEvent); //имитируем 
           return
         }
         function dropResizeBottom() {
           element.style.height = (height + 3) + 'px'
           // element.style.top = (original_y - 10) + (e.pageY - original_mouse_y) + 'px'
           var clickEvent = new Event('mouseup'); // создаем событие
-          window.dispatchEvent(clickEvent); // имитируем 
+          windowItem.dispatchEvent(clickEvent); // имитируем 
         }
 
         if (maxAboutWidth > width - 40) {
@@ -154,7 +154,7 @@ function makeResizableDiv(div) {
           element.style.width = (width + 10) + 'px'
           element.style.left = (original_x - 10) + (e.pageX - original_mouse_x) + 'px'
           var clickEvent = new Event('mouseup'); //создаем событие
-          window.dispatchEvent(clickEvent); //имитируем 
+          windowItem.dispatchEvent(clickEvent); //имитируем 
           return
         }
         if (
@@ -163,7 +163,7 @@ function makeResizableDiv(div) {
           element.style.height = (height + 10) + 'px'
           element.style.top = (original_y + 10) + (e.pageY - original_mouse_y) + 'px'
           var clickEvent = new Event('mouseup'); //создаем событие
-          window.dispatchEvent(clickEvent); //имитируем 
+          windowItem.dispatchEvent(clickEvent); //имитируем 
           return
         }
 
@@ -185,14 +185,14 @@ function makeResizableDiv(div) {
           element.style.width = (width + 3) + 'px'
           // element.style.left = (original_x + 10) + (e.pageX - original_mouse_x) + 'px'
           var clickEvent = new Event('mouseup'); //создаем событие
-          window.dispatchEvent(clickEvent); //имитируем 
+          windowItem.dispatchEvent(clickEvent); //имитируем 
           return
         }
         function dropResizeBottom() {
           element.style.height = (height + 3) + 'px'
           element.style.top = (original_y - 3) + (e.pageY - original_mouse_y) + 'px'
           var clickEvent = new Event('mouseup'); // создаем событие
-          window.dispatchEvent(clickEvent); // имитируем 
+          windowItem.dispatchEvent(clickEvent); // имитируем 
         }
 
         const width = original_width + (e.pageX - original_mouse_x)
@@ -243,14 +243,14 @@ function makeResizableDiv(div) {
           element.style.width = (width + 3) + 'px'
           element.style.left = (original_x - 3) + (e.pageX - original_mouse_x) + 'px'
           var clickEvent = new Event('mouseup'); //создаем событие
-          window.dispatchEvent(clickEvent); //имитируем 
+          windowItem.dispatchEvent(clickEvent); //имитируем 
           return
         }
         function dropResizeBottom() {
           element.style.height = (height + 3) + 'px'
           element.style.top = (original_y - 3) + (e.pageY - original_mouse_y) + 'px'
           var clickEvent = new Event('mouseup'); // создаем событие
-          window.dispatchEvent(clickEvent); // имитируем 
+          windowItem.dispatchEvent(clickEvent); // имитируем 
         }
 
         if (maxAboutWidth > width - 40) {
@@ -269,7 +269,7 @@ function makeResizableDiv(div) {
           element.style.width = (width + 10) + 'px'
           element.style.left = (original_x - 10) + (e.pageX - original_mouse_x) + 'px'
           var clickEvent = new Event('mouseup'); //создаем событие
-          window.dispatchEvent(clickEvent); // имитируем 
+          windowItem.dispatchEvent(clickEvent); // имитируем 
           return
         }
         if (
@@ -278,7 +278,7 @@ function makeResizableDiv(div) {
           element.style.height = (height + 10) + 'px'
           element.style.top = (original_y - 10) + (e.pageY - original_mouse_y) + 'px'
           var clickEvent = new Event('mouseup'); //создаем событие
-          window.dispatchEvent(clickEvent); //имитируем
+          windowItem.dispatchEvent(clickEvent); //имитируем
           return
         }
 
@@ -294,7 +294,7 @@ function makeResizableDiv(div) {
     }
 
     function stopResize() {
-      window.removeEventListener('mousemove', resize)
+      windowItem.removeEventListener('mousemove', resize)
     }
   }
 }
@@ -309,7 +309,7 @@ const restricter = document.querySelector('.resizable__restricter');
 const restricterTop = document.querySelector('.resizable-wall__restricter');
 const resizers = document.querySelector('.resizers');
 const mapConner = document.querySelectorAll('.resizer');
-let sides = document.querySelectorAll('.resizerWindow');
+let sides = document.querySelectorAll('.resizerwindowItem');
 const addTableBtn = document.querySelector('.j-wrap-content-sidebar__add-table-btn');
 let boxItems = document.querySelectorAll('.box-item');
 let tableDraggables = document.querySelectorAll('.draggable-item');
@@ -717,8 +717,8 @@ function makeresizableTableDiv(div) {
       original_y = element.offsetTop;  // .offsetTop changed  <==> .getBoundingClientRect().top
       original_mouse_x = e.pageX;
       original_mouse_y = e.pageY;
-      window.addEventListener('mousemove', resize)
-      window.addEventListener('mouseup', stopResize)
+      windowItem.addEventListener('mousemove', resize)
+      windowItem.addEventListener('mouseup', stopResize)
     })
 
 
@@ -804,7 +804,7 @@ function makeresizableTableDiv(div) {
     }
 
     function stopResize() {
-      window.removeEventListener('mousemove', resize)
+      windowItem.removeEventListener('mousemove', resize)
 
     }
   }
@@ -1342,7 +1342,7 @@ function onConflictItemWithMap(el) {
 
       if (itemWidth + sumPosAndTranslLeft > width - 40) {
         var clickEvent = new Event('mouseup'); //создаем событие
-        window.dispatchEvent(clickEvent); //имитируем 
+        windowItem.dispatchEvent(clickEvent); //имитируем 
         stopPointRight = sumPosAndTranslLeft;
         item.style.maxWidth = (itemWidth - 7) + 'px'
       }
@@ -1355,7 +1355,7 @@ function onConflictItemWithMap(el) {
     function dropOnBottomMap() {
       if (itemHeight + sumPosAndTranslTop > height - 40) {
         var clickEvent = new Event('mouseup'); //создаем событие
-        window.dispatchEvent(clickEvent); //имитируем 
+        windowItem.dispatchEvent(clickEvent); //имитируем 
         stopPointBottom = sumPosAndTranslTop;
         item.style.maxHeight = (itemHeight - 7) + 'px'
       }
@@ -1368,7 +1368,7 @@ function onConflictItemWithMap(el) {
     function dropOnLeftMap() {
       if (sumPosAndTranslLeft < 45) {
         var clickEvent = new Event('mouseup'); //создаем событие
-        window.dispatchEvent(clickEvent); //имитируем 
+        windowItem.dispatchEvent(clickEvent); //имитируем 
         item.style.maxWidth = (width - 10) + 'px'
         stopPointRight = item.style.width;
         item.style.left = '40px'
@@ -1378,7 +1378,7 @@ function onConflictItemWithMap(el) {
     function dropOnTopMap() {
       if (sumPosAndTranslTop < 45) {
         var clickEvent = new Event('mouseup'); //создаем событие
-        window.dispatchEvent(clickEvent); //имитируем
+        windowItem.dispatchEvent(clickEvent); //имитируем
 
       }
     }
@@ -1422,7 +1422,7 @@ function onConflictItemsWithOther(el) {
           itemposLeft + itemTranslateLeft < leftSideNearestItemCoord):
           leftSideNearestItemCoord = Math.min(...nearestItems)
           let clickEvent = new Event('mouseup'); // создаем событие drop'a
-          window.dispatchEvent(clickEvent); // имитируем 
+          windowItem.dispatchEvent(clickEvent); // имитируем 
           console.log('bum bum')
           break;
         default:
@@ -1453,7 +1453,7 @@ function onConflictItemsWithOther(el) {
       if (itemHeight + itemposTop + itemTranslateTop > BottomSideNearestItemCoord &&
         itemposTop + itemTranslateTop < BottomSideNearestItemCoord + (neareastH)) {
         var clickEvent = new Event('mouseup'); // создаем событие drop'a
-        window.dispatchEvent(clickEvent); // имитируем 
+        windowItem.dispatchEvent(clickEvent); // имитируем 
         console.log('slam')
         console.log(BottomSideNearestItemCoord)
       }
@@ -1486,7 +1486,7 @@ function onConflictItemsWithOther(el) {
         case (nearestObj !== undefined &&
           itemposLeft + itemTranslateLeft < nearestPoint):
           let clickEvent = new Event('mouseup'); // создаем событие drop'a
-          window.dispatchEvent(clickEvent); // имитируем 
+          windowItem.dispatchEvent(clickEvent); // имитируем 
           console.log('bumssss')
           break;
         default:
@@ -1605,13 +1605,13 @@ function onCreateItem() {
 ///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////
 // для перетаскивания окна
-let windowsDrag = document.querySelectorAll('.windowsDrag')
-const windowTopRestrictor = document.querySelector('.resizable-wall.resizable-wall--top')
-let windowDraggble;
+let windowItemsDrag = document.querySelectorAll('.windowItemsDrag')
+const windowItemTopRestrictor = document.querySelector('.resizable-wall.resizable-wall--top')
+let windowItemDraggbleTop;
 let startX;
 let startY;
-function dragWindow(items, restricter, type) {
-    windowDraggble = Draggable.create(items, {
+function dragwindowItem(items, restricter, type) {
+    windowItemDraggbleTop = Draggable.create(items, {
       type: type,
       onPress: function() {
         startX = this.x;
@@ -1619,7 +1619,7 @@ function dragWindow(items, restricter, type) {
         
 
         if (this.target.style.opacity < 1) {
-          windowButton.addEventListener('click', createWindow)
+          windowItemButtonTop.addEventListener('click', createwindowItem)
         }
       },
       onDragStart: function () {
@@ -1648,101 +1648,107 @@ function dragWindow(items, restricter, type) {
 
 }
 
-dragWindow(windowsDrag, windowTopRestrictor, 'x')
+dragwindowItem(windowItemsDrag, windowItemTopRestrictor, 'x')
 
 
 //////////////////////////////////////////////////////////
 
-const windowButton = document.querySelector('#addWindow')
+const windowItemButtonTop = document.querySelector('#addwindowItemTop')
+const windowItemButtonBottom = document.querySelector('#addwindowItemBottom')
+const windowItemButtonLeft = document.querySelector('#addwindowItemLeft')
+const windowItemButtonRight = document.querySelector('#addwindowItemRight')
 
-windowButton.addEventListener('click', createWindow)
+windowItemButtonTop.addEventListener('click', function() {
+  createwindowItem(".resizable-wall--top", "resizablewindowItemWrapperTopAndBottom--top")
+  })
+windowItemButtonBottom.addEventListener('click', function() {
+  createwindowItem(".resizable-wall--bottom", "resizablewindowItemWrapperTopAndBottom--bottom")
+})
 
-function createWindow() {
+// 1 направление ,
+function createwindowItem(sideClass, borderClass) {
+
   // создание обвёртки
-  const topSide = document.querySelector(".resizable-wall")
-  const window = document.createElement('div');
-  window.style.display = 'block'
-  const windowId = window.id = 'id' + Date.now()
-  console.log(windowId)
-  window.classList.add(windowId);
-  window.classList.add('resizableWindowWrapper', 'box-item');
-  window.classList.add('windowsDrag');
+  const side = document.querySelector(sideClass)
+  const windowItem = document.createElement('div');
+  windowItem.style.display = 'block'
+  const windowItemId = windowItem.id = 'id' + Date.now()
+  console.log(windowItemId)
+  windowItem.classList.add(windowItemId);
+  windowItem.classList.add('resizablewindowItemWrapperTopAndBottom', 'box-item');
+  windowItem.classList.add(borderClass);
+  windowItem.classList.add('windowItemsDrag');
   // врутренности ресайзер и уголки
   const innerDiv = document.createElement('div');
-  innerDiv.classList.add('resizerWindowInner');
-  window.appendChild(innerDiv)
+  innerDiv.classList.add('resizerwindowItemInnerTopAndBottom', borderClass );
+  windowItem.appendChild(innerDiv)
 
   const corner1 = document.createElement('div');
-  corner1.classList.add('resizerWindow', 'left-side');
+  corner1.classList.add('resizerwindowItem', 'left-side');
   const corner2 = document.createElement('div');
-  corner2.classList.add('resizerWindow', 'top-side');
+  // corner2.classList.add('resizerwindowItem', 'top-side');
   const corner3 = document.createElement('div');
-  corner3.classList.add('resizerWindow', 'bottom-side');
+  // corner3.classList.add('resizerwindowItem', 'bottom-side');
   const corner4 = document.createElement('div');
-  corner4.classList.add('resizerWindow', 'right-side');
+  corner4.classList.add('resizerwindowItem', 'right-side');
 
   innerDiv.appendChild(corner1)
   innerDiv.appendChild(corner2)
   innerDiv.appendChild(corner3)
   innerDiv.appendChild(corner4)
 
-  topSide.appendChild(window)
+  side.appendChild(windowItem)
 
   const tableTextDiv = document.createElement('div');
-  tableTextDiv.classList.add('tableText', 'window-text');
+  tableTextDiv.classList.add('tableText', 'windowItem-text');
   tableTextDiv.style.display = 'block'
   const tableText = document.createElement('p');
   tableText.innerHTML = 'text'
   tableText.classList.add('tebleTextP');
   tableTextDiv.appendChild(tableText)
-  window.appendChild(tableTextDiv)
+  windowItem.appendChild(tableTextDiv)
   // input
   const tableInput = document.createElement('input');
-  tableInput.classList.add('tableText__input', 'window-input');
+  tableInput.classList.add('tableText__input', 'windowItem-input');
   tableInput.type = 'text'
   tableInput.name = 'tableText'
   tableInput.value = ''
-  window.appendChild(tableInput)
+  windowItem.appendChild(tableInput)
   // удалялка 
-  const windowDel = document.createElement('div');
-  windowDel.innerHTML = "x";
-  windowDel.classList.add('tableCenter-del');
-  innerDiv.appendChild(windowDel)
+  const windowItemDel = document.createElement('div');
+  windowItemDel.innerHTML = "x";
+  windowItemDel.classList.add('tableCenter-del');
+  innerDiv.appendChild(windowItemDel)
 
   // логика удалялки 
   let removed;
-  windowDel.addEventListener('click', function () {
-    removed = window.parentNode.removeChild(window)
-    console.log(removed)
+  windowItemDel.addEventListener('click', function () {
+    removed = windowItem.parentNode.removeChild(windowItem)
     itemCoords = itemCoords.filter(item => item.id != removed.id)
     boxItems = document.querySelectorAll('.box-item');
-    console.log(itemCoords)
-
   })
 
 
-  //  // draggedMap.appendChild(div)
-  //  // oбновеление коллекции
-  boxItems = document.querySelectorAll('.box-item')
-  sides = document.querySelectorAll('.resizerWindow')
-  windowsDrag = document.querySelectorAll('.windowsDrag')
-  itemCoords = getAllItemCoords(boxItems)
-  disableWindowParent(sides)
-  makeresizableWindowDiv('.' + windowId)
-  dragWindow(windowsDrag, windowTopRestrictor, 'x')
-  inputsHandler('.' + windowId)
-  onConflictItemsWithOther()
-  onShowWindowAnimation('.' + windowId)
 
-  windowButton.removeEventListener('click', createWindow)
+  // oбновеление коллекции
+  boxItems = document.querySelectorAll('.box-item')
+  sides = document.querySelectorAll('.resizerwindowItem')
+  windowItemsDrag = document.querySelectorAll('.windowItemsDrag')
+  itemCoords = getAllItemCoords(boxItems)
+  disablewindowItemParent(sides)
+  makeresizablewindowItemDiv('.' + windowItemId)
+  dragwindowItem(windowItemsDrag, windowItemTopRestrictor, 'x')
+  inputsHandler('.' + windowItemId)
+  onConflictItemsWithOther()
+  onShowwindowItemAnimation('.' + windowItemId)
+
+  windowItemButtonTop.removeEventListener('click', createwindowItem)
 }
 
 /////////////////////////////////////////////////////////
 
 function onShowTableAnimation(div) {
 
-
-  // const table = document.querySelectorAll(".box-item");
   const option1 = {
     x: 0,
     y: 0,
@@ -1766,12 +1772,9 @@ function onShowTableAnimation(div) {
 //////////////////////////////////////////////////////////
 
 
-
-
-
-function makeresizableWindowDiv(div) {
+function makeresizablewindowItemDiv(div) {
   const element = document.querySelector(div);
-  const resizerTablesTable = document.querySelectorAll(div + ' .resizerWindow')
+  const resizerTablesTable = document.querySelectorAll(div + ' .resizerwindowItem')
   const minimum_size = 60;
   let original_width = 0;
   let original_height = 0;
@@ -1782,7 +1785,7 @@ function makeresizableWindowDiv(div) {
   for (let i = 0; i < resizerTablesTable.length; i++) {
     const currentresizerTable = resizerTablesTable[i];
     currentresizerTable.addEventListener('mousedown', function (e) {
-      elCoords = getAllItemCoords(windowsDrag)
+      elCoords = getAllItemCoords(windowItemsDrag)
       e.preventDefault()
       original_width = parseFloat(getComputedStyle(element, null).getPropertyValue('width').replace('px', ''));
       original_height = parseFloat(getComputedStyle(element, null).getPropertyValue('height').replace('px', ''));
@@ -1790,31 +1793,31 @@ function makeresizableWindowDiv(div) {
       original_y = element.offsetTop;  // .offsetTop changed  <==> .getBoundingClientRect().top
       original_mouse_x = e.pageX;
       original_mouse_y = e.pageY;
-      window.addEventListener('mousemove', resize)
-      window.addEventListener('mouseup', stopResize)
+      windowItem.addEventListener('mousemove', resize)
+      windowItem.addEventListener('mouseup', stopResize)
     })
 
     function resize(e) {
 
       if (currentresizerTable.classList.contains('right-side')) {
-        windowsOnConflict(div)
-        elCoords = getAllItemCoords(windowsDrag)
+        windowItemsOnConflict(div)
+        elCoords = getAllItemCoords(windowItemsDrag)
         const width = original_width + (e.pageX - original_mouse_x);
         if (width > minimum_size) {
           element.style.width = width + 'px'
         }
       }
       else if (currentresizerTable.classList.contains('bottom-side')) {
-        windowsOnConflict(div)
-        elCoords = getAllItemCoords(windowsDrag)
+        windowItemsOnConflict(div)
+        elCoords = getAllItemCoords(windowItemsDrag)
         const height = original_height + (e.pageY - original_mouse_y)
         if (height > minimum_size) {
           element.style.height = height + 'px'
         }
       }
       else if (currentresizerTable.classList.contains('top-side')) {
-        windowsOnConflict(div)
-        elCoords = getAllItemCoords(windowsDrag)
+        windowItemsOnConflict(div)
+        elCoords = getAllItemCoords(windowItemsDrag)
         const height = original_height - (e.pageY - original_mouse_y)
         if (height > minimum_size) {
           element.style.height = height + 'px'
@@ -1822,8 +1825,8 @@ function makeresizableWindowDiv(div) {
         }
       }
       else {
-        windowsOnConflict(div)
-        elCoords = getAllItemCoords(windowsDrag)
+        windowItemsOnConflict(div)
+        elCoords = getAllItemCoords(windowItemsDrag)
         const width = original_width - (e.pageX - original_mouse_x)
         if (width > minimum_size) {
           element.style.width = width + 'px'
@@ -1833,36 +1836,36 @@ function makeresizableWindowDiv(div) {
     }
 
     function stopResize() {
-      window.removeEventListener('mousemove', resize)
+      windowItem.removeEventListener('mousemove', resize)
     }
   }
 }
 
-makeresizableWindowDiv('.resizableWindowWrapper')
+makeresizablewindowItemDiv('.resizablewindowItemWrapperTopAndBottom')
 ///////////////////////////////////////////////////////
 
-const collectionWindowItems = document.querySelectorAll('.resizerWindowInner')
+const collectionwindowItemItems = document.querySelectorAll('.resizerwindowItemInnerTopAndBottom')
 
-function disableWindowParent(elems) {
+function disablewindowItemParent(elems) {
   elems.forEach(item => {
     item.addEventListener('mouseover', disable)
     item.addEventListener('mouseout', enable)
   })
 
   function disable() {
-    dragDisable(mapDraggble, windowDraggble)
+    dragDisable(mapDraggble, windowItemDraggbleTop)
   }
   function enable() {
-    dragEnable(mapDraggble, windowDraggble)
+    dragEnable(mapDraggble, windowItemDraggbleTop)
   }
 }
-disableWindowParent(sides)
+disablewindowItemParent(sides)
 
 
 //////////////////////////////////////////////////////////
 
-let elCoords = getAllItemCoords(windowsDrag)
-function windowsOnConflict(el) {
+let elCoords = getAllItemCoords(windowItemsDrag)
+function windowItemsOnConflict(el) {
   const currentItem = document.querySelector(el)
   console.log(currentItem)
 
@@ -1884,8 +1887,9 @@ function windowsOnConflict(el) {
         console.log(topSideElement.offsetLeft)
   
 
-        const itemsThatRight = itemsWithoutCurrent.filter(item => {
-          return item.itemTranslateLeft + item.positionLeft > itemposLeft + itemTranslateLeft
+        const itemsThatRight = itemsWithoutCurrent.filter(item => { return item.itemTranslateTop + item.positionTop + item.itemHeight > itemposTop + itemTranslateTop &&
+          item.itemTranslateTop + item.positionTop < itemposTop + itemTranslateTop + itemHeight &&
+           item.itemTranslateLeft + item.positionLeft > itemposLeft + itemTranslateLeft
         })
         const itemsOnConflictLine = itemsThatRight
         const nearestItems = itemsOnConflictLine.map(item => {
@@ -1894,7 +1898,7 @@ function windowsOnConflict(el) {
   
         let leftSideNearestItemCoord;
         leftSideNearestItemCoord = Math.min(...nearestItems)
-        console.log(topSideElement.offsetWidth)
+        console.log(itemsThatRight)
         console.log(itemWidth + itemposLeft + itemTranslateLeft)
         switch (true) {
           case (leftSideNearestItemCoord !== undefined &&
@@ -1903,7 +1907,7 @@ function windowsOnConflict(el) {
             ):
             leftSideNearestItemCoord = Math.min(...nearestItems)
             let clickEvent = new Event('mouseup'); // создаем событие drop'a
-            window.dispatchEvent(clickEvent); // имитируем 
+            windowItem.dispatchEvent(clickEvent); // имитируем 
             console.log('bum bum')
             break;
           default:
@@ -1914,8 +1918,9 @@ function windowsOnConflict(el) {
       onRightConflict()
 
       function onLeftConflict() {
-        const itemsThatLeft = itemsWithoutCurrent.filter(item => {
-          return item.itemTranslateLeft + item.positionLeft < itemposLeft + itemTranslateLeft
+        const itemsThatLeft = itemsWithoutCurrent.filter(item => {return item.itemTranslateTop + item.positionTop + item.itemHeight > itemposTop + itemTranslateTop &&
+          item.itemTranslateTop + item.positionTop < itemposTop + itemTranslateTop + itemHeight &&
+          item.itemTranslateLeft + item.positionLeft < itemposLeft + itemTranslateLeft
         })
         const nearestItems = itemsThatLeft.map(item => {
           return item.positionLeft + item.itemTranslateLeft
@@ -1938,7 +1943,7 @@ function windowsOnConflict(el) {
             itemposLeft + itemTranslateLeft < nearestPoint + 15 ||
             itemposLeft + itemTranslateLeft < 40):
             let clickEvent = new Event('mouseup'); // создаем событие drop'a
-            window.dispatchEvent(clickEvent); // имитируем 
+            windowItem.dispatchEvent(clickEvent); // имитируем 
             console.log('bumssss')
             break;
           default:
@@ -1950,7 +1955,7 @@ function windowsOnConflict(el) {
   
 }
 /////////////////////////////////////////////////////////////////////////
-function onShowWindowAnimation(div) {
+function onShowwindowItemAnimation(div) {
 
   const option1 = {
     x: 0,

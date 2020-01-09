@@ -27,22 +27,25 @@
         <sidebar class="j-wrap-content-sidebar">
           <button class="j-wrap-content-sidebar__add-table-btn">addTable</button>
           <button class="j-wrap-content-sidebar__add-table-btn" id="addElement">Text</button>
-          <button class="j-wrap-content-sidebar__add-table-btn" id="addWindow">window</button>
+          <button class="j-wrap-content-sidebar__add-table-btn" id="addwindowItemTop">windowItem top</button>
+          <button class="j-wrap-content-sidebar__add-table-btn" id="addwindowItemTopBottom">windowItem bottom</button>
+          <button class="j-wrap-content-sidebar__add-table-btn" id="addwindowItemTopLeft">windowItem left</button>
+          <button class="j-wrap-content-sidebar__add-table-btn" id="addwindowItemTopRight">windowItem right</button>
         </sidebar>
         <div class="j-wrap-content-map">
           <div class="resizable draggedMap">
             <div class="resizable-wall resizable-wall--top">
               <div class="resizable-wall__restricter"></div>
-              <div class="resizableWindowWrapper windowsDrag">
-                <div class="resizerWindowInner">
-                  <div class="resizerWindow left-side"></div>
-                  <div class="resizerWindow top-side"></div>
-                  <div class="resizerWindow bottom-side"></div>
-                  <div class="resizerWindow right-side"></div>
-                  <div class="windowText">
+              <div class="resizablewindowItemWrapperTopAndBottom windowItemsDrag resizablewindowItemWrapperTopAndBottom--top">
+                <div class="resizerwindowItemInnerTopAndBottom">
+                  <div class="resizerwindowItem left-side"></div>
+                  <div class="resizerwindowItem top-side"></div>
+                  <div class="resizerwindowItem bottom-side"></div>
+                  <div class="resizerwindowItem right-side"></div>
+                  <div class="windowItemText">
                     <p>окно</p>
                   </div>
-                  <input class="resizable-wall-window-top-and-bottom__input" type="text" name="tableText" value="">
+                  <input class="resizable-wall-windowItem-top-and-bottom__input" type="text" name="tableText" value="">
                   <div class="tableCenter-del">x</div>
                 </div>
               </div>

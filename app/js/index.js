@@ -231,7 +231,6 @@ function makeResizableDiv(div) {
         }
       }
       else {
-
         const width = original_width - (e.pageX - original_mouse_x)
         const height = original_height - (e.pageY - original_mouse_y)
 
@@ -306,7 +305,7 @@ const btnTable = document.querySelector('.j-wrap-content-sidebar__add-table-btn'
 const wrapperDraggerMap = document.querySelector('.j-wrap-content-map');
 const draggedMap = document.querySelector('.draggedMap');
 const restricter = document.querySelector('.resizable__restricter');
-const restricterTop = document.querySelector('.resizable-wall__restricter');
+
 const resizers = document.querySelector('.resizers');
 const mapConner = document.querySelectorAll('.resizer');
 let sides = document.querySelectorAll('.resizerWindow');
@@ -421,13 +420,11 @@ function getAllItemCoords(arr) {
     oneItem.positionTop = item.offsetTop
 
     itemCoords = [...itemCoords, oneItem]
-    console.log(itemCoords)
-   
+
   })
   return itemCoords
 }
 itemCoords = getAllItemCoords(boxItems)
-console.log(itemCoords)
 
 
 // функция вычислени ограничение карты при столкновении со столом
@@ -499,12 +496,9 @@ function draggable() {
     onRelease: onRelease,
     onDragStart: onStart,
     onDragEnd: function () {
-      console.log(this)
       tableDraggables.forEach(item => {
         item.style.color = 'blue'
         item.style.pointerEvents = 'auto'
-
-
       })
       /////////////////////////////////////////
       // Действие при столкновении столов
@@ -513,7 +507,6 @@ function draggable() {
           TweenMax.to(this.target, .1, {
             x: xx,
             y: yy
-            // rotate: 90
           });
         }
       })
@@ -1237,6 +1230,7 @@ function disableDraggableParent() {
 
       corners.forEach(item => {
         this.style.opacity = '1'
+        
       })
 
       dragDisable(mapDraggble, draggableCollection)
@@ -1245,6 +1239,7 @@ function disableDraggableParent() {
       const corners = document.querySelectorAll('.resizerTable')
       corners.forEach(item => {
         this.style.opacity = '0'
+      
       })
 
       dragEnable(mapDraggble, draggableCollection)
@@ -1264,13 +1259,13 @@ function dragDisable(map, collection) {
 }
 function dragEnable(map, collection) {
   map.enable();
-
+ 
   collection.forEach(item => {
     item.enable()
   })
 }
 //////////////////////////////////////////////////
-
+// функция обработки при клике на текст замена на инпут
 function inputsHandler(el) {
 
   let tableText = document.querySelector(el + ' .tebleTextP')
@@ -1299,11 +1294,10 @@ function inputsHandler(el) {
       tableInput.style.display = 'none'
       tableText.style.display = 'block'
     }
-
   }
 }
 ///////////////////////////////////////////////////
-// logic on conflict items
+// logic on conflict items with map
 
 
 function onConflictItemWithMap(el) {
@@ -1385,7 +1379,8 @@ function onConflictItemWithMap(el) {
     dropOnTopMap()
   }
 }
-
+///////////////////////////////////////////////////////////////
+// функция конфлика блоков при ресайзе друг с другом
 
 function onConflictItemsWithOther(el) {
   const currentItem = document.querySelector(el)
@@ -1455,7 +1450,6 @@ function onConflictItemsWithOther(el) {
         var clickEvent = new Event('mouseup'); // создаем событие drop'a
         window.dispatchEvent(clickEvent); // имитируем 
         console.log('slam')
-        console.log(BottomSideNearestItemCoord)
       }
     }
     onBottomConflict()
@@ -1495,10 +1489,8 @@ function onConflictItemsWithOther(el) {
     }
     onLeftConflict()
 
- 
   }
 }
-
 onConflictItemsWithOther()
 
 
@@ -1508,13 +1500,12 @@ onConflictItemsWithOther()
 const buttonForTextItem = document.getElementById('addElement')
 buttonForTextItem.addEventListener('click', onCreateItem)
 
-
-
+/////////////////////////////////////////////////////////
+// создание текстового блока
 function onCreateItem() {
   // создание обвёртки
   const div = document.createElement('div');
   const divId = div.id = 'id' + Date.now()
-  console.log(divId)
   div.classList.add(divId);
   div.classList.add('box-item');
   div.classList.add('any-map-item');
@@ -1571,11 +1562,9 @@ function onCreateItem() {
   let removed;
   tableDel.addEventListener('click', function () {
     removed = div.parentNode.removeChild(div)
-    console.log(removed)
     itemCoords = itemCoords.filter(item => item.id != removed.id)
     boxItems = document.querySelectorAll('.box-item');
     tableDraggables = document.querySelectorAll('.draggable-item');
-    console.log(itemCoords)
   })
 
   resizers.appendChild(div)
@@ -1601,38 +1590,55 @@ function onCreateItem() {
   btnTable.removeEventListener('click', onCreateTable)
 }
 
-
-///////////////////////////////////////////////////////
 //////////////////////////////////////////////////////
 // для перетаскивания окна
 let windowsDrag = document.querySelectorAll('.windowsDrag')
-const windowTopRestrictor = document.querySelector('.resizable-wall.resizable-wall--top')
-let windowDraggble;
-let startX;
-let startY;
+let windowsDragTop = document.querySelectorAll('.drag-top')
+let windowsDragBottom = document.querySelectorAll('.drag-bottom')
+let windowsDragLeft = document.querySelectorAll('.drag-left')
+let windowsDragRight = document.querySelectorAll('.drag-right')
+
+const restricterTop = document.querySelector('.resizable-wall__restricter-top');
+const restricterBottom = document.querySelector('.resizable-wall__restricter-bottom');
+const restricterLeft = document.querySelector('.resizable-wall__restricter-left');
+const restricterRight = document.querySelector('.resizable-wall__restricter-right');
+let windowDraggbleTop = []
+let windowDraggbleBottom = []
+let windowDraggbleLeft = []
+let windowDraggbleRight = []
+
+
+let startX = 0;
+let startY = 0;
 function dragWindow(items, restricter, type) {
-    windowDraggble = Draggable.create(items, {
+  
+  return createDrag()
+  
+  function createDrag() {
+    const dr = Draggable.create(items, {
       type: type,
       onPress: function() {
         startX = this.x;
         startY = this.y;
-        
 
         if (this.target.style.opacity < 1) {
-          windowButton.addEventListener('click', createWindow)
+          windowButtonTop.addEventListener('click', createTopWindow)
+          windowButtonBottom.addEventListener('click', createBottomWindow)
         }
+
       },
       onDragStart: function () {
         mapDraggble.disable();
         this.target.style.opacity = 1;
+        
+        
       },
       onRelease: function () {
         mapDraggble.enable()
       },
       onDragEnd: function () {
-        
         /////////////////////////////////////////
-        // Действие при столкновении столов
+        // Действие при столкновении окон
         items.forEach(item => {
           if (this.hitTest(item)) {
             TweenMax.to(this.target, .1, {
@@ -1643,50 +1649,83 @@ function dragWindow(items, restricter, type) {
           }
         })
       },
-      bounds: restricterTop
+
+      bounds: restricter
     })
 
+    return dr
+  }
 }
-
-dragWindow(windowsDrag, windowTopRestrictor, 'x')
+// }
+    
+    // dragWindow(dragCl = 'g', restricter, 'x')
 
 
 //////////////////////////////////////////////////////////
 
-const windowButton = document.querySelector('#addWindow')
+const windowButtonTop = document.querySelector('#addWindowTop')
+const windowButtonBottom = document.querySelector('#addWindowBottom')
+const windowButtonLeft = document.querySelector('#addWindowLeft')
+const windowButtonRight = document.querySelector('#addWindowRight')
 
-windowButton.addEventListener('click', createWindow)
+windowButtonTop.addEventListener('click', createTopWindow)
+  
+function createTopWindow () {
+  createWindow(".resizable-wall--top", "resizableWindowWrapperTopAndBottom--top", "drag-top", restricterTop, windowDraggbleTop)
+}
 
-function createWindow() {
+windowButtonBottom.addEventListener('click', createBottomWindow)
+function createBottomWindow() {
+  createWindow(".resizable-wall--bottom", "resizableWindowWrapperTopAndBottom--bottom", "drag-bottom", restricterBottom, windowDraggbleBottom)
+}
+
+windowButtonLeft.addEventListener('click', createLeftWindow)
+function createLeftWindow() {
+  createWindow(".resizable-wall--left", "resizableWindowWrapperLeftAndRight--left", "drag-left", restricterLeft, windowDraggbleLeft)
+}
+
+// 1 направление ,
+function createWindow(sideClass, borderClass, dragClass, restricter, dragCollection) {
   // создание обвёртки
-  const topSide = document.querySelector(".resizable-wall")
-  const window = document.createElement('div');
-  window.style.display = 'block'
-  const windowId = window.id = 'id' + Date.now()
-  console.log(windowId)
-  window.classList.add(windowId);
-  window.classList.add('resizableWindowWrapper', 'box-item');
-  window.classList.add('windowsDrag');
+  const side = document.querySelector(sideClass)
+  const windowItem = document.createElement('div');
+  windowItem.style.display = 'block'
+  const windowId = windowItem.id = 'id' + Date.now()
+  windowItem.classList.add(windowId);
+ 
+  if (dragClass === "drag-top" || dragClass ===  "drag-bottom") {
+    windowItem.classList.add('resizableWindowWrapperTopAndBottom');
+  } else {
+    windowItem.classList.add('resizableWindowWrapperLeftAndRight');
+  }
+  windowItem.classList.add('box-item');
+  windowItem.classList.add(borderClass);
+  windowItem.classList.add('windowsDrag');
+  windowItem.classList.add(dragClass);
+
   // врутренности ресайзер и уголки
   const innerDiv = document.createElement('div');
-  innerDiv.classList.add('resizerWindowInner');
-  window.appendChild(innerDiv)
+  if (dragClass === "drag-top" || dragClass === "drag-bottom") {
+    innerDiv.classList.add('resizerWindowInnerTopAndBottom', borderClass );
+    const corner1 = document.createElement('div');
+    corner1.classList.add('resizerWindow', 'left-side');
+    const corner4 = document.createElement('div');
+    corner4.classList.add('resizerWindow', 'right-side');
+    innerDiv.appendChild(corner1)
+    innerDiv.appendChild(corner4)
+  } else {
+    const corner2 = document.createElement('div');
+    corner2.classList.add('resizerWindow', 'top-side');
+    const corner3 = document.createElement('div');
+    corner3.classList.add('resizerWindow', 'bottom-side');
+    innerDiv.appendChild(corner2)
+    innerDiv.appendChild(corner3)
+    innerDiv.classList.add('resizerWindowInnerLeftAndRight', borderClass );
+  }
 
-  const corner1 = document.createElement('div');
-  corner1.classList.add('resizerWindow', 'left-side');
-  const corner2 = document.createElement('div');
-  corner2.classList.add('resizerWindow', 'top-side');
-  const corner3 = document.createElement('div');
-  corner3.classList.add('resizerWindow', 'bottom-side');
-  const corner4 = document.createElement('div');
-  corner4.classList.add('resizerWindow', 'right-side');
+  windowItem.appendChild(innerDiv)
 
-  innerDiv.appendChild(corner1)
-  innerDiv.appendChild(corner2)
-  innerDiv.appendChild(corner3)
-  innerDiv.appendChild(corner4)
-
-  topSide.appendChild(window)
+  side.appendChild(windowItem)
 
   const tableTextDiv = document.createElement('div');
   tableTextDiv.classList.add('tableText', 'window-text');
@@ -1695,14 +1734,14 @@ function createWindow() {
   tableText.innerHTML = 'text'
   tableText.classList.add('tebleTextP');
   tableTextDiv.appendChild(tableText)
-  window.appendChild(tableTextDiv)
+  windowItem.appendChild(tableTextDiv)
   // input
   const tableInput = document.createElement('input');
   tableInput.classList.add('tableText__input', 'window-input');
   tableInput.type = 'text'
   tableInput.name = 'tableText'
   tableInput.value = ''
-  window.appendChild(tableInput)
+  windowItem.appendChild(tableInput)
   // удалялка 
   const windowDel = document.createElement('div');
   windowDel.innerHTML = "x";
@@ -1712,37 +1751,65 @@ function createWindow() {
   // логика удалялки 
   let removed;
   windowDel.addEventListener('click', function () {
-    removed = window.parentNode.removeChild(window)
-    console.log(removed)
+    removed = windowItem.parentNode.removeChild(windowItem)
     itemCoords = itemCoords.filter(item => item.id != removed.id)
     boxItems = document.querySelectorAll('.box-item');
-    console.log(itemCoords)
-
   })
 
-
-  //  // draggedMap.appendChild(div)
-  //  // oбновеление коллекции
+  // oбновеление коллекции
   boxItems = document.querySelectorAll('.box-item')
   sides = document.querySelectorAll('.resizerWindow')
   windowsDrag = document.querySelectorAll('.windowsDrag')
-  itemCoords = getAllItemCoords(boxItems)
-  disableWindowParent(sides)
-  makeresizableWindowDiv('.' + windowId)
-  dragWindow(windowsDrag, windowTopRestrictor, 'x')
+  let dragCl = document.querySelectorAll('.' + dragClass)
+  itemCoords = getAllItemCoords(windowsDrag)
+  console.log(itemCoords)
+  console.log( windowItem)
+  
+  
+  switch (true) {
+    case (dragClass === "drag-top"): {
+      const topCollection = dragWindow(dragCl, restricter, 'x')
+      disableWindowParent(sides, topCollection)
+      // windowDraggbleTop = dragWindow(dragCl, restricter, 'x')
+    }
+      break
+    case (dragClass === "drag-bottom"): {
+      const bottomCollection = dragWindow(dragCl, restricter, 'x')
+      disableWindowParent(sides, bottomCollection)
+    }
+      break
+    case (dragClass === "drag-left"): {
+      const leftCollection = dragWindow(dragCl, restricter, 'y')
+      disableWindowParent(sides, leftCollection)
+    }
+      break
+    case (dragClass === "drag-right"): {
+      const rightCollection = dragWindow(dragCl, restricter, 'y')
+      disableWindowParent(sides, rightCollection)
+    }
+      break
+  }
+  
+
+
+  // disableWindowParent(sides, dragCollection)
+
   inputsHandler('.' + windowId)
   onConflictItemsWithOther()
   onShowWindowAnimation('.' + windowId)
+  makeresizableWindowDiv('.' + windowId)
 
-  windowButton.removeEventListener('click', createWindow)
+  windowButtonTop.removeEventListener('click', createTopWindow)
+  windowButtonBottom.removeEventListener('click', createBottomWindow)
+    
+  
 }
 
-/////////////////////////////////////////////////////////
 
+/////////////////////////////////////////////////////////
+// анимация при появлении стола
 function onShowTableAnimation(div) {
 
-
-  // const table = document.querySelectorAll(".box-item");
   const option1 = {
     x: 0,
     y: 0,
@@ -1764,9 +1831,6 @@ function onShowTableAnimation(div) {
 }
 
 //////////////////////////////////////////////////////////
-
-
-
 
 
 function makeresizableWindowDiv(div) {
@@ -1838,33 +1902,37 @@ function makeresizableWindowDiv(div) {
   }
 }
 
-makeresizableWindowDiv('.resizableWindowWrapper')
+makeresizableWindowDiv('.resizableWindowWrapperTopAndBottom')
+makeresizableWindowDiv('.resizableWindowWrapperLeftAndRight')
 ///////////////////////////////////////////////////////
+// Отключерие родительского драг,н,дропа
 
-const collectionWindowItems = document.querySelectorAll('.resizerWindowInner')
-
-function disableWindowParent(elems) {
+function disableWindowParent(elems, collection) {
   elems.forEach(item => {
     item.addEventListener('mouseover', disable)
     item.addEventListener('mouseout', enable)
   })
-
+  
   function disable() {
-    dragDisable(mapDraggble, windowDraggble)
+    dragDisable(mapDraggble, collection)
+
   }
   function enable() {
-    dragEnable(mapDraggble, windowDraggble)
+    dragEnable(mapDraggble, collection)
+    // dragEnable(mapDraggble, windowDraggbleLeft)
+    // dragEnable(mapDraggble, windowDraggbleBottom)
+    // dragEnable(mapDraggble, windowDraggbleRight)
   }
 }
-disableWindowParent(sides)
+// disableWindowParent(sides)
 
 
 //////////////////////////////////////////////////////////
-
-let elCoords = getAllItemCoords(windowsDrag)
+// конфликт при ресайзе окон пока влево и вправо
 function windowsOnConflict(el) {
+  let elCoords = getAllItemCoords(windowsDrag)
+  console.log(elCoords)
   const currentItem = document.querySelector(el)
-  console.log(currentItem)
 
 
     if (currentItem) {
@@ -1877,16 +1945,27 @@ function windowsOnConflict(el) {
       const itemTranslateLeft = getTranslateXValue(itemTransform);
       const itemTranslateTop = getTranslateYValue(itemTransform);
 
-
-
       function onRightConflict() {
+        console.log(itemsWithoutCurrent)
+        
         const topSideElement = document.querySelector('.resizable-wall--top')
-        console.log(topSideElement.offsetLeft)
-  
 
-        const itemsThatRight = itemsWithoutCurrent.filter(item => {
-          return item.itemTranslateLeft + item.positionLeft > itemposLeft + itemTranslateLeft
+        const itemsThatRight = itemsWithoutCurrent.filter(item => { 
+          let itemElement = {};
+          if (item.id) {
+            itemElement = document.getElementById(item.id)
+          }
+          if (itemElement != undefined) {
+            return item.id != null &&
+             currentItem.parentNode === itemElement.parentNode &&
+            // item.itemTranslateTop + item.positionTop < itemposTop + itemTranslateTop + itemHeight &&
+              item.itemTranslateLeft + item.positionLeft > itemposLeft + itemTranslateLeft
+
+          } else {
+            return item.itemTranslateLeft + item.positionLeft > itemposLeft + itemTranslateLeft
+          }
         })
+        console.log(itemsThatRight)
         const itemsOnConflictLine = itemsThatRight
         const nearestItems = itemsOnConflictLine.map(item => {
           return item.positionLeft + item.itemTranslateLeft
@@ -1894,8 +1973,6 @@ function windowsOnConflict(el) {
   
         let leftSideNearestItemCoord;
         leftSideNearestItemCoord = Math.min(...nearestItems)
-        console.log(topSideElement.offsetWidth)
-        console.log(itemWidth + itemposLeft + itemTranslateLeft)
         switch (true) {
           case (leftSideNearestItemCoord !== undefined &&
             itemWidth + itemposLeft + itemTranslateLeft > leftSideNearestItemCoord - 15 ||
@@ -1909,13 +1986,24 @@ function windowsOnConflict(el) {
           default:
             return false
         }
-  
       }
-      onRightConflict()
+      
 
       function onLeftConflict() {
+        
         const itemsThatLeft = itemsWithoutCurrent.filter(item => {
-          return item.itemTranslateLeft + item.positionLeft < itemposLeft + itemTranslateLeft
+          let itemElement = '';
+            if (item.id) {
+              itemElement = document.getElementById(item.id)
+            }
+            if (itemElement != undefined) {
+              return item.id != null &&
+               currentItem.parentNode === itemElement.parentNode &&
+              // item.itemTranslateTop + item.positionTop < itemposTop + itemTranslateTop + itemHeight &&
+                item.itemTranslateLeft + item.positionLeft < itemposLeft + itemTranslateLeft
+            } else {
+              return item.itemTranslateLeft + item.positionLeft > itemposLeft + itemTranslateLeft
+            }
         })
         const nearestItems = itemsThatLeft.map(item => {
           return item.positionLeft + item.itemTranslateLeft
@@ -1932,7 +2020,7 @@ function windowsOnConflict(el) {
         if (nearestObj) {
           nearestPoint = nearestObj.positionLeft + nearestObj.itemTranslateLeft + nearestObj.itemWidth || 0
         }
-        console.log(itemposLeft, itemTranslateLeft )
+
         switch (true) {
           case (nearestObj !== undefined &&
             itemposLeft + itemTranslateLeft < nearestPoint + 15 ||
@@ -1945,21 +2033,93 @@ function windowsOnConflict(el) {
             return false
         }
       }
-      onLeftConflict()
+      // console.log(currentItem.classList.contains('drag-top') || currentItem.classList.contains('drag-bottom') )
+      // if (currentItem.classList.contains('drag-top') || currentItem.classList.contains('drag-bottom') ) {
+        onLeftConflict()
+        onRightConflict()
+      // }
+      
+
+      // function onBottomConflict() {
+      //   const leftSideElement = document.querySelector('.resizable-wall--left')
+
+      //   const itemsThatBottom = itemsWithoutCurrent.filter(item => { 
+      //     let itemElement = {};
+      //     if (item.id) {
+      //       itemElement = document.getElementById(item.id)
+      //     }
+          
+      //     if (itemElement != undefined) {
+      //       return item.id != null &&
+      //        currentItem.parentNode === itemElement.parentNode &&
+      //       // item.itemTranslateTop + item.positionTop < itemposTop + itemTranslateTop + itemHeight &&
+      //         item.itemTranslateTop + item.positionTop > itemposTop + itemTranslateTop
+
+      //     } else {
+      //       item.itemTranslateTop + item.positionTop > itemposTop + itemTranslateTop
+      //     }
+      //   })
+      //   const itemsOnConflictLine = itemsThatBottom
+      //   const nearestItems = itemsOnConflictLine.map(item => {
+      //     return item.positionTop + item.itemTranslateTop
+      //   })
+  
+      //   let bottomSideNearestItemCoord;
+      //   bottomSideNearestItemCoord = Math.min(...nearestItems)
+      //   switch (true) {
+      //     case (bottomSideNearestItemCoord !== undefined &&
+      //       itemHeight + itemposTop + itemTranslateTop > bottomSideNearestItemCoord - 15 ||
+      //       itemHeight + itemposTop + itemTranslateTop > leftSideElement.offsetWidth - 40
+      //       ):
+      //       bottomSideNearestItemCoord = Math.min(...nearestItems)
+      //       let clickEvent = new Event('mouseup'); // создаем событие drop'a
+      //       window.dispatchEvent(clickEvent); // имитируем 
+      //       console.log('bum bum')
+      //       break;
+      //     default:
+      //       return false
+      //   }
+  
+      // }
+
+      // if (currentItem.classList.contains('drag-left') || currentItem.classList.contains('drag-right') ) {
+        // onBottomConflict()
+      // }
+     
+
     }
   
 }
+
+// анимация при появлении окон
 /////////////////////////////////////////////////////////////////////////
 function onShowWindowAnimation(div) {
+  const currentElement = document.querySelector(div)
+  if (
+    !(currentElement.classList.contains('drag-left') ||
+    currentElement.classList.contains('drag-right'))
+  ) {
+    const option1 = {
+      x: 0,
+      opacity: 0.2,
+      delay: 0.2
+    };
+    const option2 = {
+      x: (draggedMap.offsetWidth / 2) - 50,
+      opacity: 0.8,
+    };
+    TweenMax.fromTo(div, .2, option1, option2);
 
-  const option1 = {
-    x: 0,
-    opacity: 0.2,
-    delay: 0.2
-  };
-  const option2 = {
-    x: (draggedMap.offsetWidth / 2) - 50,
-    opacity: 0.8,
-  };
-  TweenMax.fromTo(div, .2, option1, option2);
+  } else {
+    const option1 = {
+      y: 0,
+      opacity: 0.2,
+      delay: 0.2
+    };
+    const option2 = {
+      y: (draggedMap.offsetHeight / 2) - 50,
+      opacity: 0.8,
+    };
+    TweenMax.fromTo(div, .2, option1, option2);
+  }
 }

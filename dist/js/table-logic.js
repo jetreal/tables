@@ -23,8 +23,8 @@ function makeresizableTableDiv(div) {
       original_y = element.offsetTop;  // .offsetTop changed  <==> .getBoundingClientRect().top
       original_mouse_x = e.pageX;
       original_mouse_y = e.pageY;
-      window.addEventListener('mousemove', resize)
-      window.addEventListener('mouseup', stopResize)
+      windowItem.addEventListener('mousemove', resize)
+      windowItem.addEventListener('mouseup', stopResize)
     })
     
     function resize(e) {
@@ -95,7 +95,7 @@ function makeresizableTableDiv(div) {
     }
     
     function stopResize() {
-      window.removeEventListener('mousemove', resize)
+      windowItem.removeEventListener('mousemove', resize)
 
       onChangeColor()
 

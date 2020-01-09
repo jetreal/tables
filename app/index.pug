@@ -38,13 +38,16 @@ html(lang='en')
 				sidebar.j-wrap-content-sidebar
 					button.j-wrap-content-sidebar__add-table-btn addTable
 					button.j-wrap-content-sidebar__add-table-btn#addElement Text
-					button.j-wrap-content-sidebar__add-table-btn#addWindow window
+					button.j-wrap-content-sidebar__add-table-btn#addWindowTop window top
+					button.j-wrap-content-sidebar__add-table-btn#addWindowBottom window bottom
+					button.j-wrap-content-sidebar__add-table-btn#addWindowLeft window left
+					button.j-wrap-content-sidebar__add-table-btn#addWindowRight window right
 				.j-wrap-content-map
 					.resizable.draggedMap
 						.resizable-wall.resizable-wall--top
-							.resizable-wall__restricter
-							.resizableWindowWrapper.windowsDrag
-								.resizerWindowInner
+							.resizable-wall__restricter-top
+							.resizableWindowWrapperTopAndBottom.windowsDrag.resizableWindowWrapperTopAndBottom--top.drag-top
+								.resizerWindowInnerTopAndBottom
 									.resizerWindow.left-side
 									.resizerWindow.top-side
 									.resizerWindow.bottom-side
@@ -54,8 +57,11 @@ html(lang='en')
 									input.resizable-wall-window-top-and-bottom__input(type='text' name='tableText' value='')
 									.tableCenter-del x
 						.resizable-wall.resizable-wall--bottom
+							.resizable-wall__restricter-bottom
 						.resizable-wall.resizable-wall--left
+							.resizable-wall__restricter-left
 						.resizable-wall.resizable-wall--right
+							.resizable-wall__restricter-right
 						.resizable__restricter
 						.resizers
 							.resizer.top-left
@@ -102,8 +108,8 @@ html(lang='en')
 
 
 				//- .resizable-wall-window-top-and-bottom
-				//- 	.resizableWindowWrapper
-				//- 		.resizerWindowInner
+				//- 	.resizableWindowWrapperTopAndBottom
+				//- 		.resizerWindowInnerTopAndBottom
 				//- 			| some
 				//- 			.resizerWindow.left-side
 				//- 			.resizerWindow.top-side
