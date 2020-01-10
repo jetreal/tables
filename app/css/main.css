@@ -832,8 +832,8 @@ template {
 
 .tableText {
   position: absolute;
-  top: 12px;
-  left: 16px; }
+  top: 20px;
+  left: 6px; }
   .tableText p {
     cursor: pointer; }
 

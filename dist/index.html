@@ -27,32 +27,25 @@
         <sidebar class="j-wrap-content-sidebar">
           <button class="j-wrap-content-sidebar__add-table-btn">addTable</button>
           <button class="j-wrap-content-sidebar__add-table-btn" id="addElement">Text</button>
-          <button class="j-wrap-content-sidebar__add-table-btn" id="addwindowItemTop">windowItem top</button>
-          <button class="j-wrap-content-sidebar__add-table-btn" id="addwindowItemTopBottom">windowItem bottom</button>
-          <button class="j-wrap-content-sidebar__add-table-btn" id="addwindowItemTopLeft">windowItem left</button>
-          <button class="j-wrap-content-sidebar__add-table-btn" id="addwindowItemTopRight">windowItem right</button>
+          <button class="j-wrap-content-sidebar__add-table-btn" id="addWindowTop">window top</button>
+          <button class="j-wrap-content-sidebar__add-table-btn" id="addWindowBottom">window bottom</button>
+          <button class="j-wrap-content-sidebar__add-table-btn" id="addWindowLeft">window left</button>
+          <button class="j-wrap-content-sidebar__add-table-btn" id="addWindowRight">window right</button>
         </sidebar>
         <div class="j-wrap-content-map">
           <div class="resizable draggedMap">
             <div class="resizable-wall resizable-wall--top">
-              <div class="resizable-wall__restricter"></div>
-              <div class="resizablewindowItemWrapperTopAndBottom windowItemsDrag resizablewindowItemWrapperTopAndBottom--top">
-                <div class="resizerwindowItemInnerTopAndBottom">
-                  <div class="resizerwindowItem left-side"></div>
-                  <div class="resizerwindowItem top-side"></div>
-                  <div class="resizerwindowItem bottom-side"></div>
-                  <div class="resizerwindowItem right-side"></div>
-                  <div class="windowItemText">
-                    <p>окно</p>
-                  </div>
-                  <input class="resizable-wall-windowItem-top-and-bottom__input" type="text" name="tableText" value="">
-                  <div class="tableCenter-del">x</div>
-                </div>
-              </div>
+              <div class="resizable-wall__restricter-top"></div>
             </div>
-            <div class="resizable-wall resizable-wall--bottom"></div>
-            <div class="resizable-wall resizable-wall--left"></div>
-            <div class="resizable-wall resizable-wall--right"></div>
+            <div class="resizable-wall resizable-wall--bottom">
+              <div class="resizable-wall__restricter-bottom"></div>
+            </div>
+            <div class="resizable-wall resizable-wall--left">
+              <div class="resizable-wall__restricter-left"></div>
+            </div>
+            <div class="resizable-wall resizable-wall--right">
+              <div class="resizable-wall__restricter-right"></div>
+            </div>
             <div class="resizable__restricter"></div>
             <div class="resizers">
               <div class="resizer top-left"></div>

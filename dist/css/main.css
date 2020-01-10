@@ -511,11 +511,19 @@ template {
   left: 36px;
   position: absolute; }
 
-.resizable-wall__restricter {
+.resizable-wall__restricter-top, .resizable-wall__restricter-bottom {
   width: -webkit-calc(100% - 72px);
   width: calc(100% - 72px);
+  height: inherit;
   left: 36px;
   position: absolute; }
+
+.resizable-wall__restricter-left, .resizable-wall__restricter-right {
+  position: absolute;
+  width: 100%;
+  height: -webkit-calc(100% - 72px);
+  height: calc(100% - 72px);
+  top: 36px; }
 
 .resizable-wall {
   outline: 1px solid rgba(200, 200, 200, 0.5);
@@ -523,7 +531,7 @@ template {
   z-index: 1020;
   overflow: hidden; }
 
-.resizable-wall-windowItem-top-and-bottom {
+.resizable-wall-window-top-and-bottom {
   position: relative;
   height: 36px;
   width: 128px;
@@ -539,7 +547,7 @@ template {
       -ms-flex-pack: center;
           justify-content: center; }
 
-.resizable-wall-windowItem-top-and-bottom__input {
+.resizable-wall-window-top-and-bottom__input {
   display: none;
   width: 100px;
   position: absolute;
@@ -824,8 +832,8 @@ template {
 
 .tableText {
   position: absolute;
-  top: 12px;
-  left: 16px; }
+  top: 20px;
+  left: 6px; }
   .tableText p {
     cursor: pointer; }
 
@@ -889,7 +897,7 @@ template {
 .text-item {
   background-color: #464343; }
 
-.resizablewindowItemWrapperTopAndBottom {
+.resizableWindowWrapperTopAndBottom {
   width: 100px;
   height: inherit;
   position: absolute;
@@ -900,7 +908,18 @@ template {
   background-color: green;
   display: none; }
 
-.resizerwindowItemInnerTopAndBottom {
+.resizableWindowWrapperLeftAndRight {
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  z-index: 1;
+  -webkit-transform: translate(0px, 0px);
+      -ms-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
+  background-color: green;
+  display: none; }
+
+.resizerWindowInnerTopAndBottom {
   display: grid;
   -webkit-align-content: center;
       -ms-flex-line-pack: center;
@@ -916,59 +935,75 @@ template {
   background-color: gray;
   position: absolute; }
 
-.resizablewindowItemWrapperTopAndBottom--top {
+.resizerWindowInnerLeftAndRight {
+  display: grid;
+  -webkit-align-content: center;
+      -ms-flex-line-pack: center;
+          align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #4286f4;
+  overflow: visible;
+  background-color: gray;
+  position: absolute; }
+
+.resizableWindowWrapperTopAndBottom--top {
   border-radius: 0 0 16px 16px; }
 
-.resizablewindowItemWrapperTopAndBottom--bottom {
+.resizableWindowWrapperTopAndBottom--bottom {
   border-radius: 16px 16px 0 0; }
 
-.resizablewindowItemWrapperTopAndBottom--left {
+.resizableWindowWrapperLeftAndRight--left {
   border-radius: 0 16px 16px 0; }
 
-.resizablewindowItemWrapperTopAndBottom--right {
+.resizableWindowWrapperLeftAndRight--right {
   border-radius: 16px 0 0 16px; }
 
-.resizerwindowItem {
+.resizerWindow {
   width: 10px;
   height: 10px;
   border-radius: 50%;
   background: white;
   border: 3px solid #4286f4;
   position: absolute;
-  z-index: 1010; }
+  z-index: 1030; }
 
-.resizerwindowItem.left-side {
+.resizerWindow.left-side {
   left: -5px;
   top: -webkit-calc(50% - 5px);
   top: calc(50% - 5px);
   cursor: w-resize; }
 
-.resizerwindowItem.top-side {
+.resizerWindow.top-side {
   right: -webkit-calc(50% - 5px);
   right: calc(50% - 5px);
   top: -5px;
   cursor: n-resize; }
 
-.resizerwindowItem.bottom-side {
+.resizerWindow.bottom-side {
   left: -webkit-calc(50% - 5px);
   left: calc(50% - 5px);
   bottom: -5px;
   cursor: s-resize; }
 
-.resizerwindowItem.right-side {
+.resizerWindow.right-side {
   right: -5px;
   bottom: -webkit-calc(50% - 5px);
   bottom: calc(50% - 5px);
   cursor: e-resize; }
 
-.windowItem-text {
+.window-text {
   position: absolute;
   top: 8px;
   left: 26px; }
-  .windowItem-text p {
+  .window-text p {
     cursor: pointer; }
 
-.windowItem-input {
+.window-input {
   width: 50%;
   position: absolute;
   top: 50%;
