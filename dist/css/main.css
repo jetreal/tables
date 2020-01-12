@@ -502,6 +502,9 @@ template {
 [hidden] {
   display: none; }
 
+input {
+  outline: none; }
+
 .resizable__restricter {
   width: -webkit-calc(100% - 72px);
   width: calc(100% - 72px);
@@ -581,7 +584,7 @@ template {
 
 .resizable {
   width: 500px;
-  height: 300px;
+  height: 450px;
   position: absolute;
   top: 50px;
   left: 100px;
@@ -655,7 +658,7 @@ template {
   border: 3px solid red;
   position: relative;
   overflow: hidden;
-  height: 80vh;
+  height: 90vh;
   display: grid;
   -webkit-align-content: center;
       -ms-flex-line-pack: center;
@@ -686,7 +689,6 @@ template {
   width: 105px;
   height: 105px;
   position: absolute;
-  outline: 1px solid none;
   z-index: 1; }
   .resizableTable:hover {
     -webkit-transition: outline .5s;
@@ -744,7 +746,7 @@ template {
   width: calc(100% - 30px);
   height: -webkit-calc(100% - 30px);
   height: calc(100% - 30px);
-  background-color: #fff;
+  background-color: #1E1E1E;
   z-index: 1005;
   position: absolute;
   top: 50%;
@@ -752,14 +754,25 @@ template {
   -webkit-transform: translate(-50%, -50%);
       -ms-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+  border: 2px solid #979797;
   border-radius: 15px;
-  opacity: 1; }
+  opacity: 1;
+  color: #979797;
+  font-family: 'Seymour One', sans-serif;
+  display: grid;
+  -webkit-align-content: center;
+      -ms-flex-line-pack: center;
+          align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
 
 .tableCenter-line {
   position: absolute;
   width: 14px;
   height: 100%;
-  background-color: pink;
+  background-color: #979797;
   border-radius: 15px 0 0 15px; }
 
 .elipsTop {
@@ -807,10 +820,9 @@ template {
   border: 2px solid grey; }
 
 .tableText__input {
-  width: 40px;
-  position: absolute;
-  top: 15px;
-  left: 15px;
+  border-radius: 12px;
+  text-align: center;
+  width: 50px;
   display: none; }
 
 .tableCenter-del {
@@ -822,20 +834,52 @@ template {
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
-  border: 1px solid red;
+  background-color: silver;
+  border: 2px solid gray;
   border-radius: 100%;
   width: 15px;
   height: 15px;
   position: absolute;
   bottom: 5px;
-  right: 5px; }
+  right: 5px;
+  z-index: 1;
+  cursor: pointer;
+  color: black;
+  -webkit-transition: opacity .21s;
+  -o-transition: opacity .21s;
+  transition: opacity .21s;
+  opacity: 0; }
 
 .tableText {
-  position: absolute;
-  top: 20px;
-  left: 6px; }
+  width: 100%;
+  text-align: center; }
   .tableText p {
-    cursor: pointer; }
+    font-family: 'Seymour One', sans-serif;
+    text-transform: uppercase;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    cursor: pointer;
+    font-size: .9rem; }
+
+.tableText-on-text-item {
+  width: 100%;
+  display: grid;
+  -webkit-align-content: center;
+      -ms-flex-line-pack: center;
+          align-content: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+  .tableText-on-text-item p {
+    padding: initial;
+    text-align: center;
+    width: inherit;
+    word-wrap: break-word; }
 
 .elipsTop2 {
   left: 56px; }
@@ -894,9 +938,6 @@ template {
 .draggable-item--uno {
   display: none; }
 
-.text-item {
-  background-color: #464343; }
-
 .resizableWindowWrapperTopAndBottom {
   width: 100px;
   height: inherit;
@@ -920,30 +961,16 @@ template {
   display: none; }
 
 .resizerWindowInnerTopAndBottom {
-  display: grid;
-  -webkit-align-content: center;
-      -ms-flex-line-pack: center;
-          align-content: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   width: 100%;
   height: 100%;
   border: 1px solid #4286f4;
   overflow: visible;
   background-color: gray;
-  position: absolute; }
+  position: absolute;
+  margin: initial;
+  padding: initial; }
 
 .resizerWindowInnerLeftAndRight {
-  display: grid;
-  -webkit-align-content: center;
-      -ms-flex-line-pack: center;
-          align-content: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   width: 100%;
   height: 100%;
   border: 1px solid #4286f4;
@@ -970,7 +997,8 @@ template {
   background: white;
   border: 3px solid #4286f4;
   position: absolute;
-  z-index: 1030; }
+  z-index: 1030;
+  opacity: 0; }
 
 .resizerWindow.left-side {
   left: -5px;
@@ -998,13 +1026,30 @@ template {
 
 .window-text {
   position: absolute;
-  top: 8px;
-  left: 26px; }
+  height: inherit; }
   .window-text p {
-    cursor: pointer; }
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    cursor: pointer;
+    -webkit-transform: translate(-50%, -50%) rotate(90deg);
+        -ms-transform: translate(-50%, -50%) rotate(90deg);
+            transform: translate(-50%, -50%) rotate(90deg);
+    text-align: center; }
 
-.window-input {
-  width: 50%;
+.window-input-side {
+  width: 50px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%) rotate(90deg);
+      -ms-transform: translate(-50%, -50%) rotate(90deg);
+          transform: translate(-50%, -50%) rotate(90deg);
+  text-align: center; }
+
+.window-input-top {
+  text-align: center;
+  width: 50px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1012,6 +1057,10 @@ template {
       -ms-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
   display: none; }
+
+.toggleBtnClass {
+  color: black;
+  opacity: .3; }
 
 .displayParams {
   position: fixed;

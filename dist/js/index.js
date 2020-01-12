@@ -302,6 +302,7 @@ makeResizableDiv('.resizable')
 ///////////////////////////////////////////
 
 const btnTable = document.querySelector('.j-wrap-content-sidebar__add-table-btn');
+const sidebarAllBtn = document.querySelectorAll('.j-wrap-content-sidebar__add-table-btn');
 const wrapperDraggerMap = document.querySelector('.j-wrap-content-map');
 const draggedMap = document.querySelector('.draggedMap');
 const restricter = document.querySelector('.resizable__restricter');
@@ -341,28 +342,28 @@ function onDragRestrictMap() {
       Draggable.get(draggedMap).endDrag();
       x = Draggable.get(draggedMap).x
       y = Draggable.get(draggedMap).y
-      TweenLite.set(this.target, { x: (x - 20), y: y })
+      TweenLite.set(this.target, { x: (x - 10), y: y })
     }
       break;
     case (wrapperHeight < sumPosAndTranslTop): {
       Draggable.get(draggedMap).endDrag();
       x = Draggable.get(draggedMap).x
       y = Draggable.get(draggedMap).y
-      TweenLite.set(this.target, { x: x, y: (y - 20) })
+      TweenLite.set(this.target, { x: x, y: (y - 10) })
     }
       break;
     case (wrapperWidth - draggedMap.offsetWidth > sumPosAndTranslLeft): {
       Draggable.get(draggedMap).endDrag();
       x = Draggable.get(draggedMap).x
       y = Draggable.get(draggedMap).y
-      TweenLite.set(this.target, { x: (x + 20), y: y })
+      TweenLite.set(this.target, { x: (x + 10), y: y })
     }
       break;
     case (wrapperHeight - draggedMap.offsetHeight > sumPosAndTranslTop): {
       Draggable.get(draggedMap).endDrag();
       x = Draggable.get(draggedMap).x
       y = Draggable.get(draggedMap).y
-      TweenLite.set(this.target, { x: x, y: (y + 20) })
+      TweenLite.set(this.target, { x: x, y: (y + 10) })
     }
       break;
     default: return
@@ -374,6 +375,9 @@ var mapDraggble;
 function dragMap() {
   mapDraggble = Draggable.create(draggedMap, {
     onDrag: onDragRestrictMap,
+    onPress: function() {
+      // onInput()
+    }
   })[0]
 }
 dragMap()
@@ -497,7 +501,7 @@ function draggable() {
     onDragStart: onStart,
     onDragEnd: function () {
       tableDraggables.forEach(item => {
-        item.style.color = 'blue'
+        // item.style.color = 'aqua'
         item.style.pointerEvents = 'auto'
       })
       /////////////////////////////////////////
@@ -527,14 +531,22 @@ function onPress() {
   tlPress.to(this.target, 0.1, {
     scale: 1,
     opacity: 1,
-    // zIndex: 1000,
+    border: 'none',
     ease: Power4.easeIn
+    
 
   })
 
   if (this.target.style.opacity < 1) {
     btnTable.addEventListener('click', onCreateTable)
     buttonForTextItem.addEventListener('click', onCreateItem)
+    windowButtonTop.addEventListener('click', createTopWindow)
+    windowButtonBottom.addEventListener('click', createBottomWindow)
+    windowButtonLeft.addEventListener('click', createLeftWindow)
+    windowButtonRight.addEventListener('click', createRightWindow)
+
+    removeButtonColor()
+    
   }
 }
 // -------------------------------------
@@ -610,14 +622,14 @@ function onCreateTable() {
   table.appendChild(line)
   // удалялка 
   const tableDel = document.createElement('div');
-  tableDel.innerHTML = "x";
+  tableDel.innerHTML = "&#10005";
   tableDel.classList.add('tableCenter-del');
   table.appendChild(tableDel)
   // text
   const tableTextDiv = document.createElement('div');
   tableTextDiv.classList.add('tableText');
   const tableText = document.createElement('p');
-  tableText.innerHTML = 'text'
+  tableText.innerHTML = 'num'
   tableText.classList.add('tebleTextP');
   tableTextDiv.appendChild(tableText)
   table.appendChild(tableTextDiv)
@@ -626,6 +638,7 @@ function onCreateTable() {
   tableInput.classList.add('tableText__input');
   tableInput.type = 'text'
   tableInput.name = 'tableText'
+  tableInput.maxLength = '4'
   tableInput.value = ''
   table.appendChild(tableInput)
   // стулья
@@ -676,8 +689,39 @@ function onCreateTable() {
 
   buttonForTextItem.removeEventListener('click', onCreateItem)
   btnTable.removeEventListener('click', onCreateTable)
+  windowButtonTop.removeEventListener('click', createTopWindow)
+  windowButtonBottom.removeEventListener('click', createBottomWindow)
+  windowButtonLeft.removeEventListener('click', createLeftWindow)
+  windowButtonRight.removeEventListener('click', createRightWindow)
+
+  addButtonColor()
+  toggleDel('.tableCenter')
 }
 
+
+/////////////////////////////////////////////////////////////////
+// прятать del
+function toggleDel(delParent) {
+  const delNodeparent = document.querySelectorAll(delParent)
+  delNodeparent.forEach(item => {
+    item.addEventListener('mouseenter', showDelSign)
+    item.addEventListener('mouseleave', hideDelSign)
+  }) 
+  
+  function showDelSign() {
+    const del = document.querySelector(`.${this.parentNode.classList[0]} .tableCenter-del`)
+    del.style.opacity = '1'
+    // console.log(del)
+  }
+  function hideDelSign() {
+    const del = document.querySelector(`.${this.parentNode.classList[0]} .tableCenter-del`)
+    del.style.opacity = '0'
+  }
+}
+
+///////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////
@@ -832,7 +876,8 @@ function replaceLine(cl) {
   }
 }
 ////////////////////////////////////////////////////
-
+// const tableForHoverDel = document.querySelector('.')
+////////////////////////////////////////////////////
 // Добавление стульев сверху и снизу
 function addTopAndBottomChair(el) {
 
@@ -1267,10 +1312,12 @@ function dragEnable(map, collection) {
 //////////////////////////////////////////////////
 // функция обработки при клике на текст замена на инпут
 function inputsHandler(el) {
+  let tableText
+  let tableInput
 
-  let tableText = document.querySelector(el + ' .tebleTextP')
+  tableText = document.querySelector(el + ' .tebleTextP')
 
-  const tableInput = document.querySelector(el + ' .tableText__input')
+  tableInput = document.querySelector(el + ' .tableText__input')
 
   tableText.addEventListener('dblclick', onTextChange)
 
@@ -1282,18 +1329,19 @@ function inputsHandler(el) {
     tableInput.value = tableText.innerHTML
 
     tableInput.addEventListener('blur', onInput)
+    window.addEventListener('click', onInput)
     // tableInput.addEventListener('mouseout', onInput)
     tableInput.addEventListener('keypress', function (e) {
       if (e.keyCode === 13) {
         onInput()
       }
     })
-
     function onInput() {
-      tableText.innerHTML = this.value || 'num';
+      tableText.innerHTML = tableInput.value || 'wind';
       tableInput.style.display = 'none'
       tableText.style.display = 'block'
     }
+
   }
 }
 ///////////////////////////////////////////////////
@@ -1533,20 +1581,22 @@ function onCreateItem() {
   // сам стол
   const table = document.createElement('div');
   table.classList.add('tableCenter');
+  table.classList.add('tableCenter-element');
   table.classList.add('text-item');
   div.appendChild(table)
   // линия стола
 
   // удалялка 
   const tableDel = document.createElement('div');
-  tableDel.innerHTML = "x";
+  tableDel.innerHTML = "&#10005";
   tableDel.classList.add('tableCenter-del');
   table.appendChild(tableDel)
   // text
   const tableTextDiv = document.createElement('div');
-  tableTextDiv.classList.add('tableText');
+  // tableTextDiv.classList.add('tableText');
+  tableTextDiv.classList.add('tableText-on-text-item');
   const tableText = document.createElement('p');
-  tableText.innerHTML = 'text'
+  tableText.innerHTML = 'elem'
   tableText.classList.add('tebleTextP');
   tableTextDiv.appendChild(tableText)
   table.appendChild(tableTextDiv)
@@ -1555,6 +1605,7 @@ function onCreateItem() {
   tableInput.classList.add('tableText__input');
   tableInput.type = 'text'
   tableInput.name = 'tableText'
+  tableInput.maxLength = '4'
   tableInput.value = ''
   table.appendChild(tableInput)
 
@@ -1588,6 +1639,14 @@ function onCreateItem() {
 
   buttonForTextItem.removeEventListener('click', onCreateItem)
   btnTable.removeEventListener('click', onCreateTable)
+  windowButtonTop.removeEventListener('click', createTopWindow)
+  windowButtonBottom.removeEventListener('click', createBottomWindow)
+  windowButtonLeft.removeEventListener('click', createLeftWindow)
+  windowButtonRight.removeEventListener('click', createRightWindow)
+
+  addButtonColor()
+  toggleDel('.tableCenter')
+
 }
 
 //////////////////////////////////////////////////////
@@ -1620,16 +1679,24 @@ function dragWindow(items, restricter, type) {
       onPress: function () {
         startX = this.x;
         startY = this.y;
-
+        // this.target.style.opacity = 1;
+        // this.target.style.border = 'none';
         if (this.target.style.opacity < 1) {
           windowButtonTop.addEventListener('click', createTopWindow)
           windowButtonBottom.addEventListener('click', createBottomWindow)
-        }
+          windowButtonLeft.addEventListener('click', createLeftWindow)
+          windowButtonRight.addEventListener('click', createRightWindow)
+          buttonForTextItem.addEventListener('click', onCreateItem)
+          btnTable.addEventListener('click', onCreateTable)
 
+          removeButtonColor()
+        }
+        
       },
       onDragStart: function () {
         mapDraggble.disable();
         this.target.style.opacity = 1;
+        this.target.style.border = 'none'
 
 
       },
@@ -1656,10 +1723,6 @@ function dragWindow(items, restricter, type) {
     return dr
   }
 }
-// }
-
-// dragWindow(dragCl = 'g', restricter, 'x')
-
 
 //////////////////////////////////////////////////////////
 
@@ -1732,23 +1795,32 @@ function createWindow(sideClass, borderClass, dragClass, restricter, dragCollect
   side.appendChild(windowItem)
 
   const tableTextDiv = document.createElement('div');
-  tableTextDiv.classList.add('tableText', 'window-text');
+  tableTextDiv.classList.add('tableText');
+  if (dragClass === "drag-left" || dragClass === "drag-right") {
+    tableTextDiv.classList.add('window-text');
+  }
   tableTextDiv.style.display = 'block'
   const tableText = document.createElement('p');
-  tableText.innerHTML = 'text'
+  tableText.innerHTML = 'num'
   tableText.classList.add('tebleTextP');
   tableTextDiv.appendChild(tableText)
-  windowItem.appendChild(tableTextDiv)
+  innerDiv.appendChild(tableTextDiv)
   // input
   const tableInput = document.createElement('input');
-  tableInput.classList.add('tableText__input', 'window-input');
+  tableInput.classList.add('tableText__input');
+  tableInput.maxLength = '4'
+  if (dragClass === "drag-left" || dragClass === "drag-right") {
+    tableInput.classList.add('window-input-side');
+  } else {
+    tableInput.classList.add('window-input-top');
+  }
   tableInput.type = 'text'
   tableInput.name = 'tableText'
   tableInput.value = ''
   windowItem.appendChild(tableInput)
   // удалялка 
   const windowDel = document.createElement('div');
-  windowDel.innerHTML = "x";
+  windowDel.innerHTML = "&#10005";
   windowDel.classList.add('tableCenter-del');
   innerDiv.appendChild(windowDel)
 
@@ -1803,11 +1875,52 @@ function createWindow(sideClass, borderClass, dragClass, restricter, dragCollect
 
   windowButtonTop.removeEventListener('click', createTopWindow)
   windowButtonBottom.removeEventListener('click', createBottomWindow)
+  windowButtonLeft.removeEventListener('click', createLeftWindow)
+  windowButtonRight.removeEventListener('click', createRightWindow)
+  buttonForTextItem.removeEventListener('click', onCreateItem)
+  btnTable.removeEventListener('click', onCreateTable)
 
+  addButtonColor()
+  toggleDel('.resizerWindowInnerTopAndBottom')
+  toggleDel('.resizerWindowInnerLeftAndRight')
 
+  toggleCorner(windowId)
+}
+////////////////////////////////////////////////////////
+// скрывать resizers 'ы
+function toggleCorner(classId) {
+  const parentItemId = document.querySelector('.' + classId)
+    parentItemId.addEventListener('mouseenter', showDelSign)
+    parentItemId.addEventListener('mouseleave', hideDelSign)
+
+  
+  function showDelSign() {
+    const corners = document.querySelectorAll(`.${classId} .resizerWindow`)
+    corners.forEach(item => {
+      item.style.opacity = '1'
+    })
+   
+  }
+  function hideDelSign() {
+    const corners = document.querySelectorAll(`.${classId} .resizerWindow`)
+    corners.forEach(item => {
+      item.style.opacity = '0'
+    })
+  }
 }
 
 
+///////////////////////////////////////////////////////
+function addButtonColor() {
+  sidebarAllBtn.forEach(item => {
+    item.classList.add('toggleBtnClass')
+  })
+}
+function removeButtonColor() {
+  sidebarAllBtn.forEach(item => {
+    item.classList.remove('toggleBtnClass')
+  })
+}
 /////////////////////////////////////////////////////////
 // анимация при появлении стола
 function onShowTableAnimation(div) {
@@ -1817,16 +1930,16 @@ function onShowTableAnimation(div) {
     y: 0,
     opacity: 0.2,
     // rotation: 250,
-    scale: 0.4,
+    scale: 1,
     delay: 0.2
   };
   const option2 = {
     x: (draggedMap.offsetWidth / 2) - 50,
     y: (draggedMap.offsetHeight / 2) - 50,
     opacity: 0.6,
-    // rotation: 250,
-    scale: 0.96,
-    zIndex: 1005
+    // scale: 0.96,
+    zIndex: 1005,
+    border: '2px solid white'
 
   };
   TweenMax.fromTo(div, .2, option1, option2);
@@ -1838,7 +1951,7 @@ let elCoords = [];
 function makeresizableWindowDiv(div) {
   const element = document.querySelector(div);
   const resizerTablesTable = document.querySelectorAll(div + ' .resizerWindow')
-  const minimum_size = 60;
+  const minimum_size = 100;
   let original_width = 0;
   let original_height = 0;
   let original_x = 0;
@@ -1927,7 +2040,6 @@ function disableWindowParent(elems, collection) {
 // конфликт при ресайзе окон пока влево и вправо
 function windowsOnConflict(el) {
   elCoords = getAllItemCoords(windowsDrag)
-  console.log(elCoords)
   const currentItem = document.querySelector(el)
 
 
@@ -2019,7 +2131,7 @@ function windowsOnConflict(el) {
 
       switch (true) {
         case (nearestObj !== undefined &&
-          itemposLeft + itemTranslateLeft < nearestPoint - 15 ||
+          itemposLeft + itemTranslateLeft < nearestPoint + 15 ||
           itemposLeft + itemTranslateLeft < 40):
           let clickEvent = new Event('mouseup'); // создаем событие drop'a
           window.dispatchEvent(clickEvent); // имитируем 
@@ -2162,6 +2274,7 @@ function onShowWindowAnimation(div) {
     const option2 = {
       x: (draggedMap.offsetWidth / 2) - 50,
       opacity: 0.8,
+      border: '2px solid white'
     };
     TweenMax.fromTo(div, .2, option1, option2);
 
@@ -2174,7 +2287,8 @@ function onShowWindowAnimation(div) {
     const option2 = {
       y: (draggedMap.offsetHeight / 2) - 50,
       opacity: 0.8,
-      zIndex: 1030
+      zIndex: 1030,
+      border: '2px solid white'
     };
     TweenMax.fromTo(div, .2, option1, option2);
   }

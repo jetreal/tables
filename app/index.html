@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Seymour+One&amp;display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.0.1/dist/gsap.min.js"></script>
@@ -26,7 +27,7 @@
       <div class="j-wrap-content">
         <sidebar class="j-wrap-content-sidebar">
           <button class="j-wrap-content-sidebar__add-table-btn">addTable</button>
-          <button class="j-wrap-content-sidebar__add-table-btn" id="addElement">Text</button>
+          <button class="j-wrap-content-sidebar__add-table-btn" id="addElement">Elem</button>
           <button class="j-wrap-content-sidebar__add-table-btn" id="addWindowTop">window top</button>
           <button class="j-wrap-content-sidebar__add-table-btn" id="addWindowBottom">window bottom</button>
           <button class="j-wrap-content-sidebar__add-table-btn" id="addWindowLeft">window left</button>
@@ -65,7 +66,7 @@
                   <div class="tableText">
                     <p class="tebleTextP">123</p>
                   </div>
-                  <input class="tableText__input" type="text" name="tableText" value="">
+                  <input class="tableText__input" type="text" maxlength="4" name="tableText" value="">
                   <div class="elipsTop chair"></div>
                   <div class="elipsLeft chair"></div>
                   <div class="elipsRight chair"></div>

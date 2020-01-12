@@ -4,7 +4,8 @@
 @import "normalize"
 @import "mixins"
 
-
+input
+	outline: none
 //////////////////////////////
 .resizable__restricter
 	width: calc(100% - 72px)
@@ -76,7 +77,7 @@
 	// min-width: 400px
 	width: 500px
 	// min-height: 200px
-	height: 300px
+	height: 450px
 	position: absolute
 	top: 50px
 	left: 100px
@@ -159,7 +160,7 @@
 	border: 3px solid red
 	position: relative
 	overflow: hidden
-	height: 80vh
+	height: 90vh
 	+c
 
 ///////////////////////////////////
@@ -190,7 +191,6 @@
 	position: absolute
 	// top: 100px
 	// left: 100px
-	+o(none)
 	z-index: 1
 	&:hover
 		transition: outline .5s
@@ -204,6 +204,7 @@
 		height: inherit
 		overflow: hidden
 		padding: 20px
+		
 		
 		
 
@@ -242,19 +243,27 @@
 .tableCenter
 	width: calc(100% - 30px)
 	height: calc(100% - 30px)
-	background-color: #fff
+	background-color: #1E1E1E
 	z-index: 1005
 	position: absolute
 	top: 50%
 	left: 50%
 	transform: translate(-50%, -50%)
+	border: 2px solid #979797
 	border-radius: 15px
 	opacity: 1
+	color: #979797
+	font-family: 'Seymour One', sans-serif
+	+c
+// .tableCenter-element
+// 	width: calc(100% - 6px)
+// 	height: calc(100% - 6px)
+
 .tableCenter-line
 	position: absolute
 	width: 14px
 	height: 100%
-	background-color: pink
+	background-color: #979797
 	border-radius: 15px 0 0 15px
 
 .elipsTop
@@ -306,30 +315,53 @@
 	border: 2px solid grey
 
 .tableText__input
-	width: 40px
-	position: absolute
-	top: 15px
-	left: 15px
+	border-radius: 12px
+	text-align: center
+	width: 50px
 	display: none
 
 .tableCenter-del
 	+c
-	border: 1px solid red
+	background-color: silver
+	border: 2px solid gray
 	border-radius: 100%
 	width: 15px
 	height: 15px
 	position: absolute
 	bottom: 5px
 	right: 5px
+	z-index: 1
+	cursor: pointer
+	color: black
+	transition: opacity .21s 
+	opacity: 0
 
 .tableText
-	// transform: rotate(90deg)
-	position: absolute
-	top: 20px
-	left: 6px
+	width: 100%
+	text-align: center
+	// +c
 	& p
+		font-family: 'Seymour One', sans-serif
+		text-transform: uppercase
+		position: absolute
+		top: 50%
+		left: 50%
+		transform: translate(-50%, -50%)
 		cursor: pointer
-	// display: none
+		font-size: .9rem
+		// color: #1E1E1E
+.tableText-on-text-item
+	width: 100%
+	
+	+c
+	& p
+		padding: initial
+		text-align: center
+		width: inherit
+		word-wrap: break-word
+
+.tebleTextP
+	// color: #1E1E1E
 ////////////////////
 
 
@@ -375,8 +407,6 @@
 .draggable-item--uno
 	display: none
 
-.text-item
-	background-color: #464343
 
 .resizableWindowWrapperTopAndBottom
 	width: 100px
@@ -397,16 +427,19 @@
 	// border-radius: 0 0 16px 16px
 	display: none
 .resizerWindowInnerTopAndBottom
-	+c
-	// border-radius: 0 0 16px 16px
+	// z-index: 1
+	// +c
+
 	width: 100%
 	height: 100%
 	border: 1px solid #4286f4
 	overflow: visible
 	background-color: gray
 	position: absolute
+	margin: initial
+	padding: initial
 .resizerWindowInnerLeftAndRight
-	+c
+	// +c
 	// border-radius: 0 0 16px 16px
 	width: 100%
 	height: 100%
@@ -431,6 +464,7 @@
 	border: 3px solid #4286f4
 	position: absolute
 	z-index: 1030
+	opacity: 0
 
 .resizerWindow.left-side
 	left: -5px
@@ -453,20 +487,51 @@
 	cursor: e-resize
 	// transform: translateY(-50%)
 .window-text
+	// width: inherit
 	position: absolute
-	top: 8px
-	left: 26px
+	// transform: rotate(90deg)
+	height: inherit
+	// margin: initial
+	// padding: initial
 	& p
+		left: 50%
+		top: 50%
+		// color: #979797
+		position: absolute
 		cursor: pointer
-.window-p
+		transform: translate(-50%, -50%)  rotate(90deg)
+		text-align: center
+		// vertical-align: center
 
-.window-input
-	width: 50%
+// .window-input
+// 	width: 50px
+// 	position: absolute
+// 	top: 50%
+// 	left: 50%
+// 	transform: translate(-50%, -50%)
+// 	display: none
+.window-input-side
+	width: 50px
+	position: absolute
+	left: 50%
+	top: 50%
+	transform: translate(-50%, -50%)  rotate(90deg)
+	text-align: center
+
+.window-input-top
+	text-align: center
+	width: 50px
 	position: absolute
 	top: 50%
 	left: 50%
 	transform: translate(-50%, -50%)
 	display: none
+
+
+.toggleBtnClass
+	color: black
+	opacity: .3
+	
 @import "displayPapams"
 // @import "magnific-popup"
 @import "media"
