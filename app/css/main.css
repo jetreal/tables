@@ -505,6 +505,21 @@ template {
 input {
   outline: none; }
 
+#addTable {
+  background-image: url(../images/table.jpg);
+  background-size: cover;
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  margin-top: 20px; }
+
+#addElement {
+  background-image: url(../images/elem.jpg);
+  background-size: cover;
+  width: 80px;
+  height: 80px;
+  border-radius: 20px; }
+
 .resizable__restricter {
   width: -webkit-calc(100% - 72px);
   width: calc(100% - 72px);
@@ -640,6 +655,7 @@ input {
   overflow: hidden; }
 
 .j-wrap-content-sidebar {
+  overflow: hidden;
   z-index: 2;
   width: 200px;
   min-height: 400px;
@@ -647,12 +663,90 @@ input {
   background: rgba(10, 4, 4, 0.5); }
 
 .j-wrap-content-sidebar__add-table-btn {
+  font-family: 'Seymour One', sans-serif;
   width: 80px;
   height: 50px;
   background-color: #fff;
   text-align: center;
   display: block;
-  margin: 5px auto; }
+  margin: 0px auto;
+  background-color: #6C6C6C; }
+
+.block-for-window-control {
+  position: relative;
+  width: 100%;
+  min-height: 200px; }
+  .block-for-window-control button {
+    position: absolute; }
+
+#addWindowTop {
+  background-color: #6C6C6C;
+  top: 28px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+  width: 100px;
+  height: 32px;
+  border-radius: 0 0 16px 16px; }
+
+#addWindowBottom {
+  bottom: 28px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+  width: 100px;
+  height: 32px;
+  border-radius: 16px 16px 0 0; }
+
+#addWindowLeft {
+  top: 50%;
+  left: 28px;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+  width: 32px;
+  height: 100px;
+  border-radius: 0 16px 16px 0; }
+  #addWindowLeft p {
+    display: grid;
+    -webkit-align-content: center;
+        -ms-flex-line-pack: center;
+            align-content: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+            transform: rotate(90deg);
+    width: inherit;
+    height: inherit; }
+
+#addWindowRight {
+  top: 50%;
+  right: 28px;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+  width: 32px;
+  height: 100px;
+  border-radius: 16px 0 0 16px; }
+  #addWindowRight p {
+    display: grid;
+    -webkit-align-content: center;
+        -ms-flex-line-pack: center;
+            align-content: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+            transform: rotate(90deg);
+    width: inherit;
+    height: inherit; }
 
 .j-wrap-content-map {
   border: 3px solid red;
@@ -854,6 +948,7 @@ input {
   width: 100%;
   text-align: center; }
   .tableText p {
+    font-size: 1rem;
     font-family: 'Seymour One', sans-serif;
     text-transform: uppercase;
     position: absolute;
@@ -862,8 +957,7 @@ input {
     -webkit-transform: translate(-50%, -50%);
         -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
-    cursor: pointer;
-    font-size: .9rem; }
+    cursor: pointer; }
 
 .tableText-on-text-item {
   width: 100%;
@@ -876,6 +970,7 @@ input {
       -ms-flex-pack: center;
           justify-content: center; }
   .tableText-on-text-item p {
+    font-size: 1.5rem;
     padding: initial;
     text-align: center;
     width: inherit;

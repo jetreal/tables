@@ -37,12 +37,15 @@ html(lang='en')
 
 			.j-wrap-content
 				sidebar.j-wrap-content-sidebar
-					button.j-wrap-content-sidebar__add-table-btn addTable
-					button.j-wrap-content-sidebar__add-table-btn#addElement Elem
-					button.j-wrap-content-sidebar__add-table-btn#addWindowTop window top
-					button.j-wrap-content-sidebar__add-table-btn#addWindowBottom window bottom
-					button.j-wrap-content-sidebar__add-table-btn#addWindowLeft window left
-					button.j-wrap-content-sidebar__add-table-btn#addWindowRight window right
+					button.j-wrap-content-sidebar__add-table-btn#addTable
+					.block-for-window-control
+						button.j-wrap-content-sidebar__add-table-btn#addWindowTop wind
+						button.j-wrap-content-sidebar__add-table-btn#addWindowBottom wind
+						button.j-wrap-content-sidebar__add-table-btn#addWindowLeft
+							p wind
+						button.j-wrap-content-sidebar__add-table-btn#addWindowRight
+							p wind
+					button.j-wrap-content-sidebar__add-table-btn#addElement
 				.j-wrap-content-map
 					.resizable.draggedMap
 						.resizable-wall.resizable-wall--top
