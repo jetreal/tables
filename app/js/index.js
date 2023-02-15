@@ -120,7 +120,6 @@ function makeResizableDiv(div) {
         getCornerCoords()
         getMaxRangeItem()
 
-
         const height = original_height + (e.pageY - original_mouse_y)
         const width = original_width - (e.pageX - original_mouse_x)
 

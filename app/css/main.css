@@ -25,7 +25,7 @@
 
 body {
   width: 100%;
-  max-height: 3000px;
+  max-height: 100vh;
   margin: 0 auto;
   -webkit-tap-highlight-color: transparent;
   background-color: #828282; }
@@ -598,7 +598,7 @@ input {
   right: 0; }
 
 .resizable {
-  width: 500px;
+  width: 700px;
   height: 450px;
   position: absolute;
   top: 50px;
@@ -646,8 +646,7 @@ input {
   cursor: nwse-resize; }
 
 .wrapperAll {
-  max-width: 1344px;
-  outline: 1px solid green; }
+  max-width: 1344px; }
 
 .j-wrap-content {
   display: grid;
@@ -749,7 +748,7 @@ input {
     height: inherit; }
 
 .j-wrap-content-map {
-  border: 3px solid red;
+  border: 3px solid silver;
   position: relative;
   overflow: hidden;
   height: 90vh;
